@@ -89,6 +89,7 @@ class CogLoader(commands.Cog):
 					self.bot.dispatch("loaded_extension", self.bot.extensions.get(cog))
 			except Exception as error:
 				print('{} cannot be loaded. [{}]'.format(lname, error))
+				input('[ Enter ]')
 			print("Loaded " + self.Utils.progressbar(cog_counter/len(self.CogsToLoad)))
 			cog_counter += 1
 
