@@ -157,9 +157,6 @@ class CogLoader(commands.Cog):
 
 			# shutil.rmtree('Temp')
 
-		self._unload_extension()
-		self._load_extension()	
-
 	@commands.command()
 	async def uptime(self, ctx):
 		"""
