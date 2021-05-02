@@ -67,10 +67,10 @@ intents = discord.Intents.all()
 Bot = discord.Client()
 
 # use AutoShared for more than 5 servers
-bot = commands.AutoShardedBot(command_prefix=PREFIX, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, shard_count=6, intents=intents)
+# bot = commands.AutoShardedBot(command_prefix=PREFIX, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, shard_count=6, intents=intents)
 
 # use this for initialising the Bot but only use for under 5 servers.
-# bot = commands.Bot(command_prefix=get_pre, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, intents=intents)
+bot = commands.Bot(command_prefix=get_pre, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, intents=intents)
 
 bot.minecraft = MINECRAFT
 bot.GIPHY_API = GIPHY_API
