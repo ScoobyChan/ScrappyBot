@@ -127,6 +127,7 @@ async def on_ready():
 		# CogLoader
 		bot.load_extension("Cogs.CogLoader")
 		cg_load = bot.get_cog('CogLoader')
+		cg_load._update()
 		cg_load._load_extension()
 	
 	# Make sure Bot is Loaded fully
