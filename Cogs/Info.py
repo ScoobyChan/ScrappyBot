@@ -308,5 +308,41 @@ class Info(commands.Cog):
 			embed = self.Utils.embed({"title":f"List of Servers I'm", "desc":desc, "color":col})		
 			await msg.edit(content=None, embed=embed)
 
+	@commands.command()
+	async def online(self, ctx):
+		bof	= 0
+		for user in c.members:
+			if not user.bot and str(user.status) != 'offline':
+				bof += 1
+
+		await ctx.send('Users online: {}'.format(bof))
+
+	@commands.command()
+	async def offline(self, ctx):
+		bof	= 0
+		for user in c.members:
+			if not user.bot and str(user.status) == 'offline':
+				bof += 1
+
+		await ctx.send('Users offline: {}'.format(bof))
+
+	@commands.command()
+	async def botonline(self, ctx):
+		bof	= 0
+		for user in c.members:
+			if user.bot and str(user.status) != 'offline':
+				bof += 1
+
+		await ctx.send('bots online: {}'.format(bof))
+
+	@commands.command()
+	async def botoffline(self, ctx):
+		bof	= 0
+		for user in c.members:
+			if user.bot and str(user.status) == 'offline':
+				bof += 1
+
+		await ctx.send('bots offline: {}'.format(bof))
+
 def setup(bot):
 	bot.add_cog(Info(bot))
