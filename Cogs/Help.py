@@ -107,7 +107,7 @@ class Help(commands.Cog):
 			commands = _cog.get_commands()
 			for c in commands:
 				# print(c.help)
-				desc += '**{0}{1}**\n└─ {0}{1} {2}...'.format(ctx.prefix, c, c.help[:15])
+				desc += '\n**{0}{1}**\n└─ {0}{1} {2}...'.format(ctx.prefix, c, c.help[:15])
 
 			embed = discord.Embed(
 				title = 'Help Menu - Commands for: {}'.format(cog_),

@@ -14,11 +14,7 @@ class Lockdown(commands.Cog):
 	@commands.command(name='lockdown')
 	async def _lockdown(self, ctx):
 		"""
-		Add Roles to DB
-		Skip Mods and Admin
-		Remove Roles
-		Remove privalages
-		Add privalages to DB
+		locks down the server to prevent spam attacks everyone apart from administrators
 		"""
 		lockrole = self.settings.Get(ctx, 'role', self.settings.ServerConfig(ctx.guild.id, 'Lockdown'))
 		if lockrole == 0 or not lockrole:
@@ -34,9 +30,7 @@ class Lockdown(commands.Cog):
 	@commands.command(name='unlock')
 	async def _unlockdown(self, ctx):
 		"""
-		Add Roles to user from DB
-		Remove Roles from DB
-		Add privalages
+		unlocks the server
 		"""
 		lockrole = self.settings.Get(ctx, 'role', self.settings.ServerConfig(ctx.guild.id, 'Lockdown'))
 		if lockrole == 0 or not lockrole:
@@ -51,6 +45,7 @@ class Lockdown(commands.Cog):
 
 	@commands.command()
 	async def makelockrole(self, ctx):
+		"""Creates the lock down role ready for action"""
 		msg = await ctx.send('Creating Lockdown Role')
 		permissions = discord.Permissions.none()
 		permissions.read_messages = True
@@ -67,6 +62,7 @@ class Lockdown(commands.Cog):
 
 	@commands.command()
 	async def testlock(self, ctx):
+		"""Tests the lockdown protocols"""
 		await ctx.send("**Locking Down server for 1 minute**") 
 		await ctx.invoke(self._lockdown)
 		await asyncio.sleep(60)
