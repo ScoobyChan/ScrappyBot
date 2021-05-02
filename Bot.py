@@ -38,7 +38,7 @@ if os.path.exists(imp + 'BotSettings.yaml'):
 	with open(imp + 'BotSettings.yaml') as t:
 		t = yaml.load(t, Loader=yaml.FullLoader)
 		PREFIX = t['Prefix']
-		TOKEN = t['ScappyBotBeta']
+		TOKEN = t['Token']
 		OWM = t['OWM']
 		MINECRAFT = t['Minecraft_IP']
 		GIPHY_API = t['GIPHY']
