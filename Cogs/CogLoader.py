@@ -148,12 +148,13 @@ class CogLoader(commands.Cog):
 			date = time.localtime()
 			dateform = f"{date.tm_mday}-{date.tm_mon}-{date.tm_year}----{date.tm_hour}-{date.tm_min}-{date.tm_sec}"
 			if os.path.exists('Cogs/'):
-				shutil.copytree('Cogs/', f'Backup/{dateform}/Cogs/') 
+				# shutil.copytree('Cogs/', f'Backup/{dateform}/Cogs/') 
+				shutil.move('Cogs/', f'Backup/{dateform}/Cogs/') 
 
 			for o in os.listdir('Temp/'):
-				shutil.move(f'Temp/{o}/Cogs', 'Cogs/')
+				shutil.move(f'Temp/{o}/Cogs', './')
 
-			shutil.rmtree('Temp')
+			# shutil.rmtree('Temp')
 
 		self._unload_extension()
 		self._load_extension()	
