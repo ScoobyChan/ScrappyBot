@@ -118,7 +118,7 @@ class CogLoader(commands.Cog):
 		self.Utils.clear()
 		self.Utils.title('%s Online' % self.bot.user.name)
 		print('Total Loaded {} {}'.format(len(self.bot.cogs), 'Cog' if len(self.bot.cogs) < 2 else 'Cogs'))
-		print("Main Cogs: {}".format(len(os.listdir('Cogs'))))
+		print("Main Cogs: {}".format(len(os.listdir('Cogs')) - 1))
 		for d in os.listdir('Cogs'):
 			if not d == '__pycache__' and os.path.isdir("Cogs/"+d):
 				print("Folder:", d, "{}".format(len(os.listdir("Cogs/"+d)) - 1))
