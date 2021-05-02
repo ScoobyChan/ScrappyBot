@@ -27,7 +27,7 @@ class CogLoader(commands.Cog):
 		print('Loading Cogs')
 		Directory = 'Cogs'
 		cogDir = os.listdir(Directory)
-		if not '__pycache__' in cogDir:
+		if '__pycache__' in cogDir:
 			cogDir.remove('__pycache__')
 		self.CogsToLoad = []
 
