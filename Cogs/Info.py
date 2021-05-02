@@ -310,7 +310,87 @@ class Info(commands.Cog):
 
 	@commands.command()
 	async def online(self, ctx):
+		u = uof = 0
+		b = bof	= 0
+		c = ctx.guild
+
+		for user in c.members:
+			if user.bot and str(user.status) != 'offline':
+				bof += 1
+			if user.bot:
+				b += 1	
+			if not user.bot and str(user.status) != 'offline':
+				uof += 1
+			if not user.bot:
+				u += 1
+
+		await ctx.send('Users online: {}/{}\nBots online: {}/{}'.format(uof, u, bof, b))
+
+	@commands.command()
+	async def offline(self, ctx):
+		u = uof = 0
+		b = bof	= 0
+		c = ctx.guild
+
+		for user in c.members:
+			if user.bot and str(user.status) == 'offline':
+				bof += 1
+			if user.bot:
+				b += 1	
+			if not user.bot and str(user.status) == 'offline':
+				uof += 1
+			if not user.bot:
+				u += 1
+
+		await ctx.send('Users offline: {}/{}\nBots offline: {}/{}'.format(uof, u, bof, b))
+
+	@commands.command()
+	async def totalonline(self, ctx):
+		u = uof = 0
+		b = bof	= 0
+
+		users = []
+
+		for g in self.bot.guilds:
+			for user in g.members:
+				if not user.id in users:
+					if user.bot and str(user.status) != 'offline':
+						bof += 1
+					if user.bot:
+						b += 1	
+					if not user.bot and str(user.status) != 'offline':
+						uof += 1
+					if not user.bot:
+						u += 1
+
+			await ctx.send('Total Users online: {}/{}\nTotal Bots online: {}/{}'.format(uof, u, bof, b))
+
+	@commands.command()
+	async def totaloffline(self, ctx):
+		u = uof = 0
+		b = bof	= 0
+
+		users = []
+
+		for g in self.bot.guilds:
+			for user in g.members:
+				if not user.id in users:
+					if user.bot and str(user.status) == 'offline':
+						bof += 1
+					if user.bot:
+						b += 1	
+					if not user.bot and str(user.status) == 'offline':
+						uof += 1
+					if not user.bot:
+						u += 1
+
+			await ctx.send('Total Users offline: {}/{}\nTotal Bots offline: {}/{}'.format(uof, u, bof, b))
+
+	@commands.command()
+	async def useronline(self, ctx):
 		bof	= 0
+		c = ctx.guild
+		
 		for user in c.members:
 			if not user.bot and str(user.status) != 'offline':
 				bof += 1
@@ -318,8 +398,10 @@ class Info(commands.Cog):
 		await ctx.send('Users online: {}'.format(bof))
 
 	@commands.command()
-	async def offline(self, ctx):
+	async def useroffline(self, ctx):
 		bof	= 0
+		c = ctx.guild
+		
 		for user in c.members:
 			if not user.bot and str(user.status) == 'offline':
 				bof += 1
@@ -329,6 +411,8 @@ class Info(commands.Cog):
 	@commands.command()
 	async def botonline(self, ctx):
 		bof	= 0
+		c = ctx.guild
+		
 		for user in c.members:
 			if user.bot and str(user.status) != 'offline':
 				bof += 1
@@ -338,6 +422,8 @@ class Info(commands.Cog):
 	@commands.command()
 	async def botoffline(self, ctx):
 		bof	= 0
+		c = ctx.guild
+		
 		for user in c.members:
 			if user.bot and str(user.status) == 'offline':
 				bof += 1
