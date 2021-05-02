@@ -261,7 +261,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 			search = results[_res[_return]]['link']
 
 		tracks = await self.bot.wavelink.get_tracks(search)
-		
+		if not tracks: return await ctx.send('Track is either invalid or hidden from my view')
+
 		if not player.is_connected:
 			await ctx.invoke(self.connect_)
 
@@ -418,11 +419,14 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 
 	@commands.command()
 	@commands.is_owner()
-	async def musictest(self, ctx):
+	async def musictest(self, ctx, *, playlist):
 		"""Used for testing the music player"""
 		player: MusicPlayer = self.bot.wavelink.get_player(guild_id=ctx.guild.id, cls=MusicPlayer, context=ctx)
 
-		tracks = await self.bot.wavelink.get_tracks('https://www.youtube.com/watch?v=q6EoRBvdVPQ')
+		tracks = await self.bot.wavelink.get_tracks(playlist)
+		print(tracks)
+
+		return
 		if not player.is_connected:
 			await ctx.invoke(self.connect_)
 
