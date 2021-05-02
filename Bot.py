@@ -210,20 +210,18 @@ async def on_member_remove(member):
 		except AttributeError:
 			continue
 
-bot.run(TOKEN, bot=True, reconnect=True)
+while True:
+	try:	
+		# Initialise Mass Destruction
+		if TOKEN:
+			bot.run(TOKEN, bot=True, reconnect=True)
+		else:
+			print('I have no TOKEN')
+			break
+	except discord.errors.HTTPException:
+		print('Connection issues, waiting 30secs')
+		time.sleep(30)
 
-# while True:
-# 	try:	
-# 		# Initialise Mass Destruction
-# 		if TOKEN:
-# 			bot.run(TOKEN, bot=True, reconnect=True)
-# 		else:
-# 			print('I have no TOKEN')
-# 			break
-# 	except discord.errors.HTTPException:
-# 		print('Connection issues, waiting 30secs')
-# 		time.sleep(30)
-
-# 	except RuntimeError:
-# 		print('Shutting down by keyboard')
-# 		break
+	except RuntimeError:
+		print('Shutting down by keyboard')
+		break
