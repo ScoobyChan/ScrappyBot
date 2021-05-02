@@ -1,6 +1,6 @@
 # This Module is for loading and managing the Cogs
 # Cog loaded progress bar
-
+import tempfile
 import asyncio
 import os
 import sys
@@ -126,6 +126,37 @@ class CogLoader(commands.Cog):
 		print('{}/{}/{}, {}:{}:{}\n'.format(self.bot.res.tm_mday if len(str(self.bot.res.tm_mday)) > 1 else ('0' + str(self.bot.res.tm_mday)), self.bot.res.tm_mon if len(str(self.bot.res.tm_mon)) > 1 else ('0' + str(self.bot.res.tm_mon)), self.bot.res.tm_year, self.bot.res.tm_hour if len(str(self.bot.res.tm_hour)) > 1 else ('0' + str(self.bot.res.tm_hour)), self.bot.res.tm_min if len(str(self.bot.res.tm_min)) > 1 else ('0' + str(self.bot.res.tm_min)), self.bot.res.tm_sec if len(str(self.bot.res.tm_sec)) > 1 else ('0' + str(self.bot.res.tm_sec))))
 		print("Invite Link:\nhttps://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8\n".format(self.bot.user.id))
 	
+	def _update(self):
+		with tempfile.TemporaryDirectory() as tmpdirname:
+			if not os.path.exists('Temp'):
+				os.mkdir('Temp')
+			else:
+				shutil.move('Temp/', tmpdirname)
+				os.mkdir('Temp')
+
+			os.chdir('Temp')
+			os.system(f'git clone {self.bot.repo}')
+			os.chdir('../')
+
+			if not os.path.exists('Backup'):
+				os.mkdir('Backup')
+
+			if len(os.listdir('Backup')) > 9:
+				shutil.move(f"Backup/{os.listdir('Backup')[0]}", tmpdirname)
+
+			# make backup
+			date = time.localtime()
+			dateform = f"{date.tm_mday}-{date.tm_mon}-{date.tm_year}----{date.tm_hour}-{date.tm_min}-{date.tm_sec}"
+			if os.path.exists('Cogs/'):
+				shutil.copytree('Cogs/', f'Backup/{dateform}/Cogs/') 
+
+			for o in os.listdir('Temp/'):
+				shutil.move(f'Temp/{o}/Cogs', 'Cogs/')
+
+			shutil.rmtree('Temp')
+
+		self._unload_extension()
+		self._load_extension()	
 
 	@commands.command()
 	async def uptime(self, ctx):
@@ -226,3 +257,10 @@ class CogLoader(commands.Cog):
 		Shows Cogs loaded
 		"""
 		await ctx.send('{}'.format([str(c) for c in self.bot.cogs.keys()]))
+
+	@commands.command()
+	async def update(self, ctx):
+		"""Downloads the latest and updates the bot from the Repo"""
+		msg = await ctx.send("Updating Cogs please wait...")
+
+		self._update()
