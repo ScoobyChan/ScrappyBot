@@ -49,6 +49,7 @@ class Langfilter(commands.Cog):
 
 	@commands.command()
 	async def listlangfilter(self, ctx):
+		"""Lists the different items beign filered"""
 		_filter = self.settings.ServerConfig(message.guild.id, 'LangFilter')
 		desc = "Items being filtered:"
 		for f in _filter:
@@ -59,6 +60,8 @@ class Langfilter(commands.Cog):
 
 	@commands.command()
 	async def addlangfilter(self, ctx, *, arg):
+		"""[arg]
+		Adds the item to the list that need to be filtered"""
 		await ctx.message.content.delete()
 
 		_filter = self.settings.ServerConfig(message.guild.id, 'LangFilter')
@@ -70,7 +73,9 @@ class Langfilter(commands.Cog):
 		await ctx.send('I have added `{}` to my block list'.format(arg))
 
 	@commands.command()
-	async def remlangfilter(self, ctx):
+	async def remlangfilter(self, ctx, *, arg):
+		"""[arg]
+		 Removes the item to the list that need to be filtered"""
 		await ctx.message.content.delete()
 
 		_filter = self.settings.ServerConfig(message.guild.id, 'LangFilter')
@@ -83,6 +88,7 @@ class Langfilter(commands.Cog):
 
 	@commands.command()
 	async def dumplangfilter(self, ctx):
+		"""Dumps the different files to a file"""
 		_filter = self.settings.ServerConfig(message.guild.id, 'LangFilter')
 		desc = "Items being filtered:"
 		for f in _filter:
@@ -96,5 +102,6 @@ class Langfilter(commands.Cog):
 
 	@commands.command()
 	async def clearlangfilter(self, ctx):
+		"""Clears the items to filter"""
 		self.settings.ServerConfig(message.guild.id, 'LangFilter', [])
 		await ctx.send('I have cleared the the language filter list')
