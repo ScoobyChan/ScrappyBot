@@ -148,6 +148,10 @@ class Configuration:
 			'DailyTime':0,
 			'BlockNumbers': [],
 			'PhoneChannel': 0,
+			'LangFilter':[],
+			'LangFilterUser':{},
+			'LangFilterWarning':0,
+			'LangFilterKick':0,
 		}
 		
 		self.BotSettings = {
