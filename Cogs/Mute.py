@@ -140,17 +140,7 @@ class Mute(commands.Cog):
 			else:
 				await asyncio.sleep(1)
 
-	@commands.command()
-	async def mute(self, ctx, _member=None, *, mute_time=None):
-		"""
-		[Member][time(e.g. d1 h1 m1 s1 or 11121)]
-		Mutes a member for a certain amount of time
-		"""
-
-		member = self.settings.Get(ctx, 'user', _member)
-		channel = discord.utils.get(self.bot.get_all_channels(), id=self.settings.ServerConfig(guild.id, 'LogChannel'))
-		guild = ctx.guild
-
+	async def _mute(self, ctx, member, channel, guild):
 		if not member:
 			return await ctx.send('Can\'t find user {}'.format(_member))
 
@@ -175,6 +165,20 @@ class Mute(commands.Cog):
 
 			await ctx.send('Muting {} for {} by **{}**'.format(member.name, mute_time, ctx.author.name))
 			self.mutes.append(self.bot.loop.create_task(self.muteloop(guild.id, member.id)))
+
+	@commands.command()
+	async def mute(self, ctx, _member=None, *, mute_time=None):
+		"""
+		[Member][time(e.g. d1 h1 m1 s1 or 11121)]
+		Mutes a member for a certain amount of time
+		"""
+
+		member = self.settings.Get(ctx, 'user', _member)
+		channel = discord.utils.get(self.bot.get_all_channels(), id=self.settings.ServerConfig(guild.id, 'LogChannel'))
+		guild = ctx.guild
+
+		await self._mute(ctx, member, channel, guild)
+		
 		
 	@commands.command()
 	async def unmute(self, ctx, _member=None):

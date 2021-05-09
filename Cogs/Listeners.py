@@ -82,8 +82,8 @@ class Listeners(commands.Cog):
 		# member = await converter.convert(ctx, str(member))
 		# print(r)
 		# print(m)
+		mem = await converter.convert(member, str(m))
 		if r:
-			mem = await converter.convert(member, str(m))
 			await mem.add_roles(r)
 			
 			if self.settings.ServerConfig(ctx.guild.id, 'isLockedDown'):
