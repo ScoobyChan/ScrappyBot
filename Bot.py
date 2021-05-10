@@ -8,6 +8,7 @@
 # Role Selection
 # Rework  Reboot , Shutdown
 # App Info - https://discordpy.readthedocs.io/en/latest/api.html#discord.AppInfo | Check info.py for help (find BO)
+# https://discordpy.readthedocs.io/en/stable/ext/commands/api.html#discord.ext.commands.Bot.add_listener
 
 # EFI Creator
 
@@ -15,20 +16,19 @@
 # Sudo = Admin
 # Dry-run
 
-import json
 import os
-import json 
 import asyncio
 import time
-import shlex
 
-from ast import literal_eval
-from io import StringIO
+try:
+	import discord
+except:
+	os.system('python Utils/pipinstall.py')
+	import discord
+
 import yaml
 
 from Utils import Configuration
-
-import discord
 from discord.ext import commands
 
 
@@ -48,26 +48,27 @@ if os.path.exists(imp + 'BotSettings.yaml'):
 else:
 	PREFIX = '$'
 	TOKEN = ''
-	MINECRAFT = 'None'
+	MINECRAFT = ''
 	GIPHY_API = ''
-	OWN = ''
+	OWM = ''
 	wavepass = ''
 	repo = ''
 	FixerAPI = ''
 
 async def get_pre(bot, message):
-	guild = message.guild.id
-	set_cog = bot.get_cog('Settings')
-	if set_cog:
-		return set_cog.ServerConfig(guild, 'Prefix')
-	else:
-		return PREFIX
+	return PREFIX
+	# guild = message.guild.id
+	# set_cog = bot.get_cog('Settings')
+	# if set_cog:
+	# 	return set_cog.ServerConfig(guild, 'Prefix')
+	# else:
+	# 	return PREFIX
 
 intents = discord.Intents.all()
 Bot = discord.Client()
 
 # use AutoShared for more than 5 servers
-# bot = commands.AutoShardedBot(command_prefix=PREFIX, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, shard_count=6, intents=intents)
+# bot = commands.AutoShardedBot(command_prefix=PREFIX, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, shard_count=6)
 
 # use this for initialising the Bot but only use for under 5 servers.
 bot = commands.Bot(command_prefix=get_pre, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, intents=intents)
@@ -126,7 +127,7 @@ async def on_ready():
 		# CogLoader
 		bot.load_extension("Cogs.CogLoader")
 		cg_load = bot.get_cog('CogLoader')
-		cg_load._update()
+		# cg_load._update()
 		cg_load._load_extension()
 	
 	# Make sure Bot is Loaded fully
@@ -210,18 +211,31 @@ async def on_member_remove(member):
 		except AttributeError:
 			continue
 
-while True:
-	try:	
-		# Initialise Mass Destruction
-		if TOKEN:
-			bot.run(TOKEN, bot=True, reconnect=True)
-		else:
-			print('I have no TOKEN')
-			break
-	except discord.errors.HTTPException:
-		print('Connection issues, waiting 30secs')
-		time.sleep(30)
+# Check Creitials
+print('PREFIX:', PREFIX if PREFIX != '' else 'missing')
+print('TOKEN:', TOKEN if TOKEN != '' else 'missing')
+print('MINECRAFT:', MINECRAFT if MINECRAFT != '' else 'missing')
+print('GIPHY_API:', GIPHY_API if GIPHY_API != '' else 'missing')
+print('OWM:', OWM if OWM != '' else 'missing')
+print('wavepass:', wavepass if wavepass != '' else 'missing')
+print('repo:', repo if repo != '' else 'missing')
+print('FixerAPI:', FixerAPI if FixerAPI != '' else 'missing')
 
-	except RuntimeError:
-		print('Shutting down by keyboard')
-		break
+if not TOKEN == '':
+	while True:
+		try:	
+			# Initialise Mass Destruction
+			if TOKEN:
+				bot.run(TOKEN, bot=True, reconnect=True)
+			else:
+				print('I have no TOKEN')
+				break
+		except discord.errors.HTTPException:
+			print('Connection issues, waiting 30secs')
+			time.sleep(30)
+
+		except RuntimeError:
+			print('Shutting down by keyboard')
+			break
+else:
+	input([' ENTER '])
