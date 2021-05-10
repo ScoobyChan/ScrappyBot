@@ -319,11 +319,13 @@ class Music(commands.Cog, wavelink.WavelinkMixin):
 		await player.teardown()
 	
 	@commands.command()
-	async def repeat(self, ctx, rep):
+	async def repeat(self, ctx, rep=None):
 		"""[off/single/queue]
 		Might be working to check"""
 		player: MusicPlayer = self.bot.wavelink.get_player(guild_id=ctx.guild.id, cls=MusicPlayer, context=ctx)
 		accepted = ['off', 'single', 'queue']
+		if not rep: return await ctx.send('Repeat set to: '.format(player.repeat))
+
 		if not rep.lower() in accepted:
 			return
 
