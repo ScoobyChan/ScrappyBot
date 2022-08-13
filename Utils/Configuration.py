@@ -150,7 +150,9 @@ class Configuration:
 			'SuggestionChannel':0,
 			'BugreportsChannel':0,
 			'Messages':0,
-			'BlacklistedServers':[]
+			'BlacklistedServers':[],
+			'gitcommit':0,
+			'reboot': True
 		}
 
 		self.PhoneBook = {}
