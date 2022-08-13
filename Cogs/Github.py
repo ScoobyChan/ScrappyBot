@@ -82,7 +82,7 @@ class Github(commands.Cog):
 		
 		return (_files, _files_changed_total_count, _lines_added, _lines_removed)
 
-	def update_git(self, url):
+	async def update_git(self, url):
 		dry = False
 		_require_reboot = False
 
@@ -113,8 +113,10 @@ class Github(commands.Cog):
 		cg_load = self.bot.get_cog('Cogloader')
 		if _require_reboot:
 			print('reboot') # To work on
+			bc = self.bot.get_cog('BotControl')
+			if bc: await bc.reboot()
 
-		cg_load.reload()
+		await cg_load.reload()
 	
 	@commands.command()
 	@commands.is_owner()
@@ -133,7 +135,7 @@ class Github(commands.Cog):
 		
 		self.settings.BotConfig('gitcommit', commit)
 
-		self.update_git(url)
+		await self.update_git(url)
 		
 		await msg.edit(content='Updated\n{}'.format(_files))
 
