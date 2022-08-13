@@ -26,6 +26,7 @@ allowed_mentions = discord.AllowedMentions(
 
 Bot = discord.Client()
 bot = commands.Bot(command_prefix=get_pre, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, intents=Intents.intents, allowed_mentions=allowed_mentions)
+Conf = Configuration.Configuration(bot)
 
 # # use AutoShared for more than 5 servers
 # # bot = commands.AutoShardedBot(command_prefix=get_pre, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, shard_count=6)
@@ -219,18 +220,39 @@ async def on_raw_reaction_add(payload):
 		except AttributeError:
 			continue
 
-while True:
-	try:	
-		# Initialise Mass Destruction
-		if Settings.token:
-			bot.run(Settings.token, bot=True, reconnect=True)
-		else:
-			print('I have no TOKEN')
-			break
-	except discord.errors.HTTPException:
-		print('Connection issues, waiting 30secs')
-		time.sleep(30)
+def BotConfig(setting, passback=None):
+	l = Conf.LoadConfigBot()
+	_set = l.get(setting, 'not_found')
+	if _set == 'not_found':
+		raise commands.DisabledCommand(f'Can not find {setting}')
 
-	except RuntimeError:
-		print('Exiting by keyboard')
-		exit()
+	if not passback:
+		return _set
+
+	l[setting] = passback
+
+	Conf.SaveConfigBot(l)
+
+while True:
+	reboot = BotConfig('reboot')
+
+	if reboot:
+		try:	
+			# Initialise Mass Destruction
+			if Settings.token:
+				BotConfig('reboot', False)
+				bot.run(Settings.token, bot=True, reconnect=True)
+			else:
+				print('I have no TOKEN')
+				break
+		except discord.errors.HTTPException:
+			print('Connection issues, waiting 30secs')
+			time.sleep(30)
+
+		except RuntimeError:
+			print('Exiting by keyboard')
+			exit()
+	else:
+		print('Quitting Bot')
+		BotConfig('reboot', True)
+		break
