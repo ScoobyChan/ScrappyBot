@@ -139,9 +139,9 @@ class Github(commands.Cog):
 		if _require_reboot:
 			print('reboot') # To work on
 			bc = self.bot.get_cog('BotControl')
-			if bc: await bc.reboot()
+			if bc: await bc.reboot(self.ctx)
 
-		await cg_load.reload()
+		await cg_load.reload(self.ctx)
 	
 	@commands.command()
 	@commands.is_owner()
@@ -149,6 +149,7 @@ class Github(commands.Cog):
 		"""
 		Joined user
 		"""
+		self.ctx = ctx
 		msg = await ctx.send('Updating from Github')
 		
 		_commit = self.settings.BotConfig('gitcommit')
