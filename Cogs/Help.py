@@ -39,35 +39,43 @@ class Help(commands.Cog):
 		commands = []
 		lennum = len(cogs) - 1
 
+		cogs.sort()
+		cogs.remove('Settings')
+
 		for _cogs in cogs:
 			_cog = self.bot.get_cog(_cogs)
 			for c in _cog.get_commands():
 				commands.append(str(c))
 
-		
-		col = ctx.author.top_role.colour
-
-		# print(len(cogs))
-		# print(len(commands))
+		col = ctx.author.top_role.colour or self.settings.randomColor()
 
 		reacts = ['⏮️','◀️','▶️','⏭️']
-		if not cog_:
-			msg = await ctx.send('Help me ;(')
 
+		msg = await ctx.send('\u200b')
+		await asyncio.sleep(0.05)
+
+		if not cog_:
 			while True:
 				desc = ''
 				_cog = self.bot.get_cog(cogs[num])
 				# _cog = _cog.sort(reverse=True)
 				commands = _cog.get_commands()
-				for c in commands:
-					if c.help:
-						# print(c.help[:15])
-						desc += '\n**{0}{1}**\n└─ {0}{1} {2}...'.format(ctx.prefix, c, c.help[:15] if c.help else "")
-					else:
-						print(c, 'add doc code to this command :D')
-						desc += '\n**{0}{1}**\n└─ {0}{1}'.format(ctx.prefix, c)
-					
-				embed = self.Utils.embed({"title":'Help Menu - {}'.format(cogs[num]), "desc":desc, "color":col})		
+				commands.sort()
+				if len(commands) > 0:
+					for c in commands:
+						if c.help:
+							desc += '\n**{0}{1}**\n└─ {0}{1} {2}...'.format(self.settings.ServerConfig(ctx.guild.id, 'Prefix'), c, c.help[:15] if c.help else "")
+						else:
+							print(c, 'add doc code to this command :D')
+							desc += '\n**{0}{1}**\n└─ {0}{1}'.format(self.settings.ServerConfig(ctx.guild.id, 'Prefix'), c)
+				else:
+					desc = 'No commands in module'
+				embed = discord.Embed(
+					title = 'Help Menu - {}{}'.format(cogs[num], '' if not cogs[num] in self.settings.ServerConfig(ctx.guild.id, 'DisabledCommands') else ' - Disabled by Server Owner'),
+					description = desc,
+					colour = col
+				)
+				embed.set_footer(text='Cog Page {}/{}'.format((num + 1), len(cogs)))
 				await msg.edit(content=None, embed=embed)
 
 				try:	
@@ -92,6 +100,8 @@ class Help(commands.Cog):
 					if reaction.emoji == reacts[3]:
 						num = lennum
 
+					await msg.remove_reaction(reaction, adder)
+
 				except asyncio.exceptions.TimeoutError:
 					break
 			
@@ -107,14 +117,14 @@ class Help(commands.Cog):
 			commands = _cog.get_commands()
 			for c in commands:
 				# print(c.help)
-				desc += '\n**{0}{1}**\n└─ {0}{1} {2}...'.format(ctx.prefix, c, c.help[:15] if c.help else "")
+				desc += '\n**{0}{1}**\n└─ {0}{1} {2}...'.format(self.settings.ServerConfig(ctx.guild.id, 'Prefix'), c, c.help[:15] if c.help else "")
 
 			embed = discord.Embed(
 				title = 'Help Menu - Commands for: {}'.format(cog_),
 				description = desc,
 				colour = col
 			)
-			embed = self.Utils.embed({"title":'Help Menu - Commands for: {}'.format(cog_), "desc":desc, "color":col})		
+			
 			await ctx.send(embed=embed)
 
 		# Done
@@ -123,13 +133,13 @@ class Help(commands.Cog):
 				_cog = self.bot.get_cog(_cogs)
 				for c in _cog.get_commands():
 					if str(c) == cog_:
-						desc = '**{}{}** {}'.format(ctx.prefix, str(c), c.help)
+						desc = '**{}{}** {}'.format(self.settings.ServerConfig(ctx.guild.id, 'Prefix'), str(c), c.help)
 						embed = discord.Embed(
 							title = '{0} Cog - {0}.py'.format(_cogs),
 							description = desc,
 							colour = col
 						)
-						embed = self.Utils.embed({"title":'Help Menu - Commands for: {}'.format(cog_), "desc":desc, "color":col})		
+						
 						await ctx.send(embed=embed)
 						break
 
@@ -139,37 +149,36 @@ class Help(commands.Cog):
 			ResCog = self.settings.Search(cog_, cogs)
 			ResCom = self.settings.Search(cog_, commands)
 			
-			msg = '\n**Possible Cogs**'
+			dsec = '\n**Possible Cogs**'
 			for c in ResCog[:3]:
-				msg += '\n└─ {}'.format(c)
+				dsec += '\n└─ {}'.format(c)
 
-			msg += '\n**Possible Commands**'
+			dsec += '\n**Possible Commands**'
 			for c in ResCom[:3]:
-				msg += '\n└─ {}'.format(c)
+				dsec += '\n└─ {}'.format(c)
 
-			embed = self.Utils.embed({"title":"Results", "desc":msg, "color":col})		
+			embed = discord.Embed(
+				title = 'Results',
+				description = dsec,
+				colour = col
+			)
+			
 			return await ctx.send(embed=embed)
-
-	@commands.command()
-	async def listevents(self, ctx):
-		"""Lists the different Events happening"""
-		cogs = [c for c in self.bot.cogs.keys()]
-		desc = ''
-		for cog in cogs:
-			for name, func in cog.get_listeners():
-				desc += '\n -', name, '->', func
-
-		col = ctx.author.top_role.colour
-		embed = self.embed.Utils({"title":"Cogs", "desc":desc, "color":col})		
-		await ctx.send(embed=embed)
 
 	@commands.command()
 	async def listcogs(self, ctx):
 		"""Lists the different Cogs"""
-		desc = '\n - '.join([str(c) for c in self.bot.cogs.keys()].sort(reverse=True))
-		
-		col = ctx.author.top_role.colour
-		embed = self.embed.Utils({"title":"Cogs", "desc":desc, "color":col})		
+		desc = [str(c) for c in self.bot.cogs.keys()]
+		desc.remove('Settings')
+		desc.sort()
+
+		col = ctx.author.top_role.colour or self.settings.randomColor()
+
+		embed = discord.Embed(
+			title = 'Cogs',
+			description = desc,
+			colour = col
+		)	
 		await ctx.send(embed=embed)
 
 	@commands.command()
@@ -178,6 +187,8 @@ class Help(commands.Cog):
 		_help = []
 
 		cogs = [c for c in self.bot.cogs.keys()]
+		cogs.sort()
+		cogs.remove('Settings')
 
 		f= open(f"Help.txt","w+")
 		for cog_ in cogs:
@@ -186,9 +197,14 @@ class Help(commands.Cog):
 			commands = _cog.get_commands()
 			for c in commands:
 				# _help += 
-				# print(str('└─ {0}{1} {2}'.format(ctx.prefix, str(c), c.help)))
-				_help.append(str(f' - {ctx.prefix}{c}'))
-				_help.append(str(f' --- {c.help}'))
+				# print(str('└─ {0}{1} {2}'.format(self.settings.ServerConfig(ctx.guild.id, 'Prefix'), str(c), c.help)))
+				_help.append(str(f' - {self.settings.ServerConfig(ctx.guild.id, "Prefix")}{c}'))
+				if c.help:
+					_help.append(str(f' --- {c.help}'))
+
+				else:
+					_help.append(str(f' --- None'))
+			_help.append('\n')
 
 		f.write('\n'.join(_help))		
 		f.close()

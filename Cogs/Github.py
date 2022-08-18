@@ -86,7 +86,22 @@ class Github(commands.Cog):
 		dry = False
 		_require_reboot = False
 
-		_files, _fctc, _la, _ld = self.get_commit_information(url)
+		num = 1
+
+		total_commits, total_urls = self.github_commit_total(url)
+		for x in total_urls:
+			if '0ab38042193e808be4ab2201e8e8c03ea58b61e2' in x:
+				break
+			else:
+				num += 1
+
+		_files = []
+
+		for x in total_urls[num:]:
+			_files_to_get, _fctc, _la, _ld = self.get_commit_information(x)
+			for f in _files_to_get:
+				if not f in _files:
+					_files.append(f)
 
 		if 'Bot.py' in _files or 'Perms.py' in _files or 'Cogloader.py' in _files:
 			print('reboot required')
@@ -105,10 +120,20 @@ class Github(commands.Cog):
 				print(self.Repo+'/'+x)
 			
 			else:
-				shutil.move(x, t)
-				shutil.move(self.Repo+'/'+x, x)
-
-				shutil.rmtree(self.Repo)
+				try:
+					shutil.move(x, t)
+				except:
+					pass
+				
+				try:
+					shutil.move(self.Repo+'/'+x, x)
+				except:
+					pass
+				
+				try:
+					shutil.rmtree(self.Repo)
+				except:
+					pass
 
 		cg_load = self.bot.get_cog('Cogloader')
 		if _require_reboot:
