@@ -60,8 +60,8 @@ class Help(commands.Cog):
 				_cog = self.bot.get_cog(cogs[num])
 				# _cog = _cog.sort(reverse=True)
 				commands = _cog.get_commands()
-				commands.sort()
 				if len(commands) > 0:
+					commands.sort()
 					for c in commands:
 						if c.help:
 							desc += '\n**{0}{1}**\n└─ {0}{1} {2}...'.format(self.settings.ServerConfig(ctx.guild.id, 'Prefix'), c, c.help[:15] if c.help else "")
