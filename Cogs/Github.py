@@ -131,7 +131,7 @@ class Github(commands.Cog):
 				print(self.Repo+'/'+x)
 			
 			else:
-				print('Moving, ', x)
+				# print('Moving, ', x)
 				try:	
 					shutil.move(x, 'temp-{}/{}'.format(t, x))
 				except FileNotFoundError:
