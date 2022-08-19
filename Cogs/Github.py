@@ -9,6 +9,7 @@ import os
 from unittest import result
 import requests
 from bs4 import BeautifulSoup
+import asyncio
 
 # https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html?highlight=bot%20owner
 
@@ -23,65 +24,73 @@ class Github(commands.Cog):
 		self.URL = 'https://github.com/{}/{}/'.format(self.User, self.Repo)
 		self.dl_url = '{}/commits/main'.format(self.URL)
 
-	def github_commit_total(self, URL):	
-		page = requests.get(URL)
-		soup = BeautifulSoup(page.content, "html.parser")
+	def github_commit_total(self):	
+		with requests.Session() as sess:
+			page = sess.get(self.dl_url)
+			soup = BeautifulSoup(page.content, "html.parser")
 
-		x = re.findall('/{}/{}/commit/.+[a-z0-9].>.+[a-z0-9].<'.format(self.User, self.Repo), str(soup))
-		x.pop()
+			x = re.findall('/{}/{}/commit/.+[a-z0-9].>.+[a-z0-9].<'.format(self.User, self.Repo), str(soup))
+			x.pop()
 
-		if len(x) < 1: return print('No commits found')
+			if len(x) < 1: return print('No commits found')
 
-		total_commits = []
-		total_urls = []
+			total_commits = []
+			total_urls = []
 
-		for y in x:
-			url = 'https://github.com{}'.format(y.split('"')[0])
-			commit = y.split('"')[0].split('/')[len(y.split('"')[0].split('/')) - 1]
-			total_commits.append(commit)
-			total_urls.append(url)
+			for y in x:
+				url = 'https://github.com{}'.format(y.split('"')[0])
+				commit = y.split('"')[0].split('/')[len(y.split('"')[0].split('/')) - 1]
+				total_commits.append(commit)
+				total_urls.append(url)
 
-		return (total_commits, total_urls)
+			return (total_commits, total_urls)
 
 	def github_commit_latest(self, URL):	
-		page = requests.get(URL)
-		soup = BeautifulSoup(page.content, "html.parser")
+		print('New session')
+		with requests.Session() as sess:
+			page = sess.get(URL)
+			soup = BeautifulSoup(page.content, "html.parser")
 
-		x = re.findall('/{}/{}/commit/.+[a-z0-9].>.+[a-z0-9].<'.format(self.User, self.Repo), str(soup))
-		x.pop()
+			x = re.findall('/{}/{}/commit/.+[a-z0-9].>.+[a-z0-9].<'.format(self.User, self.Repo), str(soup))
+			x.pop()
 
-		if len(x) < 1: return print('No commits found')
-		
-		url = 'https://github.com{}'.format(x[0].split('"')[0])
-		commit = x[0].split('"')[0].split('/')[len(x[0].split('"')[0].split('/')) - 1]
-		return (commit, url)
+			if len(x) < 1: return print('No commits found')
+			
+			url = 'https://github.com{}'.format(x[0].split('"')[0])
+			commit = x[0].split('"')[0].split('/')[len(x[0].split('"')[0].split('/')) - 1]
+			return (commit, url)
 
 	def get_commit_information(self, URL):
-		page = requests.get(URL)
-		soup = BeautifulSoup(page.content, "html.parser")
+		with requests.Session() as sess:
+			page = sess.get(URL)
+			soup = BeautifulSoup(page.content, "html.parser")
 
-		_files_changed_total_count = 0
-		_lines_added = 0
-		_lines_removed = 0
+			with open('readme.html', 'w') as f:
+				f.write(str(soup))
 
-		x = re.findall('>.+[0-9].changed files', str(soup))
-		if len(x) > 0: _files_changed_total_count = x[0].split('>')[1]
-		
-		x = re.findall('>.+[0-9].additions', str(soup))
-		if len(x) > 0: _lines_added = x[0].split('>')[1]
+			_files_changed_total_count = 0
+			_lines_added = 0
+			_lines_removed = 0
 
-		x = re.findall('>.+[0-9].deletions', str(soup))
-		if len(x) > 0: _lines_removed = x[0].split('>')[1]
+			x = re.findall('>.+[0-9].changed files', str(soup))
+			if len(x) > 0: _files_changed_total_count = x[0].split('>')[1]
+			
+			x = re.findall('>.+[0-9].additions', str(soup))
+			if len(x) > 0: _lines_added = x[0].split('>')[1]
 
-		
-		x = re.findall('hidden...>.+[a-z0-9].<', str(soup))
-		_files = []
-		if len(x) > 0:
-			for v in x:
-				if not re.match('You.signed.*another.tab.or.window', v.split('>')[1].split('<')[0]): 
+			x = re.findall('>.+[0-9].deletions', str(soup))
+			if len(x) > 0: _lines_removed = x[0].split('>')[1]
+
+			x = re.findall('title=".*">.+[a-z0-9].py<', str(soup))
+			if self.bot.debug: print(x)
+			_files = []
+			
+			if len(x) > 0:
+				for v in x:
 					_files.append(v.split('>')[1].split('<')[0])
 		
-		return (_files, _files_changed_total_count, _lines_added, _lines_removed)
+			if self.bot.debug: print(_files)
+			return (_files, _files_changed_total_count, _lines_added, _lines_removed)
 
 	async def update_git(self, msg, ctx, URL, current_commit):
 		dry = False
@@ -90,7 +99,9 @@ class Github(commands.Cog):
 
 		# Update commit to latest
 
-		total_commits, total_urls = self.github_commit_total(URL)
+		total_commits, total_urls = self.github_commit_total()
+		if self.bot.debug: print('Commit total:', len(total_commits))
+		
 		num = 1
 		if not isinstance(current_commit, int):
 			for x in total_urls:
@@ -98,14 +109,19 @@ class Github(commands.Cog):
 					break
 				else:
 					num += 1
+		else:
+			num = 0
 
 		_files = []
 
 		for x in total_urls[num:]:
+			await asyncio.sleep(0.1)
 			_files_to_get, _fctc, _la, _ld = self.get_commit_information(x)
 			for f in _files_to_get:
 				if not f in _files:
 					_files.append(f)
+
+		if self.bot.debug: print(_files)
 
 		if 'Bot.py' in _files or 'Perms.py' in _files or 'Cogloader.py' in _files:
 			print('reboot required')
