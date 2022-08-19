@@ -150,15 +150,16 @@ class Github(commands.Cog):
 					shutil.move(x, 'temp-{}/{}'.format(t, x))
 				except FileNotFoundError:
 					pass
+				
+				if os.path.exists(self.Repo+'/'+x):
+					try:
+						shutil.move(self.Repo+'/'+x, x)
+					except FileNotFoundError:
+						v = x.split('/')
+						y = '/'.join(v[:len(v)-1])
 
-				try:
-					shutil.move(self.Repo+'/'+x, x)
-				except FileNotFoundError:
-					v = x.split('/')
-					y = '/'.join(v[:len(v)-1])
-
-					if len(v) > 1: os.makedirs(y)
-					shutil.move(self.Repo+'/'+x, x)
+						if len(v) > 1: os.makedirs(y)
+						shutil.move(self.Repo+'/'+x, x)
 
 		shutil.rmtree(self.Repo)
 
