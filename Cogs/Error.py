@@ -24,7 +24,9 @@ class Error(commands.Cog):
 	async def on_command_error(self, ctx, error):
 		com = str(ctx.prefix)+str(ctx.command)
 		logging.critical('Error: ' + str(error))
-		logging.critical('Error: ' + str(traceback.format_exc()))
+		logging.critical('Error: ' + str(error.__traceback__))
+		
+		# logging.critical('Error: ' + str(traceback.format_exc()))
 		embed = discord.Embed(
 			title='ERROR',
 			description = str(error),
@@ -44,9 +46,9 @@ class Error(commands.Cog):
 		if isinstance(error, commands.NotOwner):
 			return await ctx.send(str(error))
 		if isinstance(error, commands.NoEntryPointError):
-			# b = self.settings.Get(ctx, 'errorch')
-			# if b:
-			# 	return await b.send(error)
+			b = self.bot.get_channel(self.settings.BotConfig('ErrorChannel'))
+			if b:
+				return await b.send(error)
 			print(error) # send this to error channel
 
 		if isinstance(error, commands.CommandInvokeError):
@@ -57,17 +59,18 @@ class Error(commands.Cog):
 				return await ctx.send('Please enable DM from this server **' + ctx.author.name + '**')
 			
 			elif "'NoneType' object has no attribute 'send'" in str(error):
-				# b = self.settings.Get(ctx, 'errorch')
-				# if b:
-				# 	return await b.send(embed=embed)
+				b = self.bot.get_channel(self.settings.BotConfig('ErrorChannel'))
+				if b:
+					return await b.send(embed=embed)
 				print(error)
 			
 			else:
-				# b = self.settings.Get(ctx, 'errorch')
-				# if b:
-				# 	return await b.send(embed=embed)
-				# else:
-				print(traceback.format_exc())
+				b = self.bot.get_channel(self.settings.BotConfig('ErrorChannel'))
+				if b:
+					return await b.send(embed=embed)
+				else:
+					print(error)
+					print(error.__traceback__)
 
 		if "is not found" in str(error) and "command" in str(error).lower():
 			return # await ctx.send('No Command found')
@@ -90,12 +93,12 @@ class Error(commands.Cog):
 
 	@commands.command()
 	@commands.is_owner()
-	async def seterrorchannel(self, ctx, ch=None):
+	async def seterrorchannel(self, ctx, ch: discord.TextChannel=None):
 		"""
 		[channel]
 		sets the error channel
 		"""			
-		ch = self.settings.Get(ctx, 'channel', ch)
+	
 		if not ch:
 			ch = ctx.channel
 
