@@ -83,7 +83,7 @@ class Github(commands.Cog):
 		
 		return (_files, _files_changed_total_count, _lines_added, _lines_removed)
 
-	async def update_git(self, msg, ctx, URL, dl_url, current_commit):
+	async def update_git(self, msg, ctx, URL, current_commit):
 		dry = False
 
 		_require_reboot = False
@@ -114,7 +114,7 @@ class Github(commands.Cog):
 
 		await msg.edit(content='Downloading repo')
 		if os.path.exists(self.Repo): shutil.rmtree(self.Repo)
-		os.system('git clone {}'.format(dl_url))
+		os.system('git clone {}'.format(self.URL))
 
 		if not os.path.exists(self.Repo): return
 
@@ -172,7 +172,7 @@ class Github(commands.Cog):
 		
 		self.settings.BotConfig('gitcommit', commit)
 
-		await self.update_git(msg, ctx, url, self.dl_url, _commit)
+		await self.update_git(msg, ctx, url, _commit)
 
 	@commands.command()
 	async def check_update(self, ctx):
