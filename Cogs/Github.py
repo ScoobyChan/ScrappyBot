@@ -110,11 +110,11 @@ class Github(commands.Cog):
 				else:
 					num += 1
 		else:
-			num = 0
+			num = len(total_urls)
 
 		_files = []
 
-		for x in total_urls[num:]:
+		for x in total_urls[:num]:
 			await asyncio.sleep(0.1)
 			_files_to_get, _fctc, _la, _ld = self.get_commit_information(x)
 			for f in _files_to_get:
