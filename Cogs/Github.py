@@ -20,7 +20,8 @@ class Github(commands.Cog):
 		self.User = 'ScoobyChan'
 		self.Repo = 'ScrappyBot'
 
-		self.URL = 'https://github.com/{}/{}/commits/main'.format(self.User, self.Repo)
+		self.URL = 'https://github.com/{}/{}/'.format(self.User, self.Repo)
+		self.dl_url = '{}/commits/main'.format(self.URL)
 
 	def github_commit_total(self, URL):	
 		page = requests.get(URL)
@@ -82,13 +83,20 @@ class Github(commands.Cog):
 		
 		return (_files, _files_changed_total_count, _lines_added, _lines_removed)
 
-	async def update_git(self, ctx, url):
+	async def update_git(self, ctx, URL, dl_url, current_commit):
 		dry = False
+		commit, url = self.github_commit_latest(URL)
+		if current_commit == commit:
+			return
+
 		_require_reboot = False
 
+		# Update commit to latest
+		current_commit = commit
+
+		total_commits, total_urls = self.github_commit_total(URL)
 		num = 1
 
-		total_commits, total_urls = self.github_commit_total(url)
 		for x in total_urls:
 			if '0ab38042193e808be4ab2201e8e8c03ea58b61e2' in x:
 				break
@@ -107,7 +115,10 @@ class Github(commands.Cog):
 			print('reboot required')
 			_require_reboot = True
 		
-		# os.system('git clone {}'.format(url))
+		if os.path.exists(self.Repo): shutil.rmtree(self.Repo)
+		os.system('git clone {}'.format(dl_url))
+
+		if not os.path.exists(self.Repo): return
 
 		t = str(int(time.time()))
 
@@ -120,20 +131,22 @@ class Github(commands.Cog):
 				print(self.Repo+'/'+x)
 			
 			else:
-				try:
-					shutil.move(x, t)
-				except:
+				print('Moving, ', x)
+				try:	
+					shutil.move(x, 'temp-{}/{}'.format(t, x))
+				except FileNotFoundError:
 					pass
-				
+
 				try:
 					shutil.move(self.Repo+'/'+x, x)
-				except:
-					pass
-				
-				try:
-					shutil.rmtree(self.Repo)
-				except:
-					pass
+				except FileNotFoundError:
+					v = x.split('/')
+					y = '/'.join(v[:len(v)-1])
+
+					if len(v) > 1: os.makedirs(y)
+					shutil.move(self.Repo+'/'+x, x)
+
+		shutil.rmtree(self.Repo)
 
 		cg_load = self.bot.get_cog('Cogloader')
 		if _require_reboot:
@@ -149,7 +162,6 @@ class Github(commands.Cog):
 		"""
 		Joined user
 		"""
-		
 		msg = await ctx.send('Updating from Github')
 		
 		_commit = self.settings.BotConfig('gitcommit')
