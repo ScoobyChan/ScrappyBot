@@ -92,12 +92,12 @@ class Github(commands.Cog):
 
 		total_commits, total_urls = self.github_commit_total(URL)
 		num = 1
-
-		for x in total_urls:
-			if current_commit in x:
-				break
-			else:
-				num += 1
+		if not isinstance(current_commit, int):
+			for x in total_urls:
+				if current_commit in x:
+					break
+				else:
+					num += 1
 
 		_files = []
 
@@ -129,7 +129,7 @@ class Github(commands.Cog):
 				print(self.Repo+'/'+x)
 			
 			else:
-				# print('Moving, ', x)
+				print('Moving, ', x)
 				try:	
 					shutil.move(x, 'temp-{}/{}'.format(t, x))
 				except FileNotFoundError:
@@ -146,7 +146,7 @@ class Github(commands.Cog):
 
 		shutil.rmtree(self.Repo)
 
-		await msg.edit(content='Updated\n{}'.format(_files))
+		await msg.edit(content='Updated {} files'.format(len(_files)))
 
 		cg_load = self.bot.get_cog('Cogloader')
 		if _require_reboot:
@@ -165,12 +165,14 @@ class Github(commands.Cog):
 		msg = await ctx.send('Updating from Github')
 		
 		_commit = self.settings.BotConfig('gitcommit')
-		commit, url = self.github_commit_latest(self.URL)
+		commit, url = self.github_commit_latest(self.dl_url)
 		
 		if commit == _commit and force == False: 
 			return await ctx.send('Bot already up to date')
 		
 		self.settings.BotConfig('gitcommit', commit)
+
+		if force: _commit = 0
 
 		await self.update_git(msg, ctx, url, _commit)
 
@@ -182,7 +184,7 @@ class Github(commands.Cog):
 
 		_commit = self.settings.BotConfig('gitcommit')
 
-		commit, url = self.github_commit_latest(self.URL)
+		commit, url = self.github_commit_latest(self.dl_url)
 		
 		await ctx.send('Latest commit is {}, current commit is {}'.format(commit, _commit))
 
