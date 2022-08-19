@@ -168,14 +168,13 @@ class Github(commands.Cog):
 		
 		_commit = self.settings.BotConfig('gitcommit')
 		commit, url = self.github_commit_latest(self.URL)
-		_files, _fctc, _la, _ld = self.get_commit_information(url)
 		
 		if commit == _commit: 
 			return await ctx.send('Bot already up to date')
 		
 		self.settings.BotConfig('gitcommit', commit)
 
-		await self.update_git(msg, ctx, url)
+		await self.update_git(msg, ctx, url, self.dl_url, commit)
 
 	@commands.command()
 	async def check_update(self, ctx):
