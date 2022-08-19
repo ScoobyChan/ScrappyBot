@@ -85,20 +85,16 @@ class Github(commands.Cog):
 
 	async def update_git(self, msg, ctx, URL, dl_url, current_commit):
 		dry = False
-		commit, url = self.github_commit_latest(URL)
-		if current_commit == commit:
-			return
 
 		_require_reboot = False
 
 		# Update commit to latest
-		current_commit = commit
 
 		total_commits, total_urls = self.github_commit_total(URL)
 		num = 1
 
 		for x in total_urls:
-			if '0ab38042193e808be4ab2201e8e8c03ea58b61e2' in x:
+			if current_commit in x:
 				break
 			else:
 				num += 1
@@ -115,6 +111,8 @@ class Github(commands.Cog):
 			print('reboot required')
 			_require_reboot = True
 		
+
+		await msg.edit(content='Downloading repo')
 		if os.path.exists(self.Repo): shutil.rmtree(self.Repo)
 		os.system('git clone {}'.format(dl_url))
 
@@ -160,7 +158,7 @@ class Github(commands.Cog):
 	
 	@commands.command()
 	@commands.is_owner()
-	async def update(self, ctx):
+	async def update(self, ctx, force=False):
 		"""
 		Joined user
 		"""
@@ -169,12 +167,12 @@ class Github(commands.Cog):
 		_commit = self.settings.BotConfig('gitcommit')
 		commit, url = self.github_commit_latest(self.URL)
 		
-		if commit == _commit: 
+		if commit == _commit and force == False: 
 			return await ctx.send('Bot already up to date')
 		
 		self.settings.BotConfig('gitcommit', commit)
 
-		await self.update_git(msg, ctx, url, self.dl_url, commit)
+		await self.update_git(msg, ctx, url, self.dl_url, _commit)
 
 	@commands.command()
 	async def check_update(self, ctx):
