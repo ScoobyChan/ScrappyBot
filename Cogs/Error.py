@@ -23,10 +23,13 @@ class Error(commands.Cog):
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
 		com = str(ctx.prefix)+str(ctx.command)
-		logging.critical('Error: ' + str(error))
-		logging.critical('Error: ' + str(error.__traceback__))
-		
-		# logging.critical('Error: ' + str(traceback.format_exc()))
+		logging.critical('#'*26)
+		logging.critical('Error: ')
+		logging.critical(str(error))
+		logging.critical(str(error.__traceback__))
+		logging.critical(str("".join(traceback.format_exception(type(error), error, error.__traceback__))))
+		logging.critical('#'*26)
+
 		embed = discord.Embed(
 			title='ERROR',
 			description = str(error),
@@ -49,7 +52,6 @@ class Error(commands.Cog):
 			b = self.bot.get_channel(self.settings.BotConfig('ErrorChannel'))
 			if b:
 				return await b.send(error)
-			print(error) # send this to error channel
 
 		if isinstance(error, commands.CommandInvokeError):
 			if 'DiscordException' in str(error):
@@ -69,8 +71,12 @@ class Error(commands.Cog):
 				if b:
 					return await b.send(embed=embed)
 				else:
-					print(error)
-					print(error.__traceback__)
+					embed = discord.Embed(
+						title='ERROR: {}'.format(error),
+						description = str("".join(traceback.format_exception(type(error), error, error.__traceback__))),
+						colour = discord.Color.red()
+					)
+					return await b.send(embed=embed)
 
 		if "is not found" in str(error) and "command" in str(error).lower():
 			return # await ctx.send('No Command found')
