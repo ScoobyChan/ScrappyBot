@@ -37,7 +37,7 @@ class Help(commands.Cog):
 		num = 0
 		cogs = [str(c) for c in self.bot.cogs.keys()]
 		commands = []
-		lennum = len(cogs) - 1
+		lennum = len(cogs) - 2
 
 		cogs.sort()
 		cogs.remove('Settings')
