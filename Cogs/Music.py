@@ -106,7 +106,10 @@ class Music(commands.Cog):
 				node = await wavelink.NodePool.create_node(bot=self.bot, host=host_ip, port=2333, password=self.bot.wavepass, spotify_client=spotify.SpotifyClient(client_id=self.bot.spotcli, client_secret=self.bot.spotsec))	
 			else:
 				node = await wavelink.NodePool.create_node(bot=self.bot, host=host_ip, port=2333, password=self.bot.wavepass)
+			
+			if self.bot.debug: print(node.is_connected())
 			node.is_connected()
+
 		except aiohttp.client_exceptions.ClientConnectorError:
 			raise discord.DiscordException("Lava link still down")
 
@@ -245,7 +248,9 @@ class Music(commands.Cog):
 	async def mtest(self, ctx):
 		player: wavelink.Player = await self.con_(ctx)
 		tracks = await wavelink.YouTubeTrack.search(query='hello - adele', return_first=True) 
+		print('tracks found: ', str(tracks))
 		await player.play(tracks)
+
 		#player.queue.put(tracks)
 		#player.track_ctx = ctx
 		#print(player.queue)
@@ -308,9 +313,12 @@ class Music(commands.Cog):
 	async def con_(self, ctx, channel: typing.Union[discord.VoiceChannel, discord.StageChannel]=None):
 		vc: wavelink.Player = wavelink.NodePool.get_node().get_player(ctx.guild)
 		print(vc)
+
+		print(vc.channel)
+		print(ctx.author.voice.channel)
 		
 		try:
-			channel = channel or  ctx.author.voice.channel
+			channel = channel or ctx.author.voice.channel
 		except AttributeError:
 			return await ctx.send('No voice channel to discconnect from. Please either provide one or join one.')
 
