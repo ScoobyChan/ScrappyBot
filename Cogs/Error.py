@@ -69,8 +69,6 @@ class Error(commands.Cog):
 			else:
 				b = self.bot.get_channel(self.settings.BotConfig('ErrorChannel'))
 				if b:
-					return await b.send(embed=embed)
-				else:
 					embed = discord.Embed(
 						title='ERROR: {}'.format(error),
 						description = str("".join(traceback.format_exception(type(error), error, error.__traceback__))),
