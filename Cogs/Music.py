@@ -25,6 +25,8 @@ import time
 import discord
 from discord.ext import commands
 
+import logging
+
 # url_rx = re.compile(r'https?://(?:www\.)?.+')
 
 # TO DO:
@@ -126,9 +128,22 @@ class Music(commands.Cog):
 			print(track.title)
 			print(reason)
 		
-		self._get_next_queue(player)
-		
+		await self._get_next_queue(player)
 
+	@commands.Cog.listener()
+	async def on_wavelink_track_stuck(self, player: wavelink.Player, track: wavelink.Track, threshold):
+		if self.bot.debug: 
+			print(player)
+			print(track.title)
+			print(threshold)
+		
+		await self._get_next_queue(player)
+
+	@commands.Cog.listener()
+	async def on_wavelink_track_exception(self, player: wavelink.Player, track: wavelink.Track, error):
+		print(player)
+		print(track.title)
+		print(error)
 
 	@commands.Cog.listener()
 	async def on_voice_state_update(self, member: discord.Member, before, after):
@@ -150,12 +165,20 @@ class Music(commands.Cog):
 		print('Next in queue')
 
 		await player.stop()		
+		if player.queue.is_empty:
+			ctx = getattr(player,"tracks_ctx",None)
+
+			print('Track end', ctx.guild)
+
+			if not ctx: return
+
+			print('End of Playlist')
 		
 		if getattr(player,"repeat", False):
 			current = player.queue.get()
 			player.queue.pop(current)
 
-		player.queue.pop()
+		if not player.queue.is_empty: player.queue.pop()
 
 		if not getattr(player,"shuffle", False):
 			if len(player.queue) > 0:
@@ -186,11 +209,12 @@ class Music(commands.Cog):
 
 
 	async def _check_play(self, player, track_num=None):
+		print('Track')
 		if not player or not player.is_connected(): return print('Player not found')
 
-		if player.is_playing() or player.is_paused(): return
+		if player.is_playing() or player.is_paused(): return print('Player not playing or paused')
 		
-		if player.queue.is_empty: return
+		if player.queue.is_empty: return print('queue empty')
 
 		track = player.queue.get()
 
@@ -222,9 +246,9 @@ class Music(commands.Cog):
 		player: wavelink.Player = await self.con_(ctx)
 		tracks = await wavelink.YouTubeTrack.search(query='hello - adele', return_first=True) 
 		await player.play(tracks)
-		player.queue.put(tracks)
-		player.track_ctx = ctx
-		print(player.queue)
+		#player.queue.put(tracks)
+		#player.track_ctx = ctx
+		#print(player.queue)
 
 	@commands.command()
 	async def test_ctx(self, ctx):
@@ -390,7 +414,7 @@ class Music(commands.Cog):
 			else:
 				_return = 0
 				if len(_total_tracks) > 1:
-					_return = await fuz.fuzSelect(ctx, 'Youtube', _titles)
+					_return = await fuz.fuzSelect(ctx, 'Soundcloud', _titles)
 				
 				if _return == None: return await ctx.send('Nothing selected')
 
@@ -417,21 +441,29 @@ class Music(commands.Cog):
 		tracks = []
 
 		if 'playlist' in search:
-			async for track in spotify.SpotifyTrack.iterator(query=search, type=spotify.SpotifySearchType.playlist):
+			async for track in spotify.SpotifyTrack.iterator(query=search, type=spotify.SpotifySearchType.playlist, partial_tracks=True):
+				print(track)
 				tracks.append(track)
 
 		if 'album' in search:
-			async for track in spotify.SpotifyTrack.iterator(query=search, type=spotify.SpotifySearchType.album):
+			async for track in spotify.SpotifyTrack.iterator(query=search, type=spotify.SpotifySearchType.album, partial_tracks=True):
 				tracks.append(track)
 
 		if 'track' in search:
-			async for track in spotify.SpotifyTrack.search(query=search, type=spotify.SpotifySearchType.track):
+			async for track in spotify.SpotifyTrack.search(query=search, type=spotify.SpotifySearchType.track, partial_tracks=True):
 				tracks.append(track)
 
+		print(tracks)
+		print(player)
+		print(player.queue)
+
 		for x in tracks:
+			print(x)
 			x.ctx = ctx
-			await player.queue.put(x)
+			player.queue.put(x)
 		
+		print('added items')
+		print(player.queue)
 		await self._check_play(player)
 
 	####################################
