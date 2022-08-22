@@ -312,10 +312,6 @@ class Music(commands.Cog):
 	@commands.command(name='connect')
 	async def con_(self, ctx, channel: typing.Union[discord.VoiceChannel, discord.StageChannel]=None):
 		vc: wavelink.Player = wavelink.NodePool.get_node().get_player(ctx.guild)
-		print(vc)
-
-		print(vc.channel)
-		print(ctx.author.voice.channel)
 		
 		try:
 			channel = channel or ctx.author.voice.channel
@@ -328,6 +324,10 @@ class Music(commands.Cog):
 		if vc:
 			# if self.bot.voice.channel == ctx.author.voice.channel:
 			await vc.move_to(channel)
+			print(vc)
+
+			print(vc.channel)
+			print(ctx.author.voice.channel)	
 		else:
 			# player = wavelink.Player(dj=ctx.author)
 			vc: wavelink.Player = await channel.connect(cls=wavelink.Player) 
