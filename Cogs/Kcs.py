@@ -15,22 +15,8 @@ class Kcs(commands.Cog):
 		
 		kcs = self.settings.KcsConfig(ctx.guild.id)
 
-		msg = []
-
-		for k in kcs:
-			msg.append("{}({})".format(kcs[k]['Name'], k))
-
-		if ctx.author.top_role.colour:
-			col = ctx.author.top_role.colour
-		else:
-			col =self.settings.randomColor()
-
-		embed = discord.Embed(
-			title = 'KCS list and ID\'s',
-			description = '\n'.join(msg),
-			colour = col
-		)
-		await ctx.send(embed=embed)
+		fuz = self.bot.get_cog('FuzzySearch')
+		if fuz: fuz.fuzList(ctx, kcs, 'KCS list and ID\'s', max_num = 5)
 
 	@commands.command()
 	async def addkcs(self, ctx, _id, *, _name):
