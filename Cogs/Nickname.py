@@ -9,7 +9,7 @@ class Nickname(commands.Cog):
 	# List Permissions For Users
 	# @commands.bot_has_permissions(manage_nickname=True, change_nicknames=True)
 	@commands.command()
-	async def nick(self, ctx, user=None, *, nName=None):
+	async def nick(self, ctx, user: commands.Greedy[discord.Member]=None, *, nName=None):
 		"""[user][nickname]
 		Nickname user"""
 		if not user:

@@ -18,8 +18,7 @@ class Honk(commands.Cog):
 		self.settings = settings
 		self.Utils = Utils.Utils()
 
-	@commands.Cog.listener()
-	async def on_message(self, message):
+	async def onmessage(self, message):
 		if message.author.id == self.bot.user.id:
 			return 	
 
