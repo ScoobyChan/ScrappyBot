@@ -21,7 +21,8 @@ if Settings.auto_update:
     print("Installs complete")
 
 print(Settings.Download_prerequesites)
-if Settings.Download_prerequesites:
+    
+def prereq():
     print("Check imports")
     
     try:
@@ -82,6 +83,8 @@ if Settings.fix_cert:
 
 # pip install --user --upgrade certifi bs4 requests pyyaml discord.py[voice] wavelink geopy pytz certifi pip
 
+if Settings.Download_prerequesites:
+    prereq()
 
 import traceback
 import sys
