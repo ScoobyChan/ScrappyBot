@@ -9,15 +9,17 @@ class Nickname(commands.Cog):
 	# List Permissions For Users
 	# @commands.bot_has_permissions(manage_nickname=True, change_nicknames=True)
 	@commands.command()
-	async def nick(self, ctx, user: commands.Greedy[discord.Member]=None, *, nName=None):
+	async def nick(self, ctx, _user: commands.Greedy[discord.Member]=None, *, nName=None):
 		"""[user][nickname]
 		Nickname user"""
-		if not user:
-			user = ctx.author.id
+		if not _user: [ctx.author.id]
+		
+		if not isinstance(_user, list):
+			_user = [_user]
 
-		m = self.settings.Get(ctx, 'user', user)
-		await m.edit(nick=nName)
-		await ctx.send(str(m.name) + ' Nickname changed to ' + nName)
+		for m in _user:
+			await m.edit(nick=nName)
+			await ctx.send(str(m.name) + ' Nickname changed to ' + nName)
 
 	@commands.command()
 	async def nickall(self, ctx, *, nName=None):
