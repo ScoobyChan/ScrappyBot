@@ -7,6 +7,7 @@ import json
 import shutil
 import discord
 from discord.ext import commands
+from Utils import Utils
 
 def setup(bot):
 	bot.add_cog(Cogloader(bot))
@@ -17,6 +18,7 @@ class Cogloader(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.CogsToLoad = []
+		self.Utils = Utils.Utils()
 
 	def _load_extension(self):
 		print('Loading Cogs')
