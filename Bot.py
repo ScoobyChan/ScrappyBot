@@ -1,11 +1,6 @@
 import Settings
 import Intents
 
-# Upload:
-# Admin
-# Kcs
-# Fuzz search
-
 from Utils import Configuration
 
 import Startup
@@ -75,7 +70,7 @@ bot.color = [
 ]
 
 bot.res = time.localtime()
-bot.debug = True
+bot.debug = False
 
 
 @bot.event
@@ -255,7 +250,7 @@ while True:
 			# Initialise Mass Destruction
 			if Settings.token:
 				BotConfig('reboot', False)
-				bot.run(Settings.ScappyBotBeta_token, bot=True, reconnect=True)
+				bot.run(Settings.token, bot=True, reconnect=True)
 			else:
 				print('I have no TOKEN')
 				break
