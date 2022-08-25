@@ -15,7 +15,7 @@ class Kcs(commands.Cog):
 		kcs = self.settings.KcsConfig(ctx.guild.id)
 	
 		fuz = self.bot.get_cog('FuzzySearch')
-		if fuz: await fuz.fuzList(ctx, kcs, 'KCS list and ID\'s', max_num = 5)
+		if fuz: await fuz.fuzList(ctx, kcs, 'KCS list and ID\'s', 25)
 
 	@commands.command()
 	async def addkcs(self, ctx, _id, *, _name):
