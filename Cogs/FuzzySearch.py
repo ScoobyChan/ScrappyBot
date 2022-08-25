@@ -236,7 +236,7 @@ class FuzzySearch(commands.Cog):
 		else:
 			col =self.settings.randomColor()
 			
-		embed = discord.Embed(title="{} Selector".format(_item), colour=col)
+		embed = discord.Embed(title="{} Selector".format(_title), colour=col)
 		embed.description = _joined_list
 		embed.set_footer(text="{}/{}".format(page, page_total))
 		msg = await ctx.send(embed=embed)
@@ -256,7 +256,7 @@ class FuzzySearch(commands.Cog):
 						_joined_list += '{} - {}({})\n'.format(num, _title[x]['Name'], x)
 						num += 1
 
-				embed = discord.Embed(title="{} Selector".format(_item), colour=col)
+				embed = discord.Embed(title="{} Selector".format(_title), colour=col)
 				embed.description = _joined_list
 				embed.set_footer(text="{}/{}".format(page, page_total))
 				await msg.edit(embed=embed)
