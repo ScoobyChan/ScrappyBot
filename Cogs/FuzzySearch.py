@@ -248,12 +248,12 @@ class FuzzySearch(commands.Cog):
 				_joined_list = ''
 				num = 1
 				if isinstance(_item, list):
-					for x in _title[min_num:max_num]:
+					for x in _item[min_num:max_num]:
 						_joined_list += '{} - {}\n'.format(num, x)
 						num += 1
 				else:
 					for x in item_list[min_num:max_num]:	
-						_joined_list += '{} - {}({})\n'.format(num, _title[x]['Name'], x)
+						_joined_list += '{} - {}({})\n'.format(num, _item[x]['Name'], x)
 						num += 1
 
 				embed = discord.Embed(title="{} Selector".format(_title), colour=col)
