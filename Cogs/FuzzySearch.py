@@ -31,7 +31,9 @@ class FuzzySearch(commands.Cog):
 		 
 	async def fuzSearch(self, ctx, Search, List):		
 		
-		if not isinstance(List, list): return 'please input a list'
+		if not isinstance(List, list): 
+			return await ctx.send('please input a list')
+
 
 		_title = list(filter(lambda x: (Counter(x) == Counter(Search)), List))
 		
@@ -203,18 +205,31 @@ class FuzzySearch(commands.Cog):
 		return (choice)
 				
 	async def fuzList(self, ctx, _item, _title, max_num = 5):				
+		if not isinstance(_item, list) and not isinstance(_item, dict): 
+			return await ctx.send('please input a list')
+
 		min_num = 0
 		_sent = False
 
 		_joined_list = ''
 		num = page = page_total = 1
-		for x in _title[min_num:max_num]:
-			_joined_list += '{} - {}\n'.format(num, x)
-			num += 1
 
-		page_total = len(_title)
-		if (page_total / 5) > (page_total // 5):
-			page_total = (page_total // 5) + 1
+		if isinstance(_item, list):
+			for x in _item[min_num:max_num]:
+				_joined_list += '{} - {}\n'.format(num, x)
+				num += 1
+		else:
+			item_list = []
+			for x in _item:
+				item_list.append(x)
+			
+			for x in item_list[min_num:max_num]:				
+				_joined_list += '{} - {}({})\n'.format(num, _item[x]['Name'], x)
+				num += 1
+
+		page_total = len(item_list)
+		if (page_total / max_num) > (page_total // max_num):
+			page_total = (page_total // max_num) + 1
 			
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
@@ -232,9 +247,14 @@ class FuzzySearch(commands.Cog):
 			else:
 				_joined_list = ''
 				num = 1
-				for x in _title[min_num:max_num]:
-					_joined_list += '{} - {}\n'.format(num, x)
-					num += 1
+				if isinstance(_item, list):
+					for x in _title[min_num:max_num]:
+						_joined_list += '{} - {}\n'.format(num, x)
+						num += 1
+				else:
+					for x in item_list[min_num:max_num]:	
+						_joined_list += '{} - {}({})\n'.format(num, _title[x]['Name'], x)
+						num += 1
 
 				embed = discord.Embed(title="{} Selector".format(_item), colour=col)
 				embed.description = _joined_list

@@ -418,4 +418,4 @@ class Admin(commands.Cog):
 		""""Lists all bans in server"""
 		bans = await ctx.guild.bans()
 		fuz = self.bot.get_cog('FuzzySearch')
-		if fuz: fuz.fuzList(ctx, bans, 'Server Bans', max_num = 10)
+		if fuz: await fuz.fuzList(ctx, bans, 'Server Bans', max_num = 10)
