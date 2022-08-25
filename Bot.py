@@ -1,7 +1,15 @@
 import Settings
 import Intents
 
+# Upload:
+# Admin
+# Kcs
+# Fuzz search
+
 from Utils import Configuration
+
+import Startup
+Startup.prereq()
 
 import os
 import time
@@ -131,29 +139,35 @@ async def on_message(message):
 	# or respond or replace
 	
 	ignore = delete = react = respond = False
+	x = False
 
 	for cog in bot.cogs:
 		cog = bot.get_cog(cog)
 		try:
-#			if bot.debug: print(cog); print(type(message))
 			try:	
 				check = await cog.message(message)
 			except TypeError as e:
+				if bot.debug: print(cog); print(type(message)); print(message)
+				print('########## Big error :P #############')
 				print(e)
+				x = True
+	
 		except AttributeError:
 			# Onto the next
 			continue
 		# Make sure we have things formatted right
-		if not type(check) is dict:
-			check = {}
-		if check.get("Delete",False):
-			delete = True
-		if check.get("Ignore",False):
-			ignore = True
-		try: respond = check['Respond']
-		except KeyError: pass
-		try: react = check['Reaction']
-		except KeyError: pass
+
+		if x == False:
+			if not type(check) is dict:
+				check = {}
+			if check.get("Delete",False):
+				delete = True
+			if check.get("Ignore",False):
+				ignore = True
+			try: respond = check['Respond']
+			except KeyError: pass
+			try: react = check['Reaction']
+			except KeyError: pass
 
 	if delete:
 		# We need to delete the message - top priority
@@ -241,7 +255,7 @@ while True:
 			# Initialise Mass Destruction
 			if Settings.token:
 				BotConfig('reboot', False)
-				bot.run(Settings.token, bot=True, reconnect=True)
+				bot.run(Settings.ScappyBotBeta_token, bot=True, reconnect=True)
 			else:
 				print('I have no TOKEN')
 				break
