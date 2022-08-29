@@ -216,7 +216,13 @@ class FuzzySearch(commands.Cog):
 
 		if isinstance(_item, list):
 			for x in _item[min_num:max_num]:
-				_joined_list += '{} - {}\n'.format(num, x)
+				if isinstance(x, list):
+					guild = self.bot.get_guild(x[0])
+					_joined_list += '{0} - **{1}**, number: `{2}`\n'.format(num, guild, x[1])
+				else:
+					_joined_list += '{} - {}\n'.format(num, x)
+
+				item_list = _item
 				num += 1
 		else:
 			item_list = []
@@ -241,64 +247,70 @@ class FuzzySearch(commands.Cog):
 		embed.set_footer(text="{}/{}".format(page, page_total))
 		msg = await ctx.send(embed=embed)
 
-		while True:
-			if not _sent:
-				_sent = True				
-			else:
-				_joined_list = ''
-				num = 1
-				if isinstance(_item, list):
-					for x in _item[min_num:max_num]:
-						_joined_list += '{} - {}\n'.format(num, x)
-						num += 1
+		if len(_item) > max_num: 
+			while True:
+				if not _sent:
+					_sent = True				
 				else:
-					for x in item_list[min_num:max_num]:	
-						_joined_list += '{} - {}({})\n'.format(num, _item[x]['Name'], x)
-						num += 1
+					_joined_list = ''
+					num = 1
+					if isinstance(_item, list):
+						for x in _item[min_num:max_num]:
+							if isinstance(x, list):
+								guild = self.bot.get_guild(x[0])
+								_joined_list += '{0} - **{1}**, number: `{2}`\n'.format(num, guild, x[1])
+							else:
+								_joined_list += '{} - {}\n'.format(num, x)
+							
+							num += 1
+					else:
+						for x in item_list[min_num:max_num]:	
+							_joined_list += '{} - {}({})\n'.format(num, _item[x]['Name'], x)
+							num += 1
 
-				embed = discord.Embed(title="{} Selector".format(_title), colour=col)
-				embed.description = _joined_list
-				embed.set_footer(text="{}/{}".format(page, page_total))
-				await msg.edit(embed=embed)
-				await msg.clear_reactions() 
-			
-			try:
-				await asyncio.sleep(0.05)
-
-				if len(_title) > 5: await msg.add_reaction("⬅️")
-				if len(_title) > 5: await msg.add_reaction("➡️")
-
-				await msg.add_reaction('🚫')
-				
-				def check(reaction: discord.Reaction, adder: discord.User) -> bool:
-					return adder == ctx.message.author and reaction.message.id == msg.id
-
-				reaction, adder = await self.bot.wait_for('reaction_add', timeout=30, check=check)
-				#timeout= 30
-				if reaction.emoji == '⬅️' and len(_title) > 5:
-					print(min_num - 5)
-					if (min_num - 5) >= 0:
-						max_num -= 5
-						min_num -= 5
-						page -= 1
-						print('Previous')
-
-				elif reaction.emoji == '➡️' and len(_title) > 5:
-					print((max_num + 5) // 5) 
-					print((len(_title) // 5) + 1)
-					if ((max_num) // 5) != (len(_title) // 5) + 1:
-						max_num += 5
-						min_num += 5
-						page += 1
-						print('Next')
-
-				elif reaction.emoji == '🚫':
+					embed = discord.Embed(title="{} Selector".format(_title), colour=col)
+					embed.description = _joined_list
+					embed.set_footer(text="{}/{}".format(page, page_total))
+					await msg.edit(embed=embed)
 					await msg.clear_reactions() 
-					break
+				
+				try:
+					await asyncio.sleep(0.05)
+
+					
+					await msg.add_reaction("⬅️")
+					await msg.add_reaction("➡️")
+					await msg.add_reaction('🚫')
+					
+					def check(reaction: discord.Reaction, adder: discord.User) -> bool:
+						return adder == ctx.message.author and reaction.message.id == msg.id
+
+					reaction, adder = await self.bot.wait_for('reaction_add', timeout=30, check=check)
+					#timeout= 30
+					if reaction.emoji == '⬅️' and len(_title) > 5:
+						print(min_num - 5)
+						if (min_num - 5) >= 0:
+							max_num -= 5
+							min_num -= 5
+							page -= 1
+							print('Previous')
+
+					elif reaction.emoji == '➡️' and len(_title) > 5:
+						print((max_num + 5) // 5) 
+						print((len(_title) // 5) + 1)
+						if ((max_num) // 5) != (len(_title) // 5) + 1:
+							max_num += 5
+							min_num += 5
+							page += 1
+							print('Next')
+
+					elif reaction.emoji == '🚫':
+						await msg.clear_reactions() 
+						break
 			
-			except asyncio.exceptions.TimeoutError:
-				break	
-		
+				except asyncio.exceptions.TimeoutError:
+					break	
+	
 
 def setup(bot):
 	settings = bot.get_cog("Settings")
