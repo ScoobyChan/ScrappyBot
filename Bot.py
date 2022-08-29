@@ -1,6 +1,12 @@
 import Settings
 import Intents
 
+# Upload:
+# Bot
+# Telephone
+# Settings
+# Fuzzy
+
 from Utils import Configuration
 
 import Startup
@@ -70,7 +76,7 @@ bot.color = [
 ]
 
 bot.res = time.localtime()
-bot.debug = False
+bot.debug = True
 
 
 @bot.event
@@ -109,7 +115,7 @@ async def on_typing(channel, user, when):
 			continue
 
 @bot.event
-async def on_message(message):
+async def on_message(message): # Need to fix this
 	# Post the context too
 	context = await bot.get_context(message)
 	bot.dispatch("message_context", context, message)
@@ -136,34 +142,34 @@ async def on_message(message):
 	ignore = delete = react = respond = False
 	x = False
 
+	check = None
+
 	for cog in bot.cogs:
 		cog = bot.get_cog(cog)
 		try:
 			try:	
-				check = await cog.message(message)
+				check = await cog.onmessage(message)
 			except TypeError as e:
 				if bot.debug: print(cog); print(type(message)); print(message)
 				print('########## Big error :P #############')
 				print(e)
-				x = True
 	
 		except AttributeError:
 			# Onto the next
 			continue
 		# Make sure we have things formatted right
 
-		if x == False:
-			if not type(check) is dict:
-				check = {}
-			if check.get("Delete",False):
-				delete = True
-			if check.get("Ignore",False):
-				ignore = True
-			try: respond = check['Respond']
-			except KeyError: pass
-			try: react = check['Reaction']
-			except KeyError: pass
-
+		if not type(check) is dict:
+			check = {}
+		if check.get("Delete",False):
+			delete = True
+		if check.get("Ignore",False):
+			ignore = True
+		try: respond = check['Respond']
+		except KeyError: pass
+		try: react = check['Reaction']
+		except KeyError: pass
+	
 	if delete:
 		# We need to delete the message - top priority
 		await message.delete()
@@ -250,7 +256,7 @@ while True:
 			# Initialise Mass Destruction
 			if Settings.token:
 				BotConfig('reboot', False)
-				bot.run(Settings.token, bot=True, reconnect=True)
+				bot.run(Settings.ScappyBotBeta_token, bot=True, reconnect=True)
 			else:
 				print('I have no TOKEN')
 				break
