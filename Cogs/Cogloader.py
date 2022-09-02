@@ -5,18 +5,21 @@ import datetime
 import time
 import json
 import shutil
+from turtle import color
 import discord
 from discord.ext import commands
 from Utils import Utils
 
 def setup(bot):
-	bot.add_cog(Cogloader(bot))
+	settings = bot.get_cog("Settings")
+	bot.add_cog(Cogloader(bot, settings))
 
 start_time = time.time()
 
 class Cogloader(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot, settings):
 		self.bot = bot
+		self.settings = settings
 		self.CogsToLoad = []
 		self.Utils = Utils.Utils()
 
@@ -124,9 +127,9 @@ class Cogloader(commands.Cog):
 		difference = int(round(current_time - start_time))
 		text = str(datetime.timedelta(seconds=difference))
 		
-		
-		col = ctx.author.top_role.colour
-		embed = self.Utils.embed({"title":text, "color":col})		
+		col = ctx.author.top_role.colour or self.settings
+
+		embed = discord.Embed(title=text, color=col)
 		await ctx.send(embed=embed)
 
 	@commands.command(aliases=['r'])

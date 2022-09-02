@@ -1,14 +1,9 @@
-import asyncio
-import json
 import random
 import discord
-import urllib.request
 import requests
-import aiohttp
-import os
-from collections import Counter
 from discord.ext import commands
 import re
+import os
 
 from Utils import Utils
 
@@ -19,7 +14,7 @@ class Honk(commands.Cog):
 		self.Utils = Utils.Utils()
 
 	async def onmessage(self, message):
-		if message.author.id == self.bot.user.id:
+		if message.author.bot:
 			return 	
 
 		if type(message.channel) == discord.DMChannel:
@@ -30,12 +25,21 @@ class Honk(commands.Cog):
 				msgs = message.content
 				
 				search_result = re.search("(honk|h.o.n.k|knoh|k.n.o.h)", msgs)
-				
+
 				if search_result:
 					search = random.choice(['honk', 'goose'])
-					data = random.choice([self.Utils.ImgurSearch(search), self.Utils.GiphySearch(self.bot.GIPHY_API, search)])
+					data = self.Utils.ImgurSearch(search)
 
-					await message.channel.send(data)
+					img_data = requests.get(data).content
+
+					file = data.split('/')[len(data.split('/')) - 1]
+
+					with open('images/'+file, 'wb') as handler:
+						handler.write(img_data)
+
+					_file = discord.File('images/'+file, filename=file)
+					await message.channel.send(file=_file)
+					os.remove('images/'+file)
 
 
 	@commands.command()
