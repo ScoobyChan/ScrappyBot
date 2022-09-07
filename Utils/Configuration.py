@@ -18,8 +18,10 @@ class Configuration:
 		self.bot = bot
 		self.bans = {
 			'bantime':0,
+			'bantimeadded':0,
 			'banned':True,
-			'Task':None
+			'Task':None,
+			'BanUser':''
 		}
 		self.Tags = {
 			'user':0,
@@ -132,15 +134,28 @@ class Configuration:
 			'DailyTime':0,
 			'BlockNumbers': [],
 			'PhoneChannel': 0,
+			'LockPhoneChannel':False,
 			'LangFilter':[],
 			'LangFilterUser':{},
 			'LangFilterWarning':0,
 			'LangFilterKick':0,
 			'kcs':{},
+			'tableflip': True,
+			'Responses':{},
+			'Triggers':{},
+			'rpchannel': 0,
+			'RoleplayProfiles':{},
 		}
 
 		self.Kcs = {
 				'Name': None 
+			}
+
+		self.roleplay = {
+				'Name': None,
+				'Age': 0,
+				'Picture': '', 
+				'Description': ''
 			}
 		
 		self.BotSettings = {
@@ -151,8 +166,9 @@ class Configuration:
 			'BugreportsChannel':0,
 			'Messages':0,
 			'BlacklistedServers':[],
-			'gitcommit':0,
-			'reboot': True
+			'reboot': False,
+			'gitcommit': 0,
+			'PhoneBook': []
 		}
 
 		self.PhoneBook = {}
@@ -173,24 +189,6 @@ class Configuration:
 
 	def SaveConfigBot(self, data):
 		with open('Json/Settings.yaml', 'w') as f:
-			yaml.dump(data, f)
-
-	def LoadPhoneBook(self):
-		try:	
-			if not os.path.exists('Json/PhoneBook.yaml'):
-				with open('Json/PhoneBook.yaml', 'w') as f:
-					yaml.dump(self.PhoneBook, f)
-		except FileNotFoundError:
-			DirectoryCheck()
-			if not os.path.exists('Json/PhoneBook.yaml'):
-				with open('Json/PhoneBook.yaml', 'w') as f:
-					yaml.dump(self.PhoneBook, f)
-
-		with open('Json/PhoneBook.yaml', 'r') as f:
-			return yaml.load(f, Loader=yaml.FullLoader)
-
-	def SavePhoneBook(self, data):
-		with open('Json/PhoneBook.yaml', 'w') as f:
 			yaml.dump(data, f)
 
 	def LoadConfigServer(self, server):
