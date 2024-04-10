@@ -35,7 +35,7 @@ class HelpView(discord.ui.View):
 		try:
 			if await self._help_command.response: await self._help_command.response.edit(view=self) # might have to put this into a try statement
 		except AttributeError as a:
-			print(a)
+			# print(a)
 			pass
 
 	async def interation_check(self, interaction: discord.Interaction) -> bool:
