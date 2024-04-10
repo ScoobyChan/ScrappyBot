@@ -2,7 +2,6 @@ import os
 import sys
 import datetime
 import time
-from turtle import color
 import discord
 from discord.ext import commands
 import traceback
