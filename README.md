@@ -1,20 +1,24 @@
 # ScrappyBot
-# Python 3 is minimum requirement
+# Minimum requirement
+Python 3 is required for the Bot to operate
+Lavalink is required to be setup too for Music to be operational
 
-# Install requirements with: 
+# Installation
+Install requirements with: 
 ```
 pip install -r requirements
 ```
 
-# files required to be created in same folder as Botv3.py:
+Files required to be created in same folder as Botv3.py:
 ```
 .env
 ```
 
-# Inside .env:
+Inside .env:
 ```
 PREFIX=""
 TOKEN=""
 ```
-# Without PREFIX, default will be set to $
-# Without TOKEN, the bot will not be able to integrate to discord
+
+Without PREFIX, default will be set to $
+Without TOKEN, the bot will not be able to integrate to discord
