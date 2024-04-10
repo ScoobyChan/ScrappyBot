@@ -1,5 +1,4 @@
-﻿
-from os import name
+﻿from os import name
 from typing import Optional, Set
 import discord
 from discord.ext import commands
@@ -33,7 +32,11 @@ class HelpView(discord.ui.View):
 	
 	async def on_timeout(self) -> None:
 		self.clear_items()
-		if await self._help_command.response: await self._help_command.response.edit(view=self)
+		try:
+			if await self._help_command.response: await self._help_command.response.edit(view=self) # might have to put this into a try statement
+		except AttributeError as a:
+			print(a)
+			pass
 
 	async def interation_check(self, interaction: discord.Interaction) -> bool:
 		return self._help_command.context.author == interaction.user
