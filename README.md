@@ -1,4 +1,4 @@
-# ScrappyBotBeta
+# ScrappyBot
 # Minimum requirement
 Python 3 is required for the Bot to operate
 Lavalink is required to be setup too for Music to be operational
