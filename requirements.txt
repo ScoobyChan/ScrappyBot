@@ -20,4 +20,4 @@ speedtest
 art
 imgurpython
 typing_extensions
-msilib
+git+https://github.com/cloudwithax/pomice
