@@ -26,7 +26,7 @@ class Cogloader(commands.Cog):
 
 	async def _load_extension(self, sel_cog=None):
 		# Find cogs to load
-		directory = self.bot.cog_directory
+		directory = "Cogs"
 		cog_list = os.listdir(directory)
 		for x in ['__pycache__', 'Settings', 'cog_loader', 'Perms']:
 			if x in cog_list: cog_list.remove(x)
@@ -70,7 +70,7 @@ class Cogloader(commands.Cog):
 				print(str("".join(traceback.format_exception(type(error), error, error.__traceback__))))
 
 	async def _unload_extension(self, sel_cog=None):
-		directory = self.bot.cog_directory
+		directory = "Cogs"
 
 		if sel_cog:
 			if not sel_cog in self.cog_loaded:
