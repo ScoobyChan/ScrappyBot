@@ -33,7 +33,7 @@ class HelpView(discord.ui.View):
 	
 	async def on_timeout(self) -> None:
 		self.clear_items()
-		if await self._help_commandresponse: await self._help_command.response.edit(view=self)
+		if await self._help_command.response: await self._help_command.response.edit(view=self)
 
 	async def interation_check(self, interaction: discord.Interaction) -> bool:
 		return self._help_command.context.author == interaction.user
