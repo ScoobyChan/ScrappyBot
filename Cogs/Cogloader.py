@@ -1,4 +1,3 @@
-from msilib import Directory
 import os
 import sys
 import datetime
