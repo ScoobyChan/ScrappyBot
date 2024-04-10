@@ -20,5 +20,4 @@ PREFIX=""
 TOKEN=""
 ```
 
-Without PREFIX, default will be set to $
-Without TOKEN, the bot will not be able to integrate to discord
+Without PREFIX, default will be set to $, Without TOKEN, the bot will not be able to integrate to discord
