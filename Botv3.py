@@ -39,7 +39,7 @@ class Scrappy(commands.Bot):
         async def get_pre(self, bot, message):
                 guild = message.guild.id
                 set_cog = bot.get_cog('Settings')
-				_prefix = os.getenv("PREFIX")
+                _prefix = os.getenv("PREFIX")
                 prefix = '$' if _prefix == "" else _prefix
                 return prefix
 
