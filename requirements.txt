@@ -21,3 +21,4 @@ art
 imgurpython
 typing_extensions
 git+https://github.com/cloudwithax/pomice
+python-dotenv
