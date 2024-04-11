@@ -2,7 +2,7 @@ import random
 import discord
 from discord.ext import commands
 
-class Random(commands.Cog):
+class RandomChoice(commands.Cog):
 	def __init__(self, bot, settings):
 		self.bot = bot
 
@@ -66,4 +66,4 @@ class Random(commands.Cog):
 
 async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	await bot.add_cog(Random(bot, settings))
+	await bot.add_cog(RandomChoice(bot, settings))
