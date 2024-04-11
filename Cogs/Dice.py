@@ -30,5 +30,6 @@ class Dice(commands.Cog):
 		)
 		await ctx.send(embed=embed)
 
-def setup(bot):
-	bot.add_cog(Dice(bot))
+async def setup(bot: commands.Bot) -> None:
+	settings = bot.get_cog("Settings")
+	await bot.add_cog(Dice(bot, settings))
