@@ -22,6 +22,6 @@ class Groot(commands.Cog):
 		c = random.choice(i) +' '+ random.choice(am) +' '+ random.choice(groot)
 		await ctx.send(c)
 
-def setup(bot):
+async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	bot.add_cog(Groot(bot, settings))
+	await bot.add_cog(Groot(bot, settings))

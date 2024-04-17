@@ -2,9 +2,9 @@
 import discord
 from discord.ext import commands
 
-def setup(bot):
+async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	bot.add_cog(Horny(bot, settings))
+	await bot.add_cog(Horny(bot, settings))
 
 class Horny(commands.Cog):
 	def __init__(self, bot, settings):

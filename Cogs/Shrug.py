@@ -26,6 +26,6 @@ class Shrug(commands.Cog):
 		else:
 			await ctx.send('No one has Shrugged')
 		
-def setup(bot):
+async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	bot.add_cog(Shrug(bot, settings))
+	await bot.add_cog(Shrug(bot, settings))

@@ -9,9 +9,9 @@ import aiohttp
 import random
 from discord.ext import commands
 
-def setup(bot):
+async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	bot.add_cog(Coffee(bot, settings))
+	await bot.add_cog(Coffee(bot, settings))
 
 class Coffee(commands.Cog):
 	def __init__(self, bot, settings):

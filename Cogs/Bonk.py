@@ -52,6 +52,6 @@ class Bonk(commands.Cog):
 		await ctx.send(msg)
 		await ctx.send("https://tenor.com/view/kendo-shinai-bonk-doge-horny-gif-20995284")
 
-def setup(bot):
+async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	bot.add_cog(Bonk(bot, settings))
+	await bot.add_cog(Bonk(bot, settings))
