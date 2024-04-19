@@ -1,4 +1,5 @@
-
+import json
+import urllib.request
 import discord
 from discord.ext import commands
 
