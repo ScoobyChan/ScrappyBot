@@ -14,9 +14,10 @@ class Cool(commands.Cog):
 		In reality this just checks if a subcommand is being invoked.
 		Usage: $cool bot
 		"""
-			
+		member = ctx.author
+
 		if ctx.invoked_subcommand is None:
-			await ctx.send('No, {0.author} is not cool'.format(ctx))
+			await ctx.send('No, {} is not cool'.format(member.nick if member.nick else member.name))
 
 	@cool.command(name='bot')
 	async def _bot(self, ctx):
