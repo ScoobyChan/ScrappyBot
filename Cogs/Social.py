@@ -29,8 +29,8 @@ class Social(commands.Cog):
 		if not from_member:	from_member = "Everyone"
 		if not to_member:	to_member = ctx.author
 
-		if from_member.top_role.colour:
-			col = from_member.top_role.colour
+		if to_member.top_role.colour:
+			col = to_member.top_role.colour
 		else:
 			col =self.settings.randomColor()
 		
