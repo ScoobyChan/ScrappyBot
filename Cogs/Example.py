@@ -6,6 +6,20 @@ from discord.ext import commands
 
 # https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html?highlight=bot%20owner
 
+class JoinDistance:
+    def __init__(self, joined, created):
+        self.joined = joined
+        self.created = created
+
+    @property
+    def delta(self):
+        return self.joined - self.created
+
+class JoinDistanceConverter(commands.MemberConverter):
+    async def convert(self, ctx, argument):
+        member = await super().convert(ctx, argument)
+        return JoinDistance(member.joined_at, member.created_at)
+
 class Example(commands.Cog):
 	# print('Fun Cog Working')
 	def __init__(self, bot, settings):
@@ -23,6 +37,15 @@ class Example(commands.Cog):
 		readable_format = datetime.fromisoformat(str(member.joined_at)).strftime('%Y-%m-%d %H:%M:%S %Z')
 
 		await ctx.send('{} joined on {}'.format(member, readable_format))
+            
+	@commands.command()
+	async def delta(self, ctx, *, member: JoinDistanceConverter):
+		is_new = member.delta.days < 100
+		if is_new:
+			await ctx.send("Hey you're pretty new!")
+		else:
+			await ctx.send("Hm you're not so new.")
+
 
 	@commands.command()
 	async def slap(self, ctx, members: commands.Greedy[discord.Member], amount:typing.Optional[int] = 1, *, reason='no reason'):
