@@ -20,13 +20,12 @@ class Example(commands.Cog):
 		await ctx.send('{0} joined on {0.joined_at}'.format(member))
 
 	@commands.command()
-	async def slap(ctx, members: commands.Greedy[discord.Member], amount:typing.Optional[int] = 1, *, reason='no reason'):
+	async def slap(ctx, slapped: discord.Member, amount:typing.Optional[int] = 1, *, reason='no reason'):
 		"""
 		Slaps user
 		"""
-		print(members)
 		# slapped = ", ".join(x.name for x in members)
-		# await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
+		await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
 async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
