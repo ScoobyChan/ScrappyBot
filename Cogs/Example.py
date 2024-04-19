@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 import typing
 import discord
 from discord.ext import commands
@@ -17,7 +18,11 @@ class Example(commands.Cog):
 		Joined user
 		"""
 		if not member: member = ctx.author
-		await ctx.send('{0} joined on {0.joined_at}'.format(member))
+
+		# Format the datetime object to a more readable string format
+		readable_format = datetime.fromisoformat(0.joined_at).strftime('%Y-%m-%d %H:%M:%S %Z')
+
+		await ctx.send('{} joined on {}'.format(member, readable_format))
 
 	@commands.command()
 	async def slap(self, ctx, members: commands.Greedy[discord.Member], amount:typing.Optional[int] = 1, *, reason='no reason'):
