@@ -27,11 +27,11 @@ class Slapper(commands.Converter):
         return f'{ctx.author} slapped {to_slap} because *{argument}*'
 
 class Upper(commands.Converter):
-	def convert(self, argument):
+	def convert(self, ctx, argument):
 		return argument.upper()
 	
 class Lower(commands.Converter):
-	def convert(self, argument):
+	def convert(self, ctx, argument):
 		return argument.lower()
 
 class Example(commands.Cog):
