@@ -26,14 +26,6 @@ class Slapper(commands.Converter):
         to_slap = random.choice(ctx.guild.members)
         return f'{ctx.author} slapped {to_slap} because *{argument}*'
 
-class Upper(commands.Converter):
-	def convert(self, ctx, argument):
-		return str(argument).upper()
-	
-class Lower(commands.Converter):
-	def convert(self, ctx, argument):
-		return str(argument).lower()
-
 class Example(commands.Cog):
 	# print('Fun Cog Working')
 	def __init__(self, bot, settings):
@@ -72,16 +64,6 @@ class Example(commands.Cog):
 	@commands.command()
 	async def slapper(self, ctx, *, reason: Slapper):
 		await ctx.send(reason)
-
-	@commands.command()
-	async def up(self, ctx, *, content: Upper):
-		await ctx.send(content)
-
-	@commands.command()
-	async def low(self, ctx, *, content: Lower):
-		await ctx.send(content)
-
-
 
 async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
