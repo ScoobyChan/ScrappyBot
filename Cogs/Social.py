@@ -22,16 +22,21 @@ class Social(commands.Cog):
 		
 
 	@commands.command()
-	async def foaas(self, ctx, _to, _from='Everyone'):
+	async def foaas(self, ctx, to_member: discord.Member = None, from_member: discord.Member = None):
 		"""[to object] [from object]
 		Tells people to F*** off basically
 		"""
-		if ctx.author.top_role.colour:
-			col = ctx.author.top_role.colour
+		if not from_member:	from_member = "Everyone"
+		if not to_member:	to_member = ctx.author
+
+		if from_member.top_role.colour:
+			col = from_member.top_role.colour
 		else:
 			col =self.settings.randomColor()
 		
-		desc = fuck.off(name=_to, from_=_from).text
+		to_member = to_member.nick if to_member.nick else to_member.name
+
+		desc = fuck.off(name=to_member, from_=from_member).text
 
 		embed=discord.Embed(description=desc, color=col)
 		await ctx.send(embed=embed)
