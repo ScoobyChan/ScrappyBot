@@ -11,9 +11,16 @@ class Mom(commands.Cog):
 		self.bot = bot
 		self.settings = settings
 
-	# Add Message Checker like No u and honk
-
 	@commands.command(aliases=['mom', 'mum'])
 	async def urmom(self, ctx):
 		"""Sends out ur mom"""
 		await ctx.send('**Ur mom**')
+
+	@commands.command()
+	async def urmama(self, ctx):
+		"""Your mama jokes"""
+		with urllib.request.urlopen("https://www.yomama-jokes.com/api/v1/jokes/random/") as url:
+			data = json.loads(url.read().decode())
+			_data = data['joke']
+
+			await ctx.send(_data)
