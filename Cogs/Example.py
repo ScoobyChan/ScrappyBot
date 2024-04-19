@@ -26,13 +26,12 @@ class Slapper(commands.Converter):
         to_slap = random.choice(ctx.guild.members)
         return f'{ctx.author} slapped {to_slap} because *{argument}*'
 
-class Upper:
-	def to_upper(self, argument):
-		print(argument)
-		# return argument.upper()
+class Upper(commands.Converter):
+	def convert(self, argument):
+		return argument.upper()
 	
-class Lower:
-	def to_lower(self, argument):
+class Lowe(commands.Converter)r:
+	def convert(self, argument):
 		return argument.lower()
 
 class Example(commands.Cog):
