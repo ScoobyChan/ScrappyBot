@@ -30,7 +30,7 @@ class Upper(commands.Converter):
 	def convert(self, argument):
 		return argument.upper()
 	
-class Lowe(commands.Converter)r:
+class Lower(commands.Converter):
 	def convert(self, argument):
 		return argument.lower()
 
