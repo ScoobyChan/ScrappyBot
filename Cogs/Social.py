@@ -19,27 +19,45 @@ class Social(commands.Cog):
 		self.settings = settings
 		if self.bot.get_cog('Perms'):
 			self.bot.nsfw.append('Social')
+
+	# @commands.command()
+	# async def foaas(self, ctx, to_member: discord.Member = None, from_member: discord.Member = None):
+	# 	"""
+	# 	Tells people to F*** off basically
+	# 	"""
+	# 	if not from_member:	from_member = "Everyone"
+	# 	if not to_member:	to_member = ctx.author
+
+	# 	if to_member.top_role.colour:
+	# 		col = to_member.top_role.colour
+	# 	else:
+	# 		col =self.settings.randomColor()
 		
+	# 	to_member = to_member.nick if to_member.nick else to_member.name
 
-	@commands.command()
-	async def foaas(self, ctx, to_member: discord.Member = None, from_member: discord.Member = None):
-		"""[to object] [from object]
-		Tells people to F*** off basically
-		"""
-		if not from_member:	from_member = "Everyone"
-		if not to_member:	to_member = ctx.author
+	# 	desc = fuck.off(name=to_member, from_=from_member).text
 
-		if to_member.top_role.colour:
-			col = to_member.top_role.colour
-		else:
-			col =self.settings.randomColor()
+	# 	embed=discord.Embed(description=desc, color=col)
+	# 	await ctx.send(embed=embed)
+
+	# @commands.command()
+	# async def foaasr(self, ctx, to_member: discord.Member = None, from_member: discord.Member = None):
+	# 	"""
+	# 	"""
+	# 	if not from_member:	from_member = "Everyone"
+	# 	if not to_member:	to_member = ctx.author
+
+	# 	if to_member.top_role.colour:
+	# 		col = to_member.top_role.colour
+	# 	else:
+	# 		col =self.settings.randomColor()
 		
-		to_member = to_member.nick if to_member.nick else to_member.name
+	# 	to_member = to_member.nick if to_member.nick else to_member.name
 
-		desc = fuck.off(name=to_member, from_=from_member).text
+	# 	desc = fuck.random(name=to_member, from_=from_member).text
 
-		embed=discord.Embed(description=desc, color=col)
-		await ctx.send(embed=embed)
+	# 	embed=discord.Embed(description=desc, color=col)
+	# 	await ctx.send(embed=embed)
 
 	@commands.command()
 	async def dicksize(self, ctx, member: discord.Member = None):
