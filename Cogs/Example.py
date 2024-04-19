@@ -28,7 +28,8 @@ class Slapper(commands.Converter):
 
 class Upper:
 	def to_upper(self, argument):
-		return argument.upper()
+		print(argument)
+		# return argument.upper()
 	
 class Lower:
 	def to_lower(self, argument):
