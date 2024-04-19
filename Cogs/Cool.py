@@ -16,13 +16,10 @@ class Cool(commands.Cog):
 		"""
 			
 		if ctx.invoked_subcommand is None:
-			await ctx.send('No, {0.subcommand_passed} is not cool'.format(ctx))
+			await ctx.send('No, {0.author} is not cool'.format(ctx))
 
 	@cool.command(name='bot')
 	async def _bot(self, ctx):
-		if await self.settings.perms(ctx)	== (None or False):
-			return
-			
 		await ctx.send('Yes, the bot is cool.')
 
 async def setup(bot: commands.Bot) -> None:
