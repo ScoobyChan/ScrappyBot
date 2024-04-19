@@ -11,14 +11,14 @@ class JoinDistance:
         self.joined = joined
         self.created = created
 
+    @classmethod
+    async def convert(cls, ctx, argument):
+        member = await commands.MemberConverter().convert(ctx, argument)
+        return cls(member.joined_at, member.created_at)
+
     @property
     def delta(self):
         return self.joined - self.created
-
-class JoinDistanceConverter(commands.MemberConverter):
-    async def convert(self, ctx, argument):
-        member = await super().convert(ctx, argument)
-        return JoinDistance(member.joined_at, member.created_at)
 
 class Example(commands.Cog):
 	# print('Fun Cog Working')
