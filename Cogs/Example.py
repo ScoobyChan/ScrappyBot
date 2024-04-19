@@ -1,4 +1,5 @@
 import time
+import random
 from datetime import datetime
 import typing
 import discord
@@ -19,6 +20,11 @@ class JoinDistance:
     @property
     def delta(self):
         return self.joined - self.created
+
+class Slapper(commands.Converter):
+    async def convert(self, ctx, argument):
+        to_slap = random.choice(ctx.guild.members)
+        return f'{ctx.author} slapped {to_slap} because *{argument}*'
 
 class Example(commands.Cog):
 	# print('Fun Cog Working')
@@ -54,6 +60,19 @@ class Example(commands.Cog):
 		"""
 		slapped = ", and ".join(x.name for x in members)
 		await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
+
+	@commands.command()
+	async def slapper(ctx, *, reason: Slapper):
+		await ctx.send(reason)
+
+	def to_upper(argument):
+		return argument.upper()
+
+	@commands.command()
+	async def up(ctx, *, content: to_upper):
+		await ctx.send(content)
+
+
 
 async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
