@@ -45,7 +45,7 @@ class Example(commands.Cog):
 		await ctx.send('{} joined on {}'.format(member, readable_format))
             
 	@commands.command()
-	async def delta(self, ctx, *, member: JoinDistanceConverter):
+	async def delta(self, ctx, *, member: JoinDistance):
 		is_new = member.delta.days < 100
 		if is_new:
 			await ctx.send("Hey you're pretty new!")
