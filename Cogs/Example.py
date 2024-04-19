@@ -28,12 +28,11 @@ class Slapper(commands.Converter):
 
 class Upper(commands.Converter):
 	def convert(self, ctx, argument):
-		print(argument)
-		# return argument.upper()
+		return str(argument).upper()
 	
 class Lower(commands.Converter):
 	def convert(self, ctx, argument):
-		return argument.lower()
+		return str(argument).lower()
 
 class Example(commands.Cog):
 	# print('Fun Cog Working')
@@ -76,8 +75,7 @@ class Example(commands.Cog):
 
 	@commands.command()
 	async def up(self, ctx, *, content: Upper):
-		# await ctx.send(content)
-		pass
+		await ctx.send(content)
 
 	@commands.command()
 	async def low(self, ctx, *, content: Lower):
