@@ -24,8 +24,9 @@ class Example(commands.Cog):
 		"""
 		Slaps user
 		"""
-		slapped = ", ".join(x.name for x in members)
-		await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
+		print(members)
+		# slapped = ", ".join(x.name for x in members)
+		# await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
 async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
