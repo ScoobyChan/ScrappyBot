@@ -62,14 +62,21 @@ class Example(commands.Cog):
 		await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
 	@commands.command()
-	async def slapper(ctx, *, reason: Slapper):
+	async def slapper(self, ctx, *, reason: Slapper):
 		await ctx.send(reason)
 
-	def to_upper(argument):
+	def to_upper(self, argument):
 		return argument.upper()
 
 	@commands.command()
-	async def up(ctx, *, content: to_upper):
+	async def up(self, ctx, *, content: to_upper):
+		await ctx.send(content)
+
+	def to_lower(self, argument):
+		return argument.lower()
+
+	@commands.command()
+	async def low(self, ctx, *, content: to_upper):
 		await ctx.send(content)
 
 
