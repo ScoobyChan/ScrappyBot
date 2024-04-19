@@ -7,8 +7,9 @@ import discord
 from discord.ext import commands
 
 class Boop(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot, settings):
 		self.bot = bot
+		self.settings = settings
 
 	@commands.command()
 	async def boop(self, ctx, member=None):
@@ -71,4 +72,4 @@ class Boop(commands.Cog):
 
 async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	await bot.add_cog(Boop(bot))
+	await bot.add_cog(Boop(bot, settings))

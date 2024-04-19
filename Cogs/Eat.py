@@ -9,8 +9,9 @@ from Utils import Member
 from Utils import Computer
 
 class Eat(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot, settings):
 		self.bot = bot
+		self.settings = settings
 
 	@commands.command()
 	async def eat(self, ctx, member=None):

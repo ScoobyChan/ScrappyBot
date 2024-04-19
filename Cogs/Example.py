@@ -7,8 +7,9 @@ from discord.ext import commands
 
 class Example(commands.Cog):
 	# print('Fun Cog Working')
-	def __init__(self, bot):
+	def __init__(self, bot, settings):
 		self.bot = bot
+		self.settings = settings
 
 	@commands.command()
 	async def joined(self, ctx, *, member: discord.Member):

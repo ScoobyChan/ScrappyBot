@@ -5,6 +5,7 @@ from discord.ext import commands
 class RandomChoice(commands.Cog):
 	def __init__(self, bot, settings):
 		self.bot = bot
+		self.settings = settings
 
 	@commands.command()
 	async def dice(self, ctx, size:int=6, roll:int=1):

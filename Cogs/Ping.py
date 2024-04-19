@@ -4,8 +4,9 @@ from discord.ext import commands
 
 class Ping(commands.Cog):
 	# print('Fun Cog Working')
-	def __init__(self, bot):
+	def __init__(self, bot, settings):
 		self.bot = bot
+		self.settings = settings
 
 	@commands.command()
 	async def ping(self, ctx):
@@ -20,4 +21,4 @@ class Ping(commands.Cog):
 
 async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	await bot.add_cog(Ping(bot))
+	await bot.add_cog(Ping(bot, settings))

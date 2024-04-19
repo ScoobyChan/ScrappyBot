@@ -4,8 +4,9 @@ import discord
 from discord.ext import commands
 
 class Cool(commands.Cog):
-	def __init__(self, bot):
+	def __init__(self, bot, settings):
 		self.bot = bot
+		self.settings = settings
 
 	@commands.group(pass_context=True)
 	async def cool(self, ctx):
