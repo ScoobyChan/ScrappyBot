@@ -3,7 +3,7 @@ from discord.ext import tasks, commands
 from discord.ext.commands import MemberConverter
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(Settings(bot))
 
 class Settings(commands.Cog):

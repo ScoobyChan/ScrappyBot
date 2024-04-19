@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 import traceback
 
-async def setup(bot):
+async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
 	await bot.add_cog(Cogloader(bot, settings))
 
