@@ -12,10 +12,11 @@ class Example(commands.Cog):
 		self.settings = settings
 
 	@commands.command()
-	async def joined(self, ctx, *, member: discord.Member):
+	async def joined(self, ctx, *, member: discord.Member = None):
 		"""
 		Joined user
 		"""
+		if not member: member = ctx.author
 		await ctx.send('{0} joined on {0.joined_at}'.format(member))
 
 	@commands.command()
