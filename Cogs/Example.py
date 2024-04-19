@@ -24,7 +24,7 @@ class Example(commands.Cog):
 		"""
 		Slaps user
 		"""
-		slapped = ", ".join(x.name for x in members)
+		slapped = ", and ".join(x.name for x in members)
 		await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
 async def setup(bot: commands.Bot) -> None:
