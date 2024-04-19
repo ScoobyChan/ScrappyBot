@@ -20,7 +20,7 @@ class Example(commands.Cog):
 		if not member: member = ctx.author
 
 		# Format the datetime object to a more readable string format
-		readable_format = datetime.fromisoformat(0.joined_at).strftime('%Y-%m-%d %H:%M:%S %Z')
+		readable_format = datetime.fromisoformat(member.joined_at).strftime('%Y-%m-%d %H:%M:%S %Z')
 
 		await ctx.send('{} joined on {}'.format(member, readable_format))
 
