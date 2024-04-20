@@ -3,3 +3,5 @@
 ScrappyBot.code-workspace
 To fix
 start.bat
+_pycache_
+*.pyc
