@@ -1,7 +1,15 @@
 # Ignore important Items
 .env
 ScrappyBot.code-workspace
+
+# Ignore testing items
 To fix
 start.bat
+
+# Ignore caching
 _pycache_
 *.pyc
+
+# Ignore personal databases
+database
+*.json
