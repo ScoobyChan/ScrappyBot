@@ -15,8 +15,12 @@ class Actions:
 		self.content = kwargs.items()
 
 		self.db = {
-			"Guilds":{},
-			"User":{},
+			"Guilds":{
+				"shrug":[]
+			},
+			"User":{
+				"timezone":""
+			},
 			"Bot":{}
 		}
 
@@ -33,6 +37,12 @@ class Actions:
 	def add(self):
 		pass
 
+	def update_db(self):
+		pass
+
+	def sync(self):
+		pass
+
 	def check_db(self):
 		if not os.path.exists('database/'): os.mkdir('database') # Create folder if not exists
 
@@ -47,6 +57,7 @@ class Actions:
 class Settings(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		self.databases = ['Guilds', 'User', 'Bot']
 
 	def server_owner(self, ctx):
 		return ctx.message.author.id == ctx.guild.owner_id
@@ -60,13 +71,12 @@ class Settings(commands.Cog):
 		if not action in actions: return print('Unable to find action')
 
 		# Databases available:
-		databases = ['Guilds', 'User', 'Bot']
-		if not datab in databases: return print('Unable to find usable database')
+		if not datab in self.databases: return print('Unable to find usable database')
 
 		# Check database
-		Actions(ctx, "Guilds").check_db()
+		if action == 'Check': Actions(ctx, datab).check_db(); return
+		if action == 'Update': Actions(ctx, datab).update_db(); return
 
-		return
 		if datab == 'User':
 			act = Actions(ctx, 'User', _user = '', _content = '')
 		else:
@@ -78,3 +88,19 @@ class Settings(commands.Cog):
 	async def setting_test(self, ctx):
 		self.database(ctx, 'Delete', 'User', '181338470520848384 test')
 		await ctx.send('Setting Test')
+
+	@commands.command()
+	async def setup(self, ctx):
+		if not self.server_owner(ctx): return
+		for x in self.databases:
+			self.database(ctx, 'Check', x)
+
+		await ctx.send('Bot Setup complete on the server')
+
+	@commands.command()
+	async def update_db(self, ctx):
+		if not self.server_owner(ctx): return
+		for x in self.databases:
+			self.database(ctx, 'Update', x)
+
+		await ctx.send('Bot Setup complete on the server')
