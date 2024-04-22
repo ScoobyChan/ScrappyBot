@@ -17,11 +17,8 @@ class Actions:
 		self.db = {
 			"Guilds":{
 				"shrug":[],
-				"lenny":[]
 			},
-			"User":{
-				"hardware":{}
-			},
+			"User":{},
 			"Bot":{}
 		}
 
@@ -50,32 +47,32 @@ class Actions:
 	def add(self):
 		pass
 
+# Function for updating DB to match config
 	def update_db(self):
 		# Load Database
 		loaded_database = self.load_database()
 		current_database_default = self.db[self.database]
 		new_database = {}
 
-		value = str(self.get_value('item_id'))
-		if value: loaded_database = loaded_database.get(value, {})
+		value = str(self.get_value('item_id'))		
+		if value: selected_database = loaded_database.get(value, current_database_default)
 		
 		for x in current_database_default:
-			if not loaded_database.get(x, None):
+			if not selected_database.get(x, None):
 				new_database[x] = current_database_default[x]
-		
-		complete_new_database = {}
 
 		if value:
-			complete_new_database[value] = new_database
+			loaded_database[value] = new_database
 		else:
-			complete_new_database = new_database
+			loaded_database = new_database
 
-		self.save_database(new_database)
+		self.save_database(loaded_database)
 
 	def sync(self):
 		# Sync Json to Database
 		pass
 
+# Checks to see if Files exists
 	def check_db(self):
 		if not os.path.exists('database/'): os.mkdir('database') # Create folder if not exists
 
@@ -131,7 +128,7 @@ class Settings(commands.Cog):
 				for g in self.bot.guilds:
 					self.database(ctx, 'Update', x, item_id=g.id)
 			
-			if x == 'Users':
+			if x == 'User':
 				for u in self.bot.users:
 					self.database(ctx, 'Update', x, item_id=u.id)
 
