@@ -17,9 +17,7 @@ class Actions:
 		self.db = {
 			"Guilds":{
 				"shrug":[],
-				"lenny":[],
-				"testing":2,
-				"not_a_test":"maybe"
+				"lenny":[]
 			},
 			"User":{
 				"hardware":{}
@@ -38,10 +36,10 @@ class Actions:
 
 		return loaded_data
 
-	def save_database(self):
+	def save_database(self, new_database):
 		# Writing JSON data
 		with open(self.filename, 'w') as file:
-			json.dump(self.db[self.database], file, indent=4)
+			json.dump(new_database, file, indent=4)
 
 	def update(self):
 		pass
@@ -55,23 +53,24 @@ class Actions:
 	def update_db(self):
 		# Load Database
 		loaded_database = self.load_database()
+		current_database_default = self.db[self.database]
+		new_database = {}
+
+		value = str(self.get_value('item_id'))
+		if value: loaded_database = loaded_database.get(value, {})
 		
-		# Add Missing Items
-		for database in self.db:
-			for x in self.db[database]:
-				if not loaded_database[database].get(x, None):
-					loaded_database[database][x] = self.db[database][x]
+		for x in current_database_default:
+			if not loaded_database.get(x, None):
+				new_database[x] = current_database_default[x]
+		
+		complete_new_database = {}
 
-		self.save_database()
-		loaded_database = self.load_database()
+		if value:
+			complete_new_database[value] = new_database
+		else:
+			complete_new_database = new_database
 
-		# Delete Missing Items
-		for database in loaded_database:
-			for x in loaded_database[database]:
-				if not  self.db[database].get(x, None):
-					del loaded_database[database][x]
-
-		self.save_database()
+		self.save_database(new_database)
 
 	def sync(self):
 		# Sync Json to Database
@@ -81,12 +80,7 @@ class Actions:
 		if not os.path.exists('database/'): os.mkdir('database') # Create folder if not exists
 
 		if not os.path.exists(f'database/{self.database}.json'):		
-			# Filename to save the data
-			filename = f'database/{self.database}.json'
-
-			# Writing JSON data
-			with open(filename, 'w') as file:
-				json.dump(self.db[self.database], file, indent=4)
+			self.save_database({})
 
 class Settings(commands.Cog):
 	def __init__(self, bot):
@@ -96,7 +90,7 @@ class Settings(commands.Cog):
 	def server_owner(self, ctx):
 		return ctx.message.author.id == ctx.guild.owner_id
 	
-	def database(self, ctx, action, datab, content = None):
+	def database(self, ctx, action, datab, item_id:str=None, content = None):
 		# Check does DB exist
 
 		# Actions:
@@ -109,12 +103,12 @@ class Settings(commands.Cog):
 
 		# Check database
 		if action == 'Check': Actions(ctx, datab).check_db(); return
-		if action == 'Update': Actions(ctx, datab).update_db(); return
+		if action == 'Update': Actions(ctx, datab, item_id = item_id).update_db(); return
 
 		if datab in ['User', 'Guilds']:
-			act = Actions(ctx, datab, item_id = '', content = '')
+			act = Actions(ctx, datab, item_id = item_id, content = content)
 		else:
-			act = Actions(ctx, datab, _content = '')
+			act = Actions(ctx, datab, content = content)
 
 		
 
@@ -132,5 +126,14 @@ class Settings(commands.Cog):
 	async def update_db(self, ctx):
 		if not self.server_owner(ctx): return
 		for x in self.databases:
-			self.database(ctx, 'Update', x)
+			self.database(ctx, 'Check', x)
+			if x == "Guilds":
+				for g in self.bot.guilds:
+					self.database(ctx, 'Update', x, item_id=g.id)
+			
+			if x == 'Users':
+				for u in self.bot.users:
+					self.database(ctx, 'Update', x, item_id=u.id)
+
 		await ctx.send('Bot Database updated complete')
+

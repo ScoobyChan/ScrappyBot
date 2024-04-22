@@ -1,4 +1,3 @@
-from foaas import fuck 
 import asyncio
 import os
 import json
