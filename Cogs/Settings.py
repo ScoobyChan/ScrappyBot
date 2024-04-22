@@ -38,14 +38,30 @@ class Actions:
 		with open(self.filename, 'w') as file:
 			json.dump(new_database, file, indent=4)
 
-	def update(self):
-		pass
+	def update_item(self):
+		loaded_database = self.load_database()
+		value = str(self.get_value('item_id'))	
 
-	def delete(self):
-		pass
+	# Deletes unused DB's - Used for deleting Guilds and Users
+	def delete_db(self):
+		loaded_database = self.load_database()
+		guild_id = str(self.get_value('guild_id'))
+		for g in loaded_database:
+			if not g in guild_id:
+				loaded_database = self.load_database()
+				del loaded_database[g]
+				self.save_database(loaded_database)
+		
+	def add_db(self):
+		loaded_database = self.load_database()
+		# guild_id = str(self.get_value('guild_id'))
+  
+		value_id = str(self.get_value('item_id'))
 
-	def add(self):
-		pass
+		if not loaded_database.get(value_id, None):
+			loaded_database[value_id] = self.db[self.database]
+
+		self.save_database(loaded_database)
 
 # Function for updating DB to match config
 	def update_db(self):
@@ -54,7 +70,8 @@ class Actions:
 		current_database_default = self.db[self.database]
 		new_database = {}
 
-		value = str(self.get_value('item_id'))		
+		value = str(self.get_value('item_id'))
+
 		if value: selected_database = loaded_database.get(value, current_database_default)
 		
 		for x in current_database_default:
@@ -87,7 +104,7 @@ class Settings(commands.Cog):
 	def server_owner(self, ctx):
 		return ctx.message.author.id == ctx.guild.owner_id
 	
-	def database(self, ctx, action, datab, item_id:str=None, content = None):
+	def database(self, ctx, action, datab, item_id:str=None, guild_id:list = None, content = None):
 		# Check does DB exist
 
 		# Actions:
@@ -100,14 +117,13 @@ class Settings(commands.Cog):
 
 		# Check database
 		if action == 'Check': Actions(ctx, datab).check_db(); return
+		if action == 'Delete': Actions(ctx, datab, guild_id = guild_id).delete_db(); return
 		if action == 'Update': Actions(ctx, datab, item_id = item_id).update_db(); return
 
-		if datab in ['User', 'Guilds']:
-			act = Actions(ctx, datab, item_id = item_id, content = content)
-		else:
-			act = Actions(ctx, datab, content = content)
-
-		
+		# if datab in ['User', 'Guilds']:
+		# 	act = Actions(ctx, datab, item_id = item_id, content = content)
+		# else:
+		# 	act = Actions(ctx, datab, content = content)
 
 	@commands.command()
 	async def setting_test(self, ctx):
@@ -125,10 +141,14 @@ class Settings(commands.Cog):
 		for x in self.databases:
 			self.database(ctx, 'Check', x)
 			if x == "Guilds":
+				guild_id = [g.id for g in self.bot.guilds]
+				self.database(ctx, 'Delete', x, guild_id=guild_id)
 				for g in self.bot.guilds:
 					self.database(ctx, 'Update', x, item_id=g.id)
 			
 			if x == 'User':
+				guild_id = [g.id for g in self.bot.users]
+				self.database(ctx, 'Delete', x, guild_id=guild_id)
 				for u in self.bot.users:
 					self.database(ctx, 'Update', x, item_id=u.id)
 
