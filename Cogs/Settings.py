@@ -137,6 +137,17 @@ class Settings(commands.Cog):
 		if action == 'Get_Item': return Actions(ctx, datab, item_id = item_id, value_id = value_id).get_item()
 		if action == 'Update_Item': Actions(ctx, datab, item_id = item_id, value_id = value_id, content = content).update_item(); return
 
+	async def get_username_by_id(self, ctx, user_id:int):
+		guild = ctx.guild
+		try:
+			member = await guild.fetch_member(user_id)
+			user_nick = member.nick if member.nick else member.name
+			return user_nick
+		except discord.NotFound:
+			return "Member not found."
+		except discord.HTTPException as e:
+			return f"Failed to retrieve member: {e}"
+
 	@commands.command()
 	async def setting_test(self, ctx):
 		self.database(ctx, 'Update_Item', 'Guilds', item_id=ctx.guild.id, value_id='shrug', content=[("Hello", "2020-02-02")])

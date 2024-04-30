@@ -63,6 +63,7 @@ class Social(commands.Cog):
 		if not member:
 			member = ctx.author
 
-		size = len(member.nick) if member.nick else len(member.name)
-		await ctx.send(f'{member.nick if member.nick else member.name}\'s dick size is {size}\" \n8{"="*size}D')
+		username = await self.settings.get_username_by_id(ctx, member.id)
+		size = len(username)
+		await ctx.send(f'{username}\'s dick size is {size}\" \n8{"="*size}D')
 
