@@ -38,9 +38,25 @@ class Actions:
 		with open(self.filename, 'w') as file:
 			json.dump(new_database, file, indent=4)
 
+	def get_item(self):
+		loaded_database = self.load_database()
+		item_id = str(self.get_value('item_id'))
+		value_id = self.get_value('value_id')
+		acquired_item = loaded_database.get(item_id, {}).get(value_id, None)
+
+		return acquired_item 
+
 	def update_item(self):
 		loaded_database = self.load_database()
-		value = str(self.get_value('item_id'))	
+		item_id = str(self.get_value('item_id'))
+		value_id = str(self.get_value('value_id'))
+		content = self.get_value('content')
+
+		if not loaded_database.get(item_id, None):
+			self.add_db()
+
+		loaded_database[item_id][value_id] = content
+		self.save_database(loaded_database)
 
 	# Deletes unused DB's - Used for deleting Guilds and Users
 	def delete_db(self):
@@ -104,11 +120,10 @@ class Settings(commands.Cog):
 	def server_owner(self, ctx):
 		return ctx.message.author.id == ctx.guild.owner_id
 	
-	def database(self, ctx, action, datab, item_id:str=None, guild_id:list = None, content = None):
+	def database(self, ctx, action, datab, item_id:str=None, guild_id:list = None, value_id = None, content = None):
 		# Check does DB exist
-
 		# Actions:
-		actions = ['Delete', 'Update', 'Add', 'Check']
+		actions = ['Delete', 'Update', 'Add', 'Check', 'Update_Item', 'Get_Item']
 
 		if not action in actions: return print('Unable to find action')
 
@@ -119,15 +134,12 @@ class Settings(commands.Cog):
 		if action == 'Check': Actions(ctx, datab).check_db(); return
 		if action == 'Delete': Actions(ctx, datab, guild_id = guild_id).delete_db(); return
 		if action == 'Update': Actions(ctx, datab, item_id = item_id).update_db(); return
-
-		# if datab in ['User', 'Guilds']:
-		# 	act = Actions(ctx, datab, item_id = item_id, content = content)
-		# else:
-		# 	act = Actions(ctx, datab, content = content)
+		if action == 'Get_Item': return Actions(ctx, datab, item_id = item_id, value_id = value_id).get_item()
+		if action == 'Update_Item': Actions(ctx, datab, item_id = item_id, value_id = value_id, content = content).update_item(); return
 
 	@commands.command()
 	async def setting_test(self, ctx):
-		self.database(ctx, 'Delete', 'User', '181338470520848384 test')
+		self.database(ctx, 'Update_Item', 'Guilds', item_id=ctx.guild.id, value_id='shrug', content=[("Hello", "2020-02-02")])
 		await ctx.send('Setting Test')
 
 	@commands.command()
