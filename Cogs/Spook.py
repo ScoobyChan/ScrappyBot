@@ -9,7 +9,7 @@ from Utils import Computer
 
 class Spook(commands.Cog):
 	def __init__(self, bot, settings):
-		"""Credits to CorpNewt for Computer and Member"""
+		"""Credits to CorpNewt for Computer and Member and Action"""
 		self.bot = bot
 		self.settings = settings
 
