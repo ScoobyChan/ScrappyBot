@@ -3,6 +3,8 @@ import json
 import discord
 from discord.ext import tasks, commands
 from discord.ext.commands import MemberConverter
+from datetime import datetime
+import pytz
 
 
 async def setup(bot: commands.Bot) -> None:
@@ -147,6 +149,26 @@ class Settings(commands.Cog):
 			return "Member not found."
 		except discord.HTTPException as e:
 			return f"Failed to retrieve member: {e}"
+		
+	def convert_time(self, formatted_date, timezone):
+		# Convert Timezone
+		# Step 1: Define the time string and its format
+		format_str = '%d-m-%Y %H:%M:%S'
+
+		# Step 2: Parse the string into a datetime object
+		naive_datetime = datetime.strptime(formatted_date, format_str)
+
+		# Step 3: Localize the datetime object to Eastern Standard Time
+		est = pytz.timezone('America/New_York')
+		est_datetime = est.localize(naive_datetime)
+
+		# Step 4: Convert to New Zealand Time
+		new_timezone = pytz.timezone(timezone)
+		new_timezone_datetime = est_datetime.astimezone(new_timezone)
+
+		# Step 5: Optionally, format the NZT datetime into a string
+		formatted_new_timezone_datetime = new_timezone_datetime.strftime(format_str)
+		return formatted_new_timezone_datetime
 
 	@commands.command()
 	async def setting_test(self, ctx):
