@@ -19,6 +19,7 @@ class Actions:
 		self.db = {
 			"Guilds":{
 				"shrug":[],
+				"lenny":[],
 			},
 			"User":{},
 			"Bot":{}
