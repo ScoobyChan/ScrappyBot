@@ -65,6 +65,6 @@ class HighFive(commands.Cog):
 		# print(msg)
 		await ctx.send(msg)
 	
-def setup(bot):
+async def setup(bot: commands.Bot) -> None:
 	settings = bot.get_cog("Settings")
-	bot.add_cog(HighFive(bot, settings))
+	await bot.add_cog(HighFive(bot, settings))
