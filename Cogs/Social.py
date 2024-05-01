@@ -16,8 +16,6 @@ class Social(commands.Cog):
 	def __init__(self, bot, settings):
 		self.bot = bot
 		self.settings = settings
-		if self.bot.get_cog('Perms'):
-			self.bot.nsfw.append('Social')
 
 	# @commands.command()
 	# async def foaas(self, ctx, to_member: discord.Member = None, from_member: discord.Member = None):
