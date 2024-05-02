@@ -24,15 +24,14 @@ class FuzzySearch(commands.Cog):
 		my_list = ["geeks", "geeg", "keegs", "geek", "skeeg", "keegs", "practice", "aa"] 
 		search = "eegsk"
 		item = 'Test'
-		# print(await self.fuzSearch(ctx, search, my_list))
-		sel = await self.fuzSelect(ctx, item, my_list)
-		print(sel)
+		print(await self.fuzSearch(ctx, search, my_list))
+		# sel = await self.fuzSelect(ctx, item, my_list)
+		# print(sel)
 		 
 	async def fuzSearch(self, ctx, Search, List):		
 		
 		if not isinstance(List, list): 
 			return await ctx.send('please input a list')
-
 
 		_title = list(filter(lambda x: (Counter(x) == Counter(Search)), List))
 		
@@ -45,7 +44,8 @@ class FuzzySearch(commands.Cog):
 			if num == 3: break
 
 		# print(sel)
-
+		embed = discord.Embed(title="{} Selector".format(item), colour=col)
+		embed.description = _joined_list
 		# await ctx.send(f'**Top Selected**\n*HINT - press react to choose*\n```md\n{sel}\n```') ## Before react
 		col = ctx.author.top_role.colour
 		msg = await ctx.send(embed=embed)
