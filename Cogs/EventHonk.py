@@ -1,12 +1,15 @@
 import random
+import re
 import discord
 from collections import Counter
 from discord.ext import commands
+from Utils import Utils
 
 class EventHonk(commands.Cog):
 	def __init__(self, bot, settings):
 		self.bot = bot
 		self.settings = settings
+		self.Utils = Utils.Utils()
 
 	async def onmessage(self, message):
 		if message.author.id == self.bot.user.id:
@@ -14,6 +17,18 @@ class EventHonk(commands.Cog):
 
 		if type(message.channel) == discord.DMChannel:
 			return
+		
+		check_message = message.content
+		pattern = r'\b[Hh][Oo][Nn][Kk]+[a-zA-Z]*\b'
+		matches = re.findall(pattern, check_message)
+
+		print(matches)
+
+		if len(matches) != 0:
+			search = random.choice(['canadian goose', 'goose'])
+			data = random.choice([self.Utils.ImgurSearch(search)])
+			
+			await message.channel.send(data)
 
 	@commands.command()
 	async def enableHonk(self, ctx):

@@ -2,6 +2,7 @@ import os
 import json
 import requests
 import urllib.request
+import urllib.parse
 import random
 import bs4
 import discord
@@ -41,14 +42,14 @@ class Utils():
 
 	def ImgurSearch(self, search):
 		try:
-			url = f'http://imgur.com/search?q={search}'
+			encoded_query = urllib.parse.quote(search)
+			url = f'https://imgur.com/search?q={encoded_query}'
 			while not url.endswith('#'):
 				req = urllib.request.Request(url)
 				page = urllib.request.urlopen(req)
 				bs = bs4.BeautifulSoup(page,"html.parser")
 				# print(page.read().decode())
-				return "http:"+str(random.choice(bs.find_all('img')).get('src'))
-				break
+				return "https:"+str(random.choice(bs.find_all('img')).get('src'))
 
 		except urllib.error.HTTPError as err:
 			return err
