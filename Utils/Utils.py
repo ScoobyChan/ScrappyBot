@@ -4,11 +4,17 @@ import requests
 import urllib.request
 import urllib.parse
 import random
-import bs4
 import discord
 import sys
+from imgurpython import ImgurClient
 
 class Utils():
+	def __init__(self) -> None:
+		self.imgur_api_key = ""
+		self.giphy_api_key = ""
+		self.tenor_api_key = ""
+		self.imgur_client_id = ""
+
 	def title(self, title):
 		num =len(title)
 		space = num + 8
@@ -41,29 +47,63 @@ class Utils():
 		return t
 
 	def ImgurSearch(self, search):
-		try:
-			encoded_query = urllib.parse.quote(search)
-			url = f'https://imgur.com/search?q={encoded_query}'
-			while not url.endswith('#'):
-				req = urllib.request.Request(url)
-				page = urllib.request.urlopen(req)
-				bs = bs4.BeautifulSoup(page,"html.parser")
-				# print(page.read().decode())
-				return "https:"+str(random.choice(bs.find_all('img')).get('src'))
 
-		except urllib.error.HTTPError as err:
-			return err
+		# Your Imgur client credentials
+		client_id = self.imgur_client_id
+		client_secret = self.imgur_api_key
 
-	def GiphySearch(self, api_key, search):
-		API = "http://api.giphy.com/v1/gifs/search?q={}&api_key={}&limit=100&rating=R".format(search, api_key)
-		data = self.JsonReader(API)
-		if data.get('message', None):
-			return data.get('message', None)
+		client = ImgurClient(client_id, client_secret)
 
-		data = data['data']
-		data = random.choice(data)
-		return data['images']['downsized']['url']
-		# return data['url']
+		# Search for images tagged with 'goose'
+		items = client.gallery_search(search, advanced=None, sort='time', window='all', page=0)
+
+		if items:
+			random_image = random.choice(items)
+			return random_image.link
+		else:
+			return "No images found."
+
+
+	def GiphySearch(self, search):
+		url = "https://api.giphy.com/v1/gifs/search"
+		params = {
+			'api_key': self.giphy_api_key,
+			'q': search,  # Search query
+			'limit': 100,  # Number of results to retrieve
+			'rating': 'R'  # Content rating
+		}
+
+		response = requests.get(url, params=params)
+		if response.status_code == 200:
+			gifs = response.json()['data']
+			if gifs:
+				random_gif = random.choice(gifs)
+				return random_gif['images']['original']['url']
+			else:
+				return "No results found."
+		else:
+			return "Error fetching data."
+
+
+	def TenorSearch(search):
+		url = "https://api.tenor.com/v1/search"
+		params = {
+			'q': search,  # Query for goose
+			'key': self.tenor_api_key,
+			'limit': 10  # Fetch 10 results
+		}
+
+		response = requests.get(url, params=params)
+		if response.status_code == 200:
+			data = response.json()
+			if data['results']:
+				random_gif = random.choice(data['results'])
+				return random_gif['media'][0]['gif']['url']
+			else:
+				return "No results found."
+		else:
+			return "Failed to fetch data."
+
 
 	def urlchecker(self, url):
 		try:	

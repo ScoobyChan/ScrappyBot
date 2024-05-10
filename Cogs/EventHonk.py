@@ -22,12 +22,10 @@ class EventHonk(commands.Cog):
 		pattern = r'\b[Hh][Oo][Nn][Kk]+[a-zA-Z]*\b'
 		matches = re.findall(pattern, check_message)
 
-		print(matches)
-
 		if len(matches) != 0:
 			search = random.choice(['canadian goose', 'goose'])
-			data = random.choice([self.Utils.ImgurSearch(search)])
-			
+			data = random.choice([self.Utils.ImgurSearch(search), self.Utils.TenorSearch(search), self.Utils.GiphySearch(search)])
+			print(data)
 			await message.channel.send(data)
 
 	@commands.command()
