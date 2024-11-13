@@ -40,30 +40,31 @@ class Scrappy(commands.Bot):
                 guild = message.guild.id
                 set_cog = bot.get_cog('Settings')
                 _prefix = os.getenv("PREFIX")
-                prefix = '$' if _prefix == "" else _prefix
+                prefix = '$' if (_prefix == "" or _prefix == None) else _prefix
                 return prefix
 
         async def on_ready(self):
                 print("Bot initializing")
-                if not bot.get_cog('Settings'):
-                        if os.path.exists('Cogs/Settings.py'):
-                                await bot.load_extension('Cogs.Settings')
-                        else: 
-                                print('Missing settings')
+                # if not bot.get_cog('Settings'):
+                #         if os.path.exists('Cogs/Settings.py'):
+                #                 await bot.load_extension('Cogs.Settings')
+                #         else: 
+                #                 print('Missing settings')
 
-                if not bot.get_cog('CogLoader'):
-                        # Occasionally this can fail
-                        try:
-                                await bot.load_extension('Cogs.Cogloader')
-                                cog_loader = bot.get_cog('Cogloader')
-                                await cog_loader._load_extension()
+                # if not bot.get_cog('CogLoader'):
+                #         # Occasionally this can fail
+                #         try:
+                #                 await bot.load_extension('Cogs.Cogloader')
+                #                 cog_loader = bot.get_cog('Cogloader')
+                #                 await cog_loader._load_extension()
 
-                                await bot.wait_until_ready()
-                                cog_loader.loaded()
+                #                 await bot.wait_until_ready()
+                #                 cog_loader.loaded()
 
-                        except Exception as e:
-                                print('Cogloader already loaded')
-                                print(e)
+                #         except Exception as e:
+                #                 print('Cogloader already loaded')
+                #                 print(e)
+                print("Bot up")
 
         async def on_typing(self, channel, user, when):
                 for cog in bot.cogs:
@@ -194,32 +195,32 @@ class Scrappy(commands.Bot):
 
 bot = Scrappy()
 bot.res = time.localtime()
-bot.debug = False
+# bot.debug = False
 
-bot.color = [
-        discord.Color.teal(), 
-        discord.Color.dark_teal(), 
-        discord.Color.green(),
-        discord.Color.dark_green(),
-        discord.Color.blue(),
-        discord.Color.dark_blue(),
-        discord.Color.purple(),
-        discord.Color.dark_purple(),
-        discord.Color.magenta(),
-        discord.Color.dark_magenta(),
-        discord.Color.gold(),
-        discord.Color.dark_gold(),
-        discord.Color.orange(),
-        discord.Color.dark_orange(),
-        discord.Color.red(),
-        discord.Color.dark_red(),
-        discord.Color.lighter_grey(),
-        discord.Color.dark_grey(),
-        discord.Color.light_grey(),
-        discord.Color.darker_grey(),
-        discord.Color.blurple(),
-        discord.Color.greyple()
-]
+# bot.color = [
+#         discord.Color.teal(), 
+#         discord.Color.dark_teal(), 
+#         discord.Color.green(),
+#         discord.Color.dark_green(),
+#         discord.Color.blue(),
+#         discord.Color.dark_blue(),
+#         discord.Color.purple(),
+#         discord.Color.dark_purple(),
+#         discord.Color.magenta(),
+#         discord.Color.dark_magenta(),
+#         discord.Color.gold(),
+#         discord.Color.dark_gold(),
+#         discord.Color.orange(),
+#         discord.Color.dark_orange(),
+#         discord.Color.red(),
+#         discord.Color.dark_red(),
+#         discord.Color.lighter_grey(),
+#         discord.Color.dark_grey(),
+#         discord.Color.light_grey(),
+#         discord.Color.darker_grey(),
+#         discord.Color.blurple(),
+#         discord.Color.greyple()
+# ]
 
 @bot.hybrid_command(name = "bhping", with_app_command = True, description = "Pings bot")
 @app_commands.guilds(discord.Object(id=477041170078498829))
