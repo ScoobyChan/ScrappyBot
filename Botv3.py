@@ -47,25 +47,15 @@ class Scrappy(commands.Bot):
 
         async def on_ready(self):
                 print("Bot initializing")
-                if not bot.get_cog('Settings'):
-                        if os.path.exists('Cogs/Settings.py'):
-                                await bot.load_extension('Cogs.Settings')
-                        else: 
-                                print('Missing settings')
+                for x in self.preloads:
+                        if not bot.get_cog(x):
+                                if os.path.exists('Cogs/{}.py'.format(x)):
+                                        await bot.load_extension('Cogs.{}'.format(x))
+                                else: 
+                                        print('Missing {}'.format(x))
 
-                if not bot.get_cog('CogLoader'):
-                        # Occasionally this can fail
-                        try:
-                                await bot.load_extension('Cogs.Cogloader')
-                                cog_loader = bot.get_cog('Cogloader')
-                                await cog_loader._load_extension()
+                await bot.wait_until_ready()
 
-                                await bot.wait_until_ready()
-                                cog_loader.loaded()
-
-                        except Exception as e:
-                                print('Cogloader already loaded')
-                                print(e)
 
         async def on_typing(self, channel, user, when):
                 for cog in bot.cogs:
