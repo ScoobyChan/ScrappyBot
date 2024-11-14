@@ -60,7 +60,7 @@ class Scrappy(commands.Bot):
                 try:
                         print("Debug: {}".format("turned on" if bot.debug else "turned off"))
                 except AttributeError:
-                        print("Debug: turned off"))
+                        print("Debug: turned off")
                 print("Bot is ready :)")
 
         async def on_typing(self, channel, user, when):
