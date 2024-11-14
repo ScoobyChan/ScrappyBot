@@ -64,7 +64,7 @@ class Cogloader(commands.Cog):
 		
 		for preload in self.bot.preloads:
 			if preload in to_be_unloaded:
-				to_be_unloaded.remove(to_be_unloaded)
+				to_be_unloaded.remove(preload)
 		
 		for c in to_be_unloaded:
 			cog = '{}.{}'.format(directory, c)
