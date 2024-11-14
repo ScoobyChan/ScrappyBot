@@ -189,40 +189,15 @@ class Scrappy(commands.Bot):
 
 bot = Scrappy()
 bot.res = time.localtime()
-# bot.debug = False
 
-# bot.color = [
-#         discord.Color.teal(), 
-#         discord.Color.dark_teal(), 
-#         discord.Color.green(),
-#         discord.Color.dark_green(),
-#         discord.Color.blue(),
-#         discord.Color.dark_blue(),
-#         discord.Color.purple(),
-#         discord.Color.dark_purple(),
-#         discord.Color.magenta(),
-#         discord.Color.dark_magenta(),
-#         discord.Color.gold(),
-#         discord.Color.dark_gold(),
-#         discord.Color.orange(),
-#         discord.Color.dark_orange(),
-#         discord.Color.red(),
-#         discord.Color.dark_red(),
-#         discord.Color.lighter_grey(),
-#         discord.Color.dark_grey(),
-#         discord.Color.light_grey(),
-#         discord.Color.darker_grey(),
-#         discord.Color.blurple(),
-#         discord.Color.greyple()
-# ]
 
-@bot.hybrid_command(name = "bhping", with_app_command = True, description = "Pings bot")
-@app_commands.guilds(discord.Object(id=477041170078498829))
-async def _bhping(ctx: commands.Context):
-        """
-        Ping response
-        """ 
-        await ctx.defer(ephemeral = True)
-        await ctx.reply('Bot Ping')
+# @bot.hybrid_command(name = "bhping", with_app_command = True, description = "Pings bot")
+# @app_commands.guilds(discord.Object(id=477041170078498829))
+# async def _bhping(ctx: commands.Context):
+#         """
+#         Ping response
+#         """ 
+#         await ctx.defer(ephemeral = True)
+#         await ctx.reply('Bot Ping')
 
 bot.run(token, reconnect=True)
