@@ -57,7 +57,10 @@ class Scrappy(commands.Bot):
                                                 print('Missing {}'.format(x))
 
                 await bot.wait_until_ready()
-                print("Debug: {}".format("turned on" if bot.debug else "turned off"))
+                try:
+                        print("Debug: {}".format("turned on" if bot.debug else "turned off"))
+                except AttributeError:
+                        print("Debug: turned off"))
                 print("Bot is ready :)")
 
         async def on_typing(self, channel, user, when):
