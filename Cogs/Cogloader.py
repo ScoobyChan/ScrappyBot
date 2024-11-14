@@ -31,7 +31,7 @@ class Cogloader(commands.Cog):
 		cog_list = os.listdir(directory)
 
 		if '__pycache__' in cog_list: cog_list.remove('__pycache__')
-		
+				
 		# Check if any are loaded already
 		current_loaded = [str(c) for c in self.bot.cogs.keys()]
 
@@ -55,19 +55,18 @@ class Cogloader(commands.Cog):
 
 	async def _unload_extension(self, sel_cog=None):
 		directory = "Cogs"
+		if not os.path.exists(directory): return
 
-		if sel_cog:
-			if not sel_cog in self.cog_loaded:
-				cog = '{}.{}'.format(directory, sel_cog)
-				try:
-					if not self.bot.get_cog(sel_cog):
-						self.bot.dispatch("unloaded_extension", self.bot.extensions.get(cog))
-						await self.bot.unload_extension(cog)
-				except Exception as error:	
-					print('{} cannot be unloaded. [{}]'.format(sel_cog, error))
-					print(str("".join(traceback.format_exception(type(error), error, error.__traceback__))))
-
-		for c in self.cog_loaded:
+		if sel_cog: 
+			to_be_unloaded = [sel_cog]
+		else:
+			to_be_unloaded = [str(c) for c in self.bot.cogs.keys()]
+		
+		for preload in self.bot.preloads:
+			if preload in to_be_unloaded:
+				to_be_unloaded.remove(to_be_unloaded)
+		
+		for c in to_be_unloaded:
 			cog = '{}.{}'.format(directory, c)
 			try:
 				if self.bot.get_cog(c):

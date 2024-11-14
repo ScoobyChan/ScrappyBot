@@ -55,7 +55,8 @@ class Scrappy(commands.Bot):
                                                 await bot.load_extension('Cogs.{}'.format(x))
                                         else: 
                                                 print('Missing {}'.format(x))
-
+                        
+                bot.preloads = self.preloads
                 await bot.wait_until_ready()
                 try:
                         print("Debug: {}".format("turned on" if bot.debug else "turned off"))
