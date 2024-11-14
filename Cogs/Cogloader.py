@@ -28,46 +28,46 @@ class Cogloader(commands.Cog):
 		# Find cogs to load
 		directory = "Cogs"
 		cog_list = os.listdir(directory)
-		for x in ['__pycache__', 'Settings', 'cog_loader', 'Perms']:
-			if x in cog_list: cog_list.remove(x)
+
+		if '__pycache__' in cog_list: cog_list.remove('__pycache__')
 		
-		if sel_cog:
-			if not sel_cog in self.cog_loaded:
-				cog = '{}.{}'.format(directory, sel_cog)
-				try:
-					if not self.bot.get_cog(sel_cog):
-						await self.bot.load_extension(cog)
-						self.bot.dispatch("loaded_extension", self.bot.extensions.get(cog))
-				except Exception as error:	
-					print('{} cannot be loaded. [{}]'.format(sel_cog, error))
-					print(str("".join(traceback.format_exception(type(error), error, error.__traceback__))))
+		# Check if any are loaded already
+		current_loaded = [str(c) for c in self.bot.cogs.keys()]
 
-		if os.path.exists('Cogs/Perms.py'):
-			try:
-				if not self.bot.get_cog("Cogs.Perms"):
-					await self.bot.load_extension("Cogs.Perms")
+		if sel_cog: 
+			to_be_loaded = [sel_cog]
+		else:
+			to_be_loaded = cog_list
 
-				cog_perm = self.bot.get_cog('Perms')
-				# await cog_perm.initiate() set up on cog side
+		for loading in to_be_loaded:
+			if not loading in current_loaded:
+				print(loading)
+		# if os.path.exists('Cogs/Perms.py'):
+		# 	try:
+		# 		if not self.bot.get_cog("Cogs.Perms"):
+		# 			await self.bot.load_extension("Cogs.Perms")
 
-				self.bot.dispatch("loaded_extension", self.bot.extensions.get('Cogs.Perms'))
-			except Exception as error:
-				print('{} cannot be loaded. [{}]'.format('Perms', error))
+		# 		cog_perm = self.bot.get_cog('Perms')
+		# 		# await cog_perm.initiate() set up on cog side
 
-		# Load rest of the cogs
+		# 		self.bot.dispatch("loaded_extension", self.bot.extensions.get('Cogs.Perms'))
+		# 	except Exception as error:
+		# 		print('{} cannot be loaded. [{}]'.format('Perms', error))
 
-		for c in cog_list:
-			lname = c.split('.')[0]
-			cog = '{}.{}'.format(directory, lname)
-			try:
-				if not self.bot.get_cog(lname):
-					await self.bot.load_extension(cog)
-					self.bot.dispatch("loaded_extension", self.bot.extensions.get(cog))
+		# # Load rest of the cogs
 
-					self.cog_loaded.append(cog)
-			except Exception as error:
-				print('{} cannot be loaded. [{}]'.format(lname, error))
-				print(str("".join(traceback.format_exception(type(error), error, error.__traceback__))))
+		# for c in cog_list:
+		# 	lname = c.split('.')[0]
+		# 	cog = '{}.{}'.format(directory, lname)
+		# 	try:
+		# 		if not self.bot.get_cog(lname):
+		# 			await self.bot.load_extension(cog)
+		# 			self.bot.dispatch("loaded_extension", self.bot.extensions.get(cog))
+
+		# 			self.cog_loaded.append(cog)
+		# 	except Exception as error:
+		# 		print('{} cannot be loaded. [{}]'.format(lname, error))
+		# 		print(str("".join(traceback.format_exception(type(error), error, error.__traceback__))))
 
 	async def _unload_extension(self, sel_cog=None):
 		directory = "Cogs"

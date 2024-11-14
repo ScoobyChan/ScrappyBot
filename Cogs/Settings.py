@@ -10,7 +10,6 @@ class Settings(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.test = 'test'
-		self.bot.debug = True
 
 		self.bot.color = [
 				discord.Color.teal(), 
