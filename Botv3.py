@@ -37,7 +37,7 @@ class Scrappy(commands.Bot):
                 super().__init__(command_prefix=self.get_pre, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, intents=intents, allowed_mentions=allowed_mentions)
 
                 self.preloads = ["Settings", "Cogloader"]
-                self.bot.debug = True
+                bot.debug = True
 
         async def get_pre(self, bot, message):
                 guild = message.guild.id
