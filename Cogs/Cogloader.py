@@ -35,8 +35,12 @@ class Cogloader(commands.Cog):
 		# Check if any are loaded already
 		current_loaded = [str(c) for c in self.bot.cogs.keys()]
 
-		if sel_cog: 
-			to_be_loaded = [sel_cog]
+		if sel_cog:
+			sel_cog = sel_cog if sel_cog.endswith('.py') else "{}.py".format(sel_cog)
+			if sel_cog in cog_list:
+				to_be_loaded = [sel_cog]
+			else:
+				return
 		else:
 			to_be_loaded = cog_list
 
