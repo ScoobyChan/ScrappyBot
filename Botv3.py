@@ -37,6 +37,7 @@ class Scrappy(commands.Bot):
                 super().__init__(command_prefix=self.get_pre, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, intents=intents, allowed_mentions=allowed_mentions)
 
                 self.preloads = ["Settings", "Cogloader"]
+                self.bot.debug = True
 
         async def get_pre(self, bot, message):
                 guild = message.guild.id
@@ -57,6 +58,7 @@ class Scrappy(commands.Bot):
                                                 print('Missing {}'.format(x))
 
                 await bot.wait_until_ready()
+                print("Debug: {}".format("turned on" if self.bot.debug else "turned off"))
                 print("Bot is ready :)")
 
         async def on_typing(self, channel, user, when):
