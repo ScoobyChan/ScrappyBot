@@ -47,14 +47,17 @@ class Scrappy(commands.Bot):
 
         async def on_ready(self):
                 print("Bot initializing")
-                for x in self.preloads:
-                        if not bot.get_cog(x):
-                                if os.path.exists('Cogs/{}.py'.format(x)):
-                                        await bot.load_extension('Cogs.{}'.format(x))
-                                else: 
-                                        print('Missing {}'.format(x))
+                # Check does Cogs exist
+                if os.path.exists("Cogs"):
+                        for x in self.preloads:
+                                if not bot.get_cog(x):
+                                        if os.path.exists('Cogs/{}.py'.format(x)):
+                                                await bot.load_extension('Cogs.{}'.format(x))
+                                        else: 
+                                                print('Missing {}'.format(x))
 
                 await bot.wait_until_ready()
+                print("Bot is ready :)")
 
 
         async def on_typing(self, channel, user, when):
