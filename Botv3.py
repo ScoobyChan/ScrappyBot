@@ -59,7 +59,6 @@ class Scrappy(commands.Bot):
                 await bot.wait_until_ready()
                 print("Bot is ready :)")
 
-
         async def on_typing(self, channel, user, when):
                 for cog in bot.cogs:
                         cog = bot.get_cog(cog)
