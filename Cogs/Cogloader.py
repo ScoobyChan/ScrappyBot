@@ -16,7 +16,6 @@ class Cogloader(commands.Cog):
 	def __init__(self, bot, settings):
 		self.bot = bot
 		self.settings = settings
-		self.cog_loaded = []
 
 	def loaded(self):
 		print('Loaded {} {}'.format(len(self.bot.cogs), 'Cog' if len(self.bot.cogs) < 2 else 'Cogs'))
@@ -105,7 +104,6 @@ class Cogloader(commands.Cog):
 		"""
 		await self._load_extension(args)
 		await ctx.send('Cogs Successfully loaded')
-		
 
 	@commands.command(aliases=['unl'])
 	@commands.is_owner()
