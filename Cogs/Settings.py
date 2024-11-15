@@ -64,9 +64,10 @@ class Settings(commands.Cog):
 		
 		if len(current_settings) != len(saved_settings):
 			print(3)
-			file.close()
-			file = open('settings_dict.json', 'w')
-			try:
+			try:	
+				file.close()
+				file = open('settings_dict.json', 'w')
+			
 				saved_settings = json.dumps(file.read()) 
 			except:
 				print(file.read())
