@@ -53,6 +53,7 @@ class Settings(commands.Cog):
 		if not os.path.exists('settings_dict.json'): 
 			file = open('settings_dict.json', "w")
 			file.write(json.dumps(self.settings))
+			file.close()
 
 		print(2)
 
@@ -63,6 +64,7 @@ class Settings(commands.Cog):
 		
 		if len(current_settings) != len(saved_settings):
 			print(3)
+			file.close()
 			file = open('settings_dict.json', 'w')
 			try:
 				saved_settings = json.dumps(file.read()) 
@@ -78,11 +80,13 @@ class Settings(commands.Cog):
 				else:
 					new_setting[ns] = current_settings[ns]
 		
-		file.write(json.dumps(new_setting))
+			file.write(json.dumps(new_setting))
+			file.close()
 
 		print(4)
 		file = open('settings_dict.json', 'r')
 		saved_settings = json.dumps(file.read()) 
+		file.close()
 		return saved_settings
 
 	def load_settings(self):
