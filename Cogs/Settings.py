@@ -58,7 +58,7 @@ class Settings(commands.Cog):
 		saved_settings = json.loads(file.read()) 
 		current_settings = json.loads(self.settings)
 		
-		if len(current_settings) != len(saved_settings)
+		if len(current_settings) != len(saved_settings):
 			file = open('settings_dict.json', 'w')
 			saved_settings = json.loads(file.read()) 
 			new_setting = {}
