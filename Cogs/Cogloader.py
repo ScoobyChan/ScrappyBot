@@ -62,7 +62,11 @@ class Cogloader(commands.Cog):
 		if not os.path.exists(directory): return
 
 		if sel_cog: 
-			to_be_unloaded = [sel_cog]
+			sel_cog = sel_cog if sel_cog.endswith('.py') else "{}.py".format(sel_cog)
+			if sel_cog in cog_list:
+				to_be_unloaded = [sel_cog]
+			else:
+				return
 		else:
 			to_be_unloaded = [str(c) for c in self.bot.cogs.keys()]
 		
