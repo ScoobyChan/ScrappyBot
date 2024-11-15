@@ -52,7 +52,7 @@ class Cogloader(commands.Cog):
 					if not self.bot.get_cog(loading):
 						await self.bot.load_extension(cog)
 						self.bot.dispatch("loaded_extension", self.bot.extensions.get(cog))
-						print(loading)
+						# print(loading)
 				except Exception as error:
 					print('{} cannot be loaded. [{}]'.format(loading, error))
 					print(str("".join(traceback.format_exception(type(error), error, error.__traceback__))))
