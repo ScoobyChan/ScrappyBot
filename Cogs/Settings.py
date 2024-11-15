@@ -49,9 +49,12 @@ class Settings(commands.Cog):
 		return ctx.message.author.id == ctx.guild.owner_id
 
 	def check_file(self):
+		print(1)
 		if not os.path.exists('settings_dict.json'): 
 			file = open('settings_dict.json', "w")
 			file.write(json.dumps(self.settings))
+
+		print(2)
 
 		# Compare dictionaries
 		file = open('settings_dict.json', 'r')
@@ -59,6 +62,7 @@ class Settings(commands.Cog):
 		current_settings = json.dumps(self.settings)
 		
 		if len(current_settings) != len(saved_settings):
+			print(3)
 			file = open('settings_dict.json', 'w')
 			saved_settings = json.dumps(file.read()) 
 			new_setting = {}
@@ -71,6 +75,7 @@ class Settings(commands.Cog):
 		
 		file.write(json.dumps(new_setting))
 
+		print(4)
 		file = open('settings_dict.json', 'r')
 		saved_settings = json.dumps(file.read()) 
 		return saved_settings
