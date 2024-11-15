@@ -78,3 +78,7 @@ class Settings(commands.Cog):
 
 	def save_settings(self):
 		settings_dict = self.check_file()
+
+	@commands.command()
+	async def test_settings(self, ctx):
+		self.load_settings()
