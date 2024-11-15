@@ -55,12 +55,12 @@ class Settings(commands.Cog):
 
 		# Compare dictionaries
 		file = open('settings_dict.json', 'r')
-		saved_settings = json.loads(file.read()) 
-		current_settings = json.loads(self.settings)
+		saved_settings = json.dumps(file.read()) 
+		current_settings = json.dumps(self.settings)
 		
 		if len(current_settings) != len(saved_settings):
 			file = open('settings_dict.json', 'w')
-			saved_settings = json.loads(file.read()) 
+			saved_settings = json.dumps(file.read()) 
 			new_setting = {}
 			
 			for ns in current_settings:
@@ -70,7 +70,7 @@ class Settings(commands.Cog):
 		file.write(json.dumps(new_setting))
 
 		file = open('settings_dict.json', 'r')
-		saved_settings = json.loads(file.read()) 
+		saved_settings = json.dumps(file.read()) 
 		return saved_settings
 
 	def load_settings(self):
