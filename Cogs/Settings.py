@@ -63,7 +63,7 @@ class Settings(commands.Cog):
 			saved_settings = json.loads(file.read()) 
 			new_setting = {}
 			
-			for ns in :
+			for ns in current_settings:
 				if ns in saved_settings:
 					new_setting[ns] = saved_settings[ns]
 		
