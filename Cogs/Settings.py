@@ -66,6 +66,8 @@ class Settings(commands.Cog):
 			for ns in current_settings:
 				if ns in saved_settings:
 					new_setting[ns] = saved_settings[ns]
+				else:
+					new_setting[ns] = current_settings[ns]
 		
 		file.write(json.dumps(new_setting))
 
