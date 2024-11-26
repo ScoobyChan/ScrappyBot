@@ -6,7 +6,7 @@ def setup(bot):
 	bot.add_cog(Horny(bot))
 
 class Horny(commands.Cog):
-	def __init__(self, bot, settings):
+	def __init__(self, bot):
 		self.bot = bot
 
 	@commands.command()
