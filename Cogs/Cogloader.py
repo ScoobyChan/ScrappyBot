@@ -5,17 +5,18 @@ import time
 import discord
 from discord.ext import commands
 import traceback
+import random
+from progress.bar import Bar
 
-async def setup(bot: commands.Bot) -> None:
-	settings = bot.get_cog("Settings")
-	await bot.add_cog(Cogloader(bot, settings))
+
+def setup(bot: commands.Bot) -> None:
+	bot.add_cog(Cogloader(bot))
 
 start_time = time.time()
 
 class Cogloader(commands.Cog):
-	def __init__(self, bot, settings):
+	def __init__(self, bot):
 		self.bot = bot
-		self.settings = settings
 
 	def loaded(self):
 		print('Loaded {} {}'.format(len(self.bot.cogs), 'Cog' if len(self.bot.cogs) < 2 else 'Cogs'))
@@ -23,7 +24,7 @@ class Cogloader(commands.Cog):
 		print('{}/{}/{}, {}:{}:{}\n'.format(self.bot.res.tm_mday if len(str(self.bot.res.tm_mday)) > 1 else ('0' + str(self.bot.res.tm_mday)), self.bot.res.tm_mon if len(str(self.bot.res.tm_mon)) > 1 else ('0' + str(self.bot.res.tm_mon)), self.bot.res.tm_year, self.bot.res.tm_hour if len(str(self.bot.res.tm_hour)) > 1 else ('0' + str(self.bot.res.tm_hour)), self.bot.res.tm_min if len(str(self.bot.res.tm_min)) > 1 else ('0' + str(self.bot.res.tm_min)), self.bot.res.tm_sec if len(str(self.bot.res.tm_sec)) > 1 else ('0' + str(self.bot.res.tm_sec))))
 		print("Invite Link:\nhttps://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8\n".format(self.bot.user.id))
 
-	async def _load_extension(self, sel_cog=None):
+	async def _load_extension(self, sel_cog=None, progress_bar=None):
 		# Find cogs to load
 		directory = "Cogs"
 		if not os.path.exists(directory): return
@@ -42,6 +43,9 @@ class Cogloader(commands.Cog):
 				return
 		else:
 			to_be_loaded = cog_list
+		
+		bar = None
+		if progress_bar: bar = Bar('Loading Modules', fill="*", max=len(to_be_loaded))
 
 		for loading in to_be_loaded:
 			if loading.endswith(".py"): loading = loading[:len(loading)-3] 
@@ -49,12 +53,15 @@ class Cogloader(commands.Cog):
 				cog = '{}.{}'.format(directory, loading)
 				try:
 					if not self.bot.get_cog(loading):
-						await self.bot.load_extension(cog)
+						self.bot.load_extension(cog)
 						self.bot.dispatch("loaded_extension", self.bot.extensions.get(cog))
 						# print(loading)
 				except Exception as error:
 					print('{} cannot be loaded. [{}]'.format(loading, error))
 					print(str("".join(traceback.format_exception(type(error), error, error.__traceback__))))
+
+			if bar: bar.next()
+		if bar: bar.finish()
 
 	async def _unload_extension(self, sel_cog=None):
 		directory = "Cogs"
@@ -62,7 +69,7 @@ class Cogloader(commands.Cog):
 
 		if sel_cog: 
 			sel_cog = sel_cog if sel_cog.endswith('.py') else "{}.py".format(sel_cog)
-			if sel_cog in cog_list:
+			if sel_cog in [str(c) for c in self.bot.cogs.keys()]:
 				to_be_unloaded = [sel_cog]
 			else:
 				return
@@ -78,7 +85,7 @@ class Cogloader(commands.Cog):
 			try:
 				if self.bot.get_cog(c):
 					self.bot.dispatch("unloaded_extension", self.bot.extensions.get(cog))
-					await self.bot.unload_extension(cog)
+					self.bot.unload_extension(cog)
 			except Exception as error:
 				print('{} cannot be unloaded. [{}]'.format(c, error))
 
@@ -158,7 +165,7 @@ class Cogloader(commands.Cog):
 		difference = int(round(current_time - start_time))
 		text = str(datetime.timedelta(seconds=difference))
 		
-		col = ctx.author.top_role.colour or self.settings
+		col = ctx.author.top_role.colour or random.choice(self.bot.color)
 
 		embed = discord.Embed(title=text, color=col)
 		await ctx.send(embed=embed)
