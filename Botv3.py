@@ -50,7 +50,7 @@ class Scrappy(commands.Bot):
                                 if not bot.get_cog(x):
                                         if os.path.exists('Cogs/{}.py'.format(x)):
                                                 print("Loading: {}".format(x))
-                                                bot.load_extension('Cogs.{}'.format(x))
+                                                await bot.load_extension('Cogs.{}'.format(x))
                                         else: 
                                                 print('Missing {}'.format(x))
                         
