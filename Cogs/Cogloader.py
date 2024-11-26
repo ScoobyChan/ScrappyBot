@@ -8,7 +8,7 @@ import traceback
 import random
 
 def setup(bot: commands.Bot) -> None:
-	await bot.add_cog(Cogloader(bot))
+	bot.add_cog(Cogloader(bot))
 
 start_time = time.time()
 
@@ -61,7 +61,7 @@ class Cogloader(commands.Cog):
 
 		if sel_cog: 
 			sel_cog = sel_cog if sel_cog.endswith('.py') else "{}.py".format(sel_cog)
-			if sel_cog in cog_list:
+			if sel_cog in [str(c) for c in self.bot.cogs.keys()]:
 				to_be_unloaded = [sel_cog]
 			else:
 				return
