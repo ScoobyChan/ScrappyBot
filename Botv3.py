@@ -8,7 +8,7 @@ from discord.ext import commands
 from dotenv import load_dotenv, dotenv_values
 load_dotenv()
 
-token = os.getenv("TOKEN")
+token = os.getenv("token")
 
 class Scrappy(commands.Bot):
         def __init__(self):
@@ -41,7 +41,7 @@ class Scrappy(commands.Bot):
         async def get_pre(self, bot, message):
                 guild = message.guild.id
                 set_cog = bot.get_cog('Settings')
-                _prefix = os.getenv("PREFIX")
+                _prefix = os.getenv("prefix")
                 prefix = '$' if (_prefix == "" or _prefix == None) else _prefix
                 return prefix
 
