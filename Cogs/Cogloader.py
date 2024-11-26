@@ -7,7 +7,7 @@ from discord.ext import commands
 import traceback
 import random
 
-async def setup(bot: commands.Bot) -> None:
+def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(Cogloader(bot))
 
 start_time = time.time()

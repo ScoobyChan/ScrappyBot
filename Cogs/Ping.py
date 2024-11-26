@@ -18,5 +18,5 @@ class Ping(commands.Cog):
 		ms = round((t2-t1) * 1000)
 		await ctx.send(content='**Pong!** <@{}> - {}ms'.format(ctx.author.id, int(ms)))
 
-async def setup(bot: commands.Bot) -> None:
+def setup(bot: commands.Bot) -> None:
 	await bot.add_cog(Ping(bot))
