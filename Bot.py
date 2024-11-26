@@ -61,7 +61,7 @@ class Scrappy(commands.Bot):
                 # Get Cogloader and load items
 
                 Cogloader = bot.get_cog('Cogloader')
-                if Cogloader: await Cogloader._load_extension()
+                if Cogloader: await Cogloader._load_extension(progress_bar=True)
 
                 try:
                         print("Debug: {}".format("turned on" if bot.debug else "turned off"))
