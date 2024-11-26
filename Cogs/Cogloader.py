@@ -8,6 +8,7 @@ import traceback
 import random
 from progress.bar import Bar
 
+
 def setup(bot: commands.Bot) -> None:
 	bot.add_cog(Cogloader(bot))
 
