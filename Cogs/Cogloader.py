@@ -44,7 +44,7 @@ class Cogloader(commands.Cog):
 			to_be_loaded = cog_list
 		
 		bar = None
-		if progress_bar: bar = Bar('FillingCirclesBar', max=len(to_be_loaded))
+		if progress_bar: bar = Bar('Loading Modules', fill="*", max=len(to_be_loaded))
 
 		for loading in to_be_loaded:
 			if loading.endswith(".py"): loading = loading[:len(loading)-3] 
