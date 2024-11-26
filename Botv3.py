@@ -37,8 +37,7 @@ class Scrappy(commands.Bot):
                 self.preloads = ["Settings", "Cogloader"]
 
         async def get_pre(self, bot, message):
-                guild = message.guild.id
-                set_cog = bot.get_cog('Settings')
+                # guild = message.guild.id
                 _prefix = os.getenv("prefix")
                 prefix = '$' if (_prefix == "" or _prefix == None) else _prefix
                 return prefix
@@ -50,7 +49,8 @@ class Scrappy(commands.Bot):
                         for x in self.preloads:
                                 if not bot.get_cog(x):
                                         if os.path.exists('Cogs/{}.py'.format(x)):
-                                                await bot.load_extension('Cogs.{}'.format(x))
+                                                print("Loading: {}".format(x))
+                                                bot.load_extension('Cogs.{}'.format(x))
                                         else: 
                                                 print('Missing {}'.format(x))
                         
@@ -59,7 +59,7 @@ class Scrappy(commands.Bot):
                 # Get Cogloader and load items
 
                 Cogloader = await bot.get_cog('Cogloader')
-                await Cogloader._load_extension()
+                if Cogloader: await Cogloader._load_extension()
 
                 try:
                         print("Debug: {}".format("turned on" if bot.debug else "turned off"))
