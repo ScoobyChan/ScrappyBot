@@ -194,7 +194,7 @@ class Scrappy(commands.Bot):
                                 continue
 
         async def on_command_error(self, ctx, error):
-                await ctx.reply(error, ephemeral = True)
+                await ctx.reply(error)
 
 bot = Scrappy()
 bot.res = time.localtime()
