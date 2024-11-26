@@ -37,7 +37,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 
 		desc = ''
 		for c in self.options:
@@ -57,7 +57,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko 8ball", color=col)
 		embed.set_image(url=data)
@@ -73,7 +73,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko Random_hentai_gif", color=col)
 		embed.set_image(url=data)
@@ -89,7 +89,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko meow", color=col)
 		embed.set_image(url=data)
@@ -105,7 +105,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko erok", color=col)
 		embed.set_image(url=data)
@@ -121,7 +121,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko lizard", color=col)
 		embed.set_image(url=data)
@@ -137,7 +137,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko feetg", color=col)
 		embed.set_image(url=data)
@@ -153,7 +153,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko baka", color=col)
 		embed.set_image(url=data)
@@ -169,7 +169,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko v3", color=col)
 		embed.set_image(url=data)
@@ -185,7 +185,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko bj", color=col)
 		embed.set_image(url=data)
@@ -201,7 +201,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko erokemo", color=col)
 		embed.set_image(url=data)
@@ -217,7 +217,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko tickle", color=col)
 		embed.set_image(url=data)
@@ -233,7 +233,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko feed", color=col)
 		embed.set_image(url=data)
@@ -249,7 +249,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko neko", color=col)
 		embed.set_image(url=data)
@@ -265,7 +265,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko kuni", color=col)
 		embed.set_image(url=data)
@@ -281,7 +281,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko femdom", color=col)
 		embed.set_image(url=data)
@@ -297,7 +297,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko futanari", color=col)
 		embed.set_image(url=data)
@@ -313,7 +313,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko smallboobs", color=col)
 		embed.set_image(url=data)
@@ -329,7 +329,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko goose", color=col)
 		embed.set_image(url=data)
@@ -345,7 +345,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko nekoapi_v3.1", color=col)
 		embed.set_image(url=data)
@@ -361,7 +361,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko poke", color=col)
 		embed.set_image(url=data)
@@ -377,7 +377,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko les", color=col)
 		embed.set_image(url=data)
@@ -393,7 +393,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko trap", color=col)
 		embed.set_image(url=data)
@@ -409,7 +409,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko pat", color=col)
 		embed.set_image(url=data)
@@ -425,7 +425,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko boobs", color=col)
 		embed.set_image(url=data)
@@ -441,7 +441,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko blowjob", color=col)
 		embed.set_image(url=data)
@@ -457,7 +457,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko hentai", color=col)
 		embed.set_image(url=data)
@@ -473,7 +473,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko hololewd", color=col)
 		embed.set_image(url=data)
@@ -489,7 +489,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko ngif", color=col)
 		embed.set_image(url=data)
@@ -505,7 +505,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko fox_girl", color=col)
 		embed.set_image(url=data)
@@ -521,7 +521,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko wallpaper", color=col)
 		embed.set_image(url=data)
@@ -537,7 +537,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko lewdk", color=col)
 		embed.set_image(url=data)
@@ -553,7 +553,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko solog", color=col)
 		embed.set_image(url=data)
@@ -569,7 +569,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko pussy", color=col)
 		embed.set_image(url=data)
@@ -585,7 +585,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko yuri", color=col)
 		embed.set_image(url=data)
@@ -601,7 +601,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko lewdkemo", color=col)
 		embed.set_image(url=data)
@@ -617,7 +617,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko lewd", color=col)
 		embed.set_image(url=data)
@@ -633,7 +633,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko anal", color=col)
 		embed.set_image(url=data)
@@ -649,7 +649,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko pwankg", color=col)
 		embed.set_image(url=data)
@@ -665,7 +665,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko nsfw_avatar", color=col)
 		embed.set_image(url=data)
@@ -681,7 +681,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko eron", color=col)
 		embed.set_image(url=data)
@@ -697,7 +697,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko kiss", color=col)
 		embed.set_image(url=data)
@@ -713,7 +713,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko pussy_jpg", color=col)
 		embed.set_image(url=data)
@@ -729,7 +729,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko woof", color=col)
 		embed.set_image(url=data)
@@ -745,7 +745,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko hug", color=col)
 		embed.set_image(url=data)
@@ -761,7 +761,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko keta", color=col)
 		embed.set_image(url=data)
@@ -777,7 +777,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko cuddle", color=col)
 		embed.set_image(url=data)
@@ -793,7 +793,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko eroyuri", color=col)
 		embed.set_image(url=data)
@@ -809,7 +809,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko slap", color=col)
 		embed.set_image(url=data)
@@ -825,7 +825,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko cum_jpg", color=col)
 		embed.set_image(url=data)
@@ -841,7 +841,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko waifu", color=col)
 		embed.set_image(url=data)
@@ -857,7 +857,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko gecg", color=col)
 		embed.set_image(url=data)
@@ -873,7 +873,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko tits", color=col)
 		embed.set_image(url=data)
@@ -889,7 +889,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko avatar", color=col)
 		embed.set_image(url=data)
@@ -905,7 +905,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko holoero", color=col)
 		embed.set_image(url=data)
@@ -921,7 +921,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko classic", color=col)
 		embed.set_image(url=data)
@@ -935,7 +935,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko kemonomimi", color=col)
 		embed.set_image(url=data)
@@ -949,7 +949,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko feet", color=col)
 		embed.set_image(url=data)
@@ -963,7 +963,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko gasm", color=col)
 		embed.set_image(url=data)
@@ -977,7 +977,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko spank", color=col)
 		embed.set_image(url=data)
@@ -991,7 +991,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko erofeet", color=col)
 		embed.set_image(url=data)
@@ -1005,7 +1005,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko ero", color=col)
 		embed.set_image(url=data)
@@ -1019,7 +1019,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko solo", color=col)
 		embed.set_image(url=data)
@@ -1033,7 +1033,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko cum", color=col)
 		embed.set_image(url=data)
@@ -1047,7 +1047,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko smug", color=col)
 		embed.set_image(url=data)
@@ -1061,7 +1061,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko holo", color=col)
 		embed.set_image(url=data)
@@ -1075,7 +1075,7 @@ class Neko(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.settings.randomColor()
+			col = random.choice(self.bot.color)
 		
 		embed=discord.Embed(title="Neko nsfw_neko_gif", color=col)
 		embed.set_image(url=data)

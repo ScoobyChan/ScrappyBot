@@ -22,7 +22,7 @@ class Lmgtfy(commands.Cog):
 			try:
 				s = self.shorten(f"https://lmgtfy.com/?q={'+'.join(search.split())}")
 				if not ctx.message.author.top_role.colour:
-					col = 0xda3c3c
+					col = random.choice(self.bot.color)
 				else:
 					col = ctx.message.author.top_role.colour
 

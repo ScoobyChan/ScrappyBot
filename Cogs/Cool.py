@@ -17,9 +17,6 @@ class Cool(commands.Cog):
 
 	@cool.command(name='bot')
 	async def _bot(self, ctx):
-		if await self.settings.perms(ctx)	== (None or False):
-			return
-			
 		await ctx.send('Yes, the bot is cool.')
 
 def setup(bot):

@@ -25,7 +25,7 @@ class Dice(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.server.randomColor()
+			col = random.choice(self.bot.color)
 
 		embed = discord.Embed(
 			description = D,

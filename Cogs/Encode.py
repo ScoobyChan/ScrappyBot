@@ -6,9 +6,8 @@ from discord.ext import commands
 
 
 class Encode(commands.Cog):
-	def __init__(self, bot, settings):
+	def __init__(self, bot):
 		self.bot = bot
-		self.settings = settings
 
 	# List Permissions For Bot/Users
 	@commands.command()
@@ -87,7 +86,7 @@ class Encode(commands.Cog):
 		if ctx.author.top_role.colour:
 			col = ctx.author.top_role.colour
 		else:
-			col =self.server.randomColor()
+			col = random.choice(self.bot.color)
 
 		embed = discord.Embed(
 			description = f'**{F}** to **{T}**\n```{t}```',
@@ -96,5 +95,4 @@ class Encode(commands.Cog):
 		await ctx.send(embed=embed)
 
 def setup(bot):
-	settings = bot.get_cog("Settings")
-	bot.add_cog(Encode(bot, settings))
+	bot.add_cog(Encode(bot))

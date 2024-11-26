@@ -3,3 +3,4 @@ pyyaml
 py-cord
 python-dotenv
 progress
+requests

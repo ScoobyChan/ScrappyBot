@@ -10,13 +10,11 @@ import random
 from discord.ext import commands
 
 def setup(bot):
-	settings = bot.get_cog("Settings")
-	bot.add_cog(Coffee(bot, settings))
+	bot.add_cog(Coffee(bot))
 
 class Coffee(commands.Cog):
-	def __init__(self, bot, settings):
+	def __init__(self, bot):
 		self.bot = bot
-		self.settings = settings
 
 	@commands.command()
 	async def coffee(self, ctx):
@@ -28,7 +26,7 @@ class Coffee(commands.Cog):
 			if ctx.author.top_role.colour:
 				col = ctx.author.top_role.colour
 			else:
-				col =self.settings.randomColor()
+				col =  random.choice(self.bot.color)
 			
 			embed=discord.Embed(title="coffee", color=col)
 			embed.set_image(url=data)
