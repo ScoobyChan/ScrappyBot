@@ -58,7 +58,7 @@ class Scrappy(commands.Bot):
                 await bot.wait_until_ready()
                 # Get Cogloader and load items
 
-                Cogloader = await bot.get_cog('Cogloader')
+                Cogloader = bot.get_cog('Cogloader')
                 if Cogloader: await Cogloader._load_extension()
 
                 try:
