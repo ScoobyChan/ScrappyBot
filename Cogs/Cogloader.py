@@ -5,17 +5,16 @@ import time
 import discord
 from discord.ext import commands
 import traceback
+import random
 
 async def setup(bot: commands.Bot) -> None:
-	settings = bot.get_cog("Settings")
-	await bot.add_cog(Cogloader(bot, settings))
+	await bot.add_cog(Cogloader(bot))
 
 start_time = time.time()
 
 class Cogloader(commands.Cog):
-	def __init__(self, bot, settings):
+	def __init__(self, bot):
 		self.bot = bot
-		self.settings = settings
 
 	def loaded(self):
 		print('Loaded {} {}'.format(len(self.bot.cogs), 'Cog' if len(self.bot.cogs) < 2 else 'Cogs'))
@@ -158,7 +157,7 @@ class Cogloader(commands.Cog):
 		difference = int(round(current_time - start_time))
 		text = str(datetime.timedelta(seconds=difference))
 		
-		col = ctx.author.top_role.colour or self.settings
+		col = ctx.author.top_role.colour or random.choice(self.bot.color)
 
 		embed = discord.Embed(title=text, color=col)
 		await ctx.send(embed=embed)
