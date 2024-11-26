@@ -1,4 +1,4 @@
 certifi 
 pyyaml
-discord.py[voice]
+py-cord
 python-dotenv
