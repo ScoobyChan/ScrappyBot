@@ -1,9 +1,7 @@
 from typing_extensions import Self
-
 import os
 import time
 import discord
-from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv, dotenv_values
 load_dotenv()
@@ -223,15 +221,5 @@ bot.color = [
         discord.Color.blurple(),
         discord.Color.greyple()
 ]
-
-
-# @bot.hybrid_command(name = "bhping", with_app_command = True, description = "Pings bot")
-# @app_commands.guilds(discord.Object(id=477041170078498829))
-# async def _bhping(ctx: commands.Context):
-#         """
-#         Ping response
-#         """ 
-#         await ctx.defer(ephemeral = True)
-#         await ctx.reply('Bot Ping')
 
 bot.run(token, reconnect=True)
