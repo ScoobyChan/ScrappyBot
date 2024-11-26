@@ -48,7 +48,7 @@ class Cogloader(commands.Cog):
 				cog = '{}.{}'.format(directory, loading)
 				try:
 					if not self.bot.get_cog(loading):
-						await self.bot.load_extension(cog)
+						self.bot.load_extension(cog)
 						self.bot.dispatch("loaded_extension", self.bot.extensions.get(cog))
 						# print(loading)
 				except Exception as error:
@@ -77,7 +77,7 @@ class Cogloader(commands.Cog):
 			try:
 				if self.bot.get_cog(c):
 					self.bot.dispatch("unloaded_extension", self.bot.extensions.get(cog))
-					await self.bot.unload_extension(cog)
+					self.bot.unload_extension(cog)
 			except Exception as error:
 				print('{} cannot be unloaded. [{}]'.format(c, error))
 
