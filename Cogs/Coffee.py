@@ -1,11 +1,6 @@
-
-import asyncio
-import os
 import json
 import urllib.request
-import requests
 import discord
-import aiohttp
 import random
 from discord.ext import commands
 
