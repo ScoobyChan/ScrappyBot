@@ -3,6 +3,7 @@ import random
 from discord.ext import commands 
 import traceback
 import urllib
+import requests
 
 class Lmgtfy(commands.Cog):
 	def __init__(self, bot):
