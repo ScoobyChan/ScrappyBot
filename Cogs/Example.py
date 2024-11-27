@@ -18,16 +18,16 @@ class Example(commands.Cog):
 		if not member: member = ctx.author
 		await ctx.send('{0} joined on {0.joined_at}'.format(member))
 
-	@commands.command()
-	async def slap(ctx, members: commands.Greedy[discord.Member] = None, amount:typing.Optional[int] = 1, *, reason='no reason'):
-		"""
-		Slaps user
-		"""
-		if members: 
-			slapped = ", ".join(x.name for x in members)
-		else:
-			members = ctx.author.name
-		await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
+	# @commands.command()
+	# async def slap(ctx, members: commands.Greedy[discord.Member] = None, amount:typing.Optional[int] = 1, *, reason='no reason'):
+	# 	"""
+	# 	Slaps user
+	# 	"""
+	# 	if members: 
+	# 		slapped = ", ".join(x.name for x in members)
+	# 	else:
+	# 		members = ctx.author.name
+	# 	await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
 def setup(bot):
 	bot.add_cog(Example(bot))

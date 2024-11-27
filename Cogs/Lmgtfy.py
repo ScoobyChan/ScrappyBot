@@ -23,7 +23,7 @@ class Lmgtfy(commands.Cog):
 	async def lmgfy(self, ctx, *, search:str = None):	
 		if search:
 			try:
-				s = self.shorten(f"https://lmgtfy.com/?q={'+'.join(search.split())}")
+				s = self.shorten(f"https://etmegooglethat.com/?q={'+'.join(search.split())}")
 				if not ctx.message.author.top_role.colour:
 					col = random.choice(self.bot.color)
 				else:
