@@ -15,11 +15,11 @@ class Example(commands.Cog):
 		"""
 		Joined user
 		"""
-		if not member: member = ctx.auther
+		if not member: member = ctx.author
 		await ctx.send('{0} joined on {0.joined_at}'.format(member))
 
 	@commands.command()
-	async def slap(ctx, members: commands.Greedy[discord.Member], amount:typing.Optional[int] = 1, *, reason='no reason'):
+	async def slap(ctx, members: commands.Greedy[discord.Member] = None, amount:typing.Optional[int] = 1, *, reason='no reason'):
 		"""
 		Slaps user
 		"""
