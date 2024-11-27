@@ -11,10 +11,11 @@ class Example(commands.Cog):
 		self.bot = bot
 
 	@commands.command()
-	async def joined(self, ctx, *, member: discord.Member):
+	async def joined(self, ctx, *, member: discord.Member = None):
 		"""
 		Joined user
 		"""
+		if not member: member = ctx.auther
 		await ctx.send('{0} joined on {0.joined_at}'.format(member))
 
 	@commands.command()
@@ -22,7 +23,10 @@ class Example(commands.Cog):
 		"""
 		Slaps user
 		"""
-		slapped = ", ".join(x.name for x in members)
+		if members: 
+			slapped = ", ".join(x.name for x in members)
+		else:
+			members = ctx.author.name
 		await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
 def setup(bot):

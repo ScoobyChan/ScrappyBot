@@ -13,7 +13,7 @@ class Cool(commands.Cog):
 		"""
 			
 		if ctx.invoked_subcommand is None:
-			await ctx.send('No, {0.subcommand_passed} is not cool'.format(ctx))
+			await ctx.send('No, **{0.subcommand_passed}** is not cool'.format(ctx))
 
 	@cool.command(name='bot')
 	async def _bot(self, ctx):
