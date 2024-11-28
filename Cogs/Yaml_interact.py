@@ -2,12 +2,12 @@ import yaml
 import os
 import discord
 
-def setup(bot: commands.Bot) -> None:
+def setup(bot) -> None:
 	bot.add_cog(Yaml_interact(bot))
 
 class Yaml_interact():
     def __init__(self, bot):
-		self.bot = bot
+        self.bot = bot
         self.settings = self.bot.settings
     
     def check_yaml(self):
@@ -28,7 +28,7 @@ class Yaml_interact():
 
         if len(saved_settings) != len(self.settings):
             new_settings = {}
-            for x in settings:
+            for x in self.settings:
                 if x in saved_settings:
                     new_settings[x] = saved_settings[x]
                 else:

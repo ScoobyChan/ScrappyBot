@@ -4,15 +4,15 @@ import discord
 
 # mongodb
 
-def setup(bot: commands.Bot) -> None:
+def setup(bot) -> None:
 	bot.add_cog(Json_interact(bot))
 
 class Json_interact():
     def __init__(self, bot):
-		self.bot = bot
+        self.bot = bot
         self.settings = self.bot.settings
 
-    def check_json():
+    def check_json(self):
         if not os.path.exists('settings_dict.json'): 
             with open('settings_dict.json', "w") as file:
                 file.write(self.settings)
