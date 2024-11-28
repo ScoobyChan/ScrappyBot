@@ -225,3 +225,11 @@ bot.color = [
 ]
 
 bot.run(token, reconnect=True)
+
+bot.settings = {
+    "bot_owners": [],
+    "bot_admins": [],
+    "guild_owner":{},
+    "guild_admins":{},
+    "blacklisted_guilds":[]
+}
