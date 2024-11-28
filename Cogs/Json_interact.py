@@ -53,6 +53,7 @@ class Json_interact(commands.Cog):
             loaded_settings = json.load(file)
 
         if data_read == "r":
+            print(loaded_settings)
             return loaded_settings.get(data_select, None)
         
         if data_read == "w":
