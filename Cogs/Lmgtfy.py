@@ -1,6 +1,6 @@
 import discord
 import random
-from discord.ext import commands 
+from discord.ext import commands
 import traceback
 import urllib
 import requests
