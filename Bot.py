@@ -232,4 +232,6 @@ bot.settings = {
     "blacklisted_guilds":[]
 }
 
+print(bot.preloads)
+
 bot.run(token, reconnect=True)
