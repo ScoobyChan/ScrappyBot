@@ -224,8 +224,6 @@ bot.color = [
         discord.Color.greyple()
 ]
 
-bot.run(token, reconnect=True)
-
 bot.settings = {
     "bot_owners": [],
     "bot_admins": [],
@@ -233,3 +231,5 @@ bot.settings = {
     "guild_admins":{},
     "blacklisted_guilds":[]
 }
+
+bot.run(token, reconnect=True)
