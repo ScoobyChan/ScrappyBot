@@ -30,7 +30,7 @@ class Example(commands.Cog):
 	# 	await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
 	@commands.command()
-	async def slap(ctx):
+	async def testdb(ctx):
 		# Test connect to DB
 		int_yaml = self.bot.get_cog("Yaml_interact")
 		await ctx.send(int_yaml.interact_yaml("bot_owners"))
