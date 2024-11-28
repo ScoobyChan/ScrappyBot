@@ -7,7 +7,7 @@ import discord
 def setup(bot) -> None:
 	bot.add_cog(Json_interact(bot))
 
-class Json_interact():
+class Json_interact(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.settings = self.bot.settings
