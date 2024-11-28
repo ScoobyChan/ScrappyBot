@@ -29,5 +29,15 @@ class Example(commands.Cog):
 	# 		members = ctx.author.name
 	# 	await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
+	@commands.command()
+	async def slap(ctx):
+		# Test connect to DB
+		int_yaml = self.bot.get_cog("Yaml_interact")
+		await ctx.send(int_yaml.interact_yaml("bot_owners"))
+		
+		int_json = self.bot.get_cog("Json_interact")
+		await ctx.send(int_json.interact_json("bot_owners"))
+
+
 def setup(bot):
 	bot.add_cog(Example(bot))
