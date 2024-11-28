@@ -36,6 +36,40 @@ class Scrappy(commands.Bot):
 
                 self.preloads = ["Settings", "Cogloader"]
 
+                self.settings = {
+                        "bot_owners": [],
+                        "bot_admins": [],
+                        "guild_owner":{},
+                        "guild_admins":{},
+                        "blacklisted_guilds":[]
+                }
+
+                self.res = time.localtime()
+                self.color = [
+                        discord.Color.teal(), 
+                        discord.Color.dark_teal(), 
+                        discord.Color.green(),
+                        discord.Color.dark_green(),
+                        discord.Color.blue(),
+                        discord.Color.dark_blue(),
+                        discord.Color.purple(),
+                        discord.Color.dark_purple(),
+                        discord.Color.magenta(),
+                        discord.Color.dark_magenta(),
+                        discord.Color.gold(),
+                        discord.Color.dark_gold(),
+                        discord.Color.orange(),
+                        discord.Color.dark_orange(),
+                        discord.Color.red(),
+                        discord.Color.dark_red(),
+                        discord.Color.lighter_grey(),
+                        discord.Color.dark_grey(),
+                        discord.Color.light_grey(),
+                        discord.Color.darker_grey(),
+                        discord.Color.blurple(),
+                        discord.Color.greyple()
+                ]
+
         async def get_pre(self, bot, message):
                 # guild = message.guild.id
                 _prefix = os.getenv("prefix")
@@ -197,41 +231,4 @@ class Scrappy(commands.Bot):
                 await ctx.reply(error)
 
 bot = Scrappy()
-bot.res = time.localtime()
-
-bot.color = [
-        discord.Color.teal(), 
-        discord.Color.dark_teal(), 
-        discord.Color.green(),
-        discord.Color.dark_green(),
-        discord.Color.blue(),
-        discord.Color.dark_blue(),
-        discord.Color.purple(),
-        discord.Color.dark_purple(),
-        discord.Color.magenta(),
-        discord.Color.dark_magenta(),
-        discord.Color.gold(),
-        discord.Color.dark_gold(),
-        discord.Color.orange(),
-        discord.Color.dark_orange(),
-        discord.Color.red(),
-        discord.Color.dark_red(),
-        discord.Color.lighter_grey(),
-        discord.Color.dark_grey(),
-        discord.Color.light_grey(),
-        discord.Color.darker_grey(),
-        discord.Color.blurple(),
-        discord.Color.greyple()
-]
-
-bot.settings = {
-    "bot_owners": [],
-    "bot_admins": [],
-    "guild_owner":{},
-    "guild_admins":{},
-    "blacklisted_guilds":[]
-}
-
-print(bot.preloads)
-
 bot.run(token, reconnect=True)
