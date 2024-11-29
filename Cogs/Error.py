@@ -49,9 +49,8 @@ class Error(commands.Cog):
 			return await ctx.send(str(error))
 		if isinstance(error, commands.NotOwner):
 			return await ctx.send(str(error))
-		if isinstance(error, commands.NoEntryPointError):
-			if b:
-				return await b.send(error)
+		# if isinstance(error, commands.NoEntryPointError):
+		# 	if b: return await b.send(error)
 
 		if isinstance(error, commands.CommandInvokeError):
 			if 'DiscordException' in str(error):

@@ -6,7 +6,7 @@ class Bot_Configuration():
         pass
        
     def preloads():
-        preloads = ["Settings", "Cogloader"]
+        preloads = ["Cogloader", "Database_interact"]
         return preloads
         
     def settings():
@@ -18,6 +18,7 @@ class Bot_Configuration():
                 "guild_prefix":{},
                 "guild_honk":{},
                 "guild_nou":{},
+                "guild_lenny":{},
                 "blacklisted_guilds":[],
                 "ErrorChannel":0
         }
