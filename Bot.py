@@ -227,8 +227,8 @@ class Scrappy(commands.Bot):
                         except AttributeError:
                                 continue
 
-        async def on_command_error(self, ctx, error):
-                await ctx.reply(error)
+        # async def on_command_error(self, ctx, error):
+        #         await ctx.reply(error)
 
 bot = Scrappy()
 bot.run(token, reconnect=True)
