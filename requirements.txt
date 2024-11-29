@@ -4,3 +4,4 @@ py-cord
 python-dotenv
 progress
 requests
+typing-extensions

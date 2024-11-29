@@ -3,3 +3,6 @@
 ScrappyBot.code-workspace
 .ignore
 settings_dict.json
+Scrappy_Beta.py
+.venv
+__pycache__

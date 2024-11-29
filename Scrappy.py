@@ -3,7 +3,7 @@ import os
 import time
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
 load_dotenv()
 
 token = os.getenv("token")
@@ -69,6 +69,7 @@ class Scrappy(commands.Bot):
                         discord.Color.blurple(),
                         discord.Color.greyple()
                 ]
+                
 
         async def get_pre(self, bot, message):
                 # guild = message.guild.id
@@ -227,8 +228,8 @@ class Scrappy(commands.Bot):
                         except AttributeError:
                                 continue
 
-        # async def on_command_error(self, ctx, error):
-        #         await ctx.reply(error)
+        async def on_command_error(self, ctx, error):
+                await ctx.reply(error)
 
 bot = Scrappy()
 bot.run(token, reconnect=True)
