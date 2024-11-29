@@ -7,7 +7,7 @@ from datetime import tzinfo, timedelta, datetime, date
 import os
 import sys
 
-log = 'Error'
+log = '.Error'
 if not os.path.exists(log):
 	os.mkdir(log)
 
@@ -105,7 +105,7 @@ class Error(commands.Cog):
 
 		db_int = self.bot.get_cog("Database_interact")
 		if db_int: 
-			db_int.get_database_item("ErrorChannel", ch.id)
+			db_int.update_database_item("ErrorChannel", ch.id)
 			msg = 'Set error channel to: **' + str(ch) + '** in ' + str(ctx.guild)
 		else:
 			msg = "Unable to update Error Channel"
