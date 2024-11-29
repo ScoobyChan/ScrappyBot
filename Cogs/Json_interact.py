@@ -16,17 +16,14 @@ class Json_interact(commands.Cog):
     def check_json(self):
         if not os.path.exists('settings_dict.json'): 
             with open('settings_dict.json', "w") as file:
-                file.write(self.settings)
+                json.dump(self.settings, file)
 
-                # Open File
         try:
             with open('settings_dict.json', 'r') as file:
                 saved_settings = json.load(file) 
         except Exception as e:
             with open('settings_dict.json', 'r') as file:
-                print(file.read())
                 if file.read() == "":
-                    print(self.settings)
                     with open('settings_dict.json', "w") as file:
                         json.dump(self.settings, file)
 
@@ -47,8 +44,9 @@ class Json_interact(commands.Cog):
                     new_settings[x] = self.settings[x]
             
             with open('settings_dict.json', "w") as file:
-                file = open('settings_dict.json', "w")
+                
                 file.write(new_settings)
+                json.dump(self.settings, file)
             
 
     def interact_json(self, data_select, data_input=None, data_read="r"):
