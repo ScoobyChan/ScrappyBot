@@ -27,8 +27,7 @@ class Json_interact(commands.Cog):
                 if file.read == "":
                     print(self.settings)
                     with open('settings_dict.json', "w") as file:
-                        file.write(self.settings)
-                        file.close
+                        json.dump(self.settings, file)
 
             with open('settings_dict.json', 'r') as file:
                 saved_settings = json.load(file) 
