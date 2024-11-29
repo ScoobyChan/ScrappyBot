@@ -25,7 +25,7 @@ class Json_interact(commands.Cog):
         except Exception as e:
             with open('settings_dict.json', 'r') as file:
                 print(file.read())
-                if file.read == "":
+                if file.read() == "":
                     print(self.settings)
                     with open('settings_dict.json', "w") as file:
                         json.dump(self.settings, file)
