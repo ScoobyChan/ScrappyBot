@@ -14,7 +14,7 @@ class Yaml_interact(commands.Cog):
     def check_yaml(self):
         if not os.path.exists('settings_dict.yaml'): 
             with open('settings_dict.yaml', 'w') as file:
-                outputs = yaml.dump(self.settings, file)
+                yaml.dump(self.settings, file)
 
         with open('settings_dict.yaml', 'r') as file:
             try:
@@ -24,7 +24,7 @@ class Yaml_interact(commands.Cog):
 
         if len(saved_settings) == 0:
             with open('settings_dict.yaml', 'w') as file:
-                outputs = yaml.dump(self.settings, file)
+                yaml.dump(self.settings, file)
             
 
         if len(saved_settings) != len(self.settings):
@@ -36,7 +36,7 @@ class Yaml_interact(commands.Cog):
                     new_settings[x] = self.settings[x]
 
             with open('settings_dict.yaml', 'w') as file:
-                outputs = yaml.dump(new_settings, file)
+                yaml.dump(new_settings, file)
 
     def interact_yaml(self, data_select, data_input=None, data_read="r"):
         # data_select: item to load
@@ -54,10 +54,10 @@ class Yaml_interact(commands.Cog):
                 print(exc)
         
         if data_read == "r":
-            return loaded_settings.get(data_select, None)
+            return loaded_settings.get(data_select, self.settings[data_select])
         
         if data_read == "w":
             loaded_settings[data_select] = data_input
 
             with open('settings_dict.yaml', 'w') as file:
-                outputs = yaml.dump(loaded_settings, file)
+                yaml.dump(loaded_settings, file)

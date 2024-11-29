@@ -6,6 +6,8 @@ from discord.ext import commands
 from dotenv import load_dotenv
 load_dotenv()
 
+from Bot_Configuration import Bot_Configuration
+
 token = os.getenv("token")
 
 class Scrappy(commands.Bot):
@@ -34,47 +36,27 @@ class Scrappy(commands.Bot):
 
                 super().__init__(command_prefix=self.get_pre, pm_help=None, description="I'm a really boy ...", game=" with Scooby Chan", case_insensitive=True, intents=intents, allowed_mentions=allowed_mentions)
 
-                self.preloads = ["Settings", "Cogloader"]
-
-                self.settings = {
-                        "bot_owners": [],
-                        "bot_admins": [],
-                        "guild_owner":{},
-                        "guild_admins":{},
-                        "blacklisted_guilds":[]
-                }
-
-                self.res = time.localtime()
-                self.color = [
-                        discord.Color.teal(), 
-                        discord.Color.dark_teal(), 
-                        discord.Color.green(),
-                        discord.Color.dark_green(),
-                        discord.Color.blue(),
-                        discord.Color.dark_blue(),
-                        discord.Color.purple(),
-                        discord.Color.dark_purple(),
-                        discord.Color.magenta(),
-                        discord.Color.dark_magenta(),
-                        discord.Color.gold(),
-                        discord.Color.dark_gold(),
-                        discord.Color.orange(),
-                        discord.Color.dark_orange(),
-                        discord.Color.red(),
-                        discord.Color.dark_red(),
-                        discord.Color.lighter_grey(),
-                        discord.Color.dark_grey(),
-                        discord.Color.light_grey(),
-                        discord.Color.darker_grey(),
-                        discord.Color.blurple(),
-                        discord.Color.greyple()
-                ]
-                
+                self.preloads = Bot_Configuration.preloads()
+                self.settings = Bot_Configuration.settings()
+                self.res = Bot_Configuration.res()
+                self.color = Bot_Configuration.color()
 
         async def get_pre(self, bot, message):
-                # guild = message.guild.id
+                guild = str(message.guild.id)
                 _prefix = os.getenv("prefix")
-                prefix = '$' if (_prefix == "" or _prefix == None) else _prefix
+
+                guild_prefix = None
+                Database_int = bot.get_cog("Database_interact")
+                if Database_int:
+                        total_guild = Database_int.get_database_item("guild_prefix")
+                        if total_guild: 
+                                guild_prefix = total_guild.get(guild, None)
+
+                if not guild_prefix:
+                        prefix = '$' if (_prefix == "" or _prefix == None) else _prefix
+                else:
+                        prefix = guild_prefix
+                        
                 return prefix
 
         async def on_ready(self):

@@ -32,7 +32,6 @@ class Json_interact(commands.Cog):
 
         if len(saved_settings) == 0:
             with open('settings_dict.json', "w") as file:
-                file = open('settings_dict.json', "w")
                 file.write(json.dumps(self.settings))
 
         if len(saved_settings) != len(self.settings):
@@ -44,8 +43,6 @@ class Json_interact(commands.Cog):
                     new_settings[x] = self.settings[x]
             
             with open('settings_dict.json', "w") as file:
-                
-                file.write(new_settings)
                 json.dump(self.settings, file)
             
 
@@ -62,14 +59,12 @@ class Json_interact(commands.Cog):
             loaded_settings = json.load(file)
 
         if data_read == "r":
-            print(loaded_settings)
-            return loaded_settings.get(data_select, None)
+            return loaded_settings.get(data_select, self.settings[data_select])
         
         if data_read == "w":
             loaded_settings[data_select] = data_input
 
             with open('settings_dict.json', "w") as file:
-                file = open('settings_dict.json', "w")
-                file.write(loaded_settings)
+                json.dump(loaded_settings, file)
 
             # data updated

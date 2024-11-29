@@ -1,8 +1,6 @@
 # Ignore important Items
-.env
 ScrappyBot.code-workspace
-.ignore
-settings_dict.json
+settings_dict.*
 Scrappy_Beta.py
-.venv
+.*
 __pycache__
