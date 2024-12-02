@@ -61,19 +61,21 @@ class Honk(commands.Cog):
 			await ctx.send("Unable to connect to database")
 	
 	@commands.command()
-	async def setHonkChannel(self, ctx, name: discord.channel = None):
+	async def sethonkchannel(self, ctx, name: discord.TextChannel = None):
 		"""
 		[Channel]
 		Adds a dedicated Channel for Honk responses
 		"""
+		print(name)
+
 		if not name: name = 0
 		
-		if int(name) == 0:
+		if name == 0:
 			self.db_int.update_guild_database_item(ctx.guild.id, "guild_honk_channel", 0)
-			await ctx.send('The No U channel is removed')
+			await ctx.send('The Honk channel is removed')
 		else:	
 			self.db_int.update_guild_database_item(ctx.guild.id, 'guild_honk_channel', name.id)
-			await ch.send('The New Honk channel to listen on is: {}'.format(name))
+			await ctx.send('The New Honk channel to listen on is: {}'.format(name))
 
 def setup(bot):
 	bot.add_cog(Honk(bot))

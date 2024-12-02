@@ -55,19 +55,19 @@ class Nou(commands.Cog):
 		else:
 			await ctx.send("Unable to connect to database")
 	@commands.command()
-	async def setNouChannel(self, ctx, name: discord.channel = None):
+	async def setnouchannel(self, ctx, name: discord.TextChannel = None):
 		"""
 		[channel]
 		sets a dedicated No u channel
 		"""
 		if not name: name = 0
 
-		if int(name) == 0:
+		if name == 0:
 			self.db_int.update_guild_database_item(ctx.guild.id, "guild_nou_channel", 0)
 			await ctx.send('The No U channel is removed')
 		else:	
 			self.db_int.update_guild_database_item(ctx.guild.id, 'guild_nou_channel', name.id)
-			await ch.send('The New No U channel to listen on is: {}'.format(ch))
+			await ctx.send('The New No U channel to listen on is: {}'.format(name))
 
 def setup(bot):
 	bot.add_cog(Nou(bot))
