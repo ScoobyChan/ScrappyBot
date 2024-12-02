@@ -22,25 +22,23 @@ class Honk(commands.Cog):
 
 		honk_enable = self.db_int.get_guild_database_item(message.guild.id, "guild_honk_enable", 0)
 		honk_guild = self.db_int.get_guild_database_item(message.guild.id, "guild_honk_channel", 0)
-		print(honk_enable)
-		print(honk_guild)
+		
 		if honk_enable == 1:
 			if message.channel.id == honk_guild or honk_guild == (0 or None):
 				msgs = message.content.lower()
-				print(msgs)
 				search_result = re.search("(honk|h.o.n.k|knoh|k.n.o.h)", msgs)
-				print(search_result)
+				
 				if search_result:
 					search = random.choice(['honk', 'goose'])
 
 					if not self.token: return
 
 					API = "http://api.giphy.com/v1/gifs/search?q={}&api_key={}&limit=100&rating=R".format(search, self.token)
-					print(API)
+
 					response = requests.get(API)
 					data = response.json()
 					random_goose = random.choice(data.get("data", None)).get("images", {}).get("downsized", {}).get("url", None)
-					print(random_goose)
+
 					await message.channel.send(random_goose)
 
 
@@ -71,10 +69,10 @@ class Honk(commands.Cog):
 		if not name: name = 0
 		
 		if int(name) == 0:
-			self.db_int.update_guild_database_item(ctx.guild.id, "guild_honk_enable", 0)
+			self.db_int.update_guild_database_item(ctx.guild.id, "guild_honk_channel", 0)
 			await ctx.send('The No U channel is removed')
 		else:	
-			self.settings.ServerConfig(ctx.guild.id, 'HonkChannel', name.id)
+			self.db_int.update_guild_database_item(ctx.guild.id, 'guild_honk_channel', name.id)
 			await ch.send('The New Honk channel to listen on is: {}'.format(name))
 
 def setup(bot):
