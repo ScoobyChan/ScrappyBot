@@ -66,8 +66,6 @@ class Honk(commands.Cog):
 		[Channel]
 		Adds a dedicated Channel for Honk responses
 		"""
-		print(name)
-
 		if not name: name = 0
 		
 		if name == 0:
