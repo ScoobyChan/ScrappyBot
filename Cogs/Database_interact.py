@@ -12,10 +12,10 @@ class Database_interact(commands.Cog):
 # mains
 ####################################################################################################
 
-	def get_database_item(self, db_item):
+	def get_database_item(self, db_item, db_return = None):
 		Yaml_int = self.bot.get_cog("Yaml_interact")
 		Json_int = self.bot.get_cog("Json_interact")
-		qet_db_item = None
+		qet_db_item = db_return
 		
 		if Json_int or Yaml_int:
 			yaml_guild_find = Yaml_int.interact_yaml(db_item)
@@ -56,10 +56,10 @@ class Database_interact(commands.Cog):
 # Guilds
 ####################################################################################################
 
-	def get_guild_database_item(self, guild_id, db_item):
+	def get_guild_database_item(self, guild_id, db_item, db_return=None):
 		Yaml_int = self.bot.get_cog("Yaml_interact")
 		Json_int = self.bot.get_cog("Json_interact")
-		qet_db_item = None
+		qet_db_item = db_return
 		
 		if Json_int or Yaml_int:
 			yaml_guild_find = Yaml_int.interact_yaml(db_item)

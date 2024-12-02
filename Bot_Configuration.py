@@ -16,8 +16,10 @@ class Bot_Configuration():
                 "guild_owner":{},
                 "guild_admins":{},
                 "guild_prefix":{},
-                "guild_honk":{},
-                "guild_nou":{},
+                "guild_honk_channel":{},
+                "guild_nou_channel":{},
+                "guild_honk_enable":{},
+                "guild_nou_enable":{},
                 "guild_lenny":{},
                 "blacklisted_guilds":[],
                 "ErrorChannel":0

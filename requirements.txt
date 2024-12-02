@@ -5,3 +5,4 @@ python-dotenv
 progress
 requests
 typing-extensions
+imgurpython
