@@ -80,7 +80,7 @@ class Error(commands.Cog):
 			h = None
 			_cogs = ctx.cog
 			_cog = self.bot.get_cog(_cogs)
-			for c in _cog.get_commands():
+			for c in _cog.get_commands(): # need to fix?
 				if str(c) == ctx.command:
 					h = c
 					

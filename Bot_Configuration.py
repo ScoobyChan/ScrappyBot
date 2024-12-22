@@ -21,6 +21,10 @@ class Bot_Configuration():
                 "guild_honk_enable":{},
                 "guild_nou_enable":{},
                 "guild_lenny":{},
+                "guild_welcome_msg":{},
+                "guild_goodbye_msg":{},
+                "guild_welcome_channel":{},
+                "guild_goodbye_channel":{},
                 "blacklisted_guilds":[],
                 "ErrorChannel":0
         }

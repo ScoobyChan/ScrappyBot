@@ -6,9 +6,9 @@ from discord.ext import commands
 
 
 class Lenny(commands.Cog):
-	def __init__(self, bot, settings):
+	def __init__(self, bot):
 		self.bot = bot
-		self.settings = settings
+		self.db_int = self.bot.get_cog("Database_interact")
 
 	# List Permissions For Bot/Users
 	@commands.command()
@@ -20,8 +20,7 @@ class Lenny(commands.Cog):
 		await ctx.message.delete()
 		await ctx.send(lenny)
 
-		db_int = self.bot.get_cog("Database_interact")
-		if db_int: db_int.update_guild_database_item(ctx.guild.id, "guild_lenny", ctx.author.id)
+		if self.db_int: self.db_int.update_guild_database_item(ctx.guild.id, "guild_lenny", ctx.author.id)
 
 	# Update JSON
 	@commands.command()
@@ -30,8 +29,7 @@ class Lenny(commands.Cog):
 		Shows who last lennied
 		"""
 		guild_lenny = user_lenny = user = None
-		db_int = self.bot.get_cog("Database_interact")
-		if db_int: guild_lenny = db_int.get_guild_database_item(ctx.guild.id, "guild_lenny")
+		if self.db_int: guild_lenny = self.db_int.get_guild_database_item(ctx.guild.id, "guild_lenny")
 
 		if guild_lenny: 
 			user = self.bot.get_user(guild_lenny)
@@ -54,10 +52,8 @@ class Lenny(commands.Cog):
 		await ctx.message.delete()
 		await ctx.send(lenny)
 
-		db_int = self.bot.get_cog("Database_interact")
-		if db_int: db_int.update_guild_database_item(ctx.guild.id, "guild_lenny", ctx.author.id)
+		if self.db_int: self.db_int.update_guild_database_item(ctx.guild.id, "guild_lenny", ctx.author.id)
 
 
 def setup(bot):
-	settings = bot.get_cog("Settings")
-	bot.add_cog(Lenny(bot, settings))
+	bot.add_cog(Lenny(bot))
