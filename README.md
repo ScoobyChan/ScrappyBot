@@ -5,6 +5,12 @@ Lavalink is required to be setup too for Music to be operational
 
 # Installation
 Install requirements with: 
+
+```bash
+python -m venv ./venv
+source ./venv/bin/activate
+```
+
 ```
 pip install -r requirements.txt
 ```
