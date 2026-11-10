@@ -8,7 +8,8 @@ from discord.ext import commands
 
 
 async def setup(bot: commands.Bot) -> None:
-    await bot.add_cog(MariaDB_interact(bot))
+    if os.environ["MARIADB_HOST"]:
+        await bot.add_cog(MariaDB_interact(bot))
 
 
 class MariaDB_interact(commands.Cog):
