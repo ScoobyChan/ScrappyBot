@@ -64,4 +64,4 @@ class Pet(commands.Cog):
 
 async def setup(bot):
 	settings = bot.get_cog("Settings")
-	bot.add_cog(Pet(bot, settings))
+	await bot.add_cog(Pet(bot, settings))

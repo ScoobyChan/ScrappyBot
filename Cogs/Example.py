@@ -30,4 +30,4 @@ class Example(commands.Cog):
 		await ctx.send('{} just got slapped {} times for {}'.format(slapped, amount, reason))
 
 async def setup(bot):
-	bot.add_cog(Example(bot))
+	await bot.add_cog(Example(bot))
