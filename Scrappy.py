@@ -90,13 +90,13 @@ class Scrappy(commands.Bot):
                 for name in self.preloads:
                         if not (cogs_dir / f"{name}.py").is_file():
                                 raise FileNotFoundError(f"Required cog not found: {name}")
-                        self.load_extension(f"Cogs.{name}")
+                        await self.load_extension(f"Cogs.{name}")
 
                 for file in sorted(cogs_dir.glob("*.py")):
                         if file.stem == "__init__" or file.stem in self.preloads:
                                 continue
                         try:
-                                self.load_extension(f"Cogs.{file.stem}")
+                                await self.load_extension(f"Cogs.{file.stem}")
                         except Exception:
                                 logger.exception("Failed loading cog %s", file.stem)
 
