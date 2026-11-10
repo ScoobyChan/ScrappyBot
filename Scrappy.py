@@ -8,7 +8,7 @@ from pathlib import Path
 
 load_dotenv()
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 from Bot_Configuration import Bot_Configuration
@@ -86,7 +86,7 @@ class Scrappy(commands.Bot):
         async def setup_hook(self) -> None:
                 logger.info("Initiating setup hook")
                 cogs_dir = Path(__file__).resolve().parent / "Cogs"
-
+                logger.info("Loading cogs from directory: %s", cogs_dir)
                 for name in self.preloads:
                         if not (cogs_dir / f"{name}.py").is_file():
                                 raise FileNotFoundError(f"Required cog not found: {name}")
