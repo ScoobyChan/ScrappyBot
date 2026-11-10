@@ -1,5 +1,6 @@
 import os
 import sys
+import asyncio
 import datetime
 import time
 import discord
@@ -7,14 +8,15 @@ from discord.ext import commands
 import traceback
 import random
 from progress.bar import Bar
+from pathlib import Path
 
 import logging
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-def setup(bot: commands.Bot) -> None:
-        bot.add_cog(Cogloader(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(Cogloader(bot))
 
 start_time = time.time()
 
@@ -22,12 +24,37 @@ class Cogloader(commands.Cog):
         def __init__(self, bot):
                 self.bot = bot
                 self.bot.start_time = discord.utils.utcnow()
+                self._reload_lock = asyncio.Lock()
 
         def loaded(self) -> None:
                 logger.info('Loaded {} {}'.format(len(self.bot.cogs), 'Cog' if len(self.bot.cogs) < 2 else 'Cogs'))
                 logger.info('Logged in as:{0} (ID: {0.id})\n'.format(self.bot.user))
                 logger.info('{}/{}/{}, {}:{}:{}\n'.format(self.bot.start_time.day if len(str(self.bot.start_time.day)) > 1 else ('0' + str(self.bot.start_time.day)), self.bot.start_time.month if len(str(self.bot.start_time.month)) > 1 else ('0' + str(self.bot.start_time.month)), self.bot.start_time.year, self.bot.start_time.hour if len(str(self.bot.start_time.hour)) > 1 else ('0' + str(self.bot.start_time.hour)), self.bot.start_time.minute if len(str(self.bot.start_time.minute)) > 1 else ('0' + str(self.bot.start_time.minute)), self.bot.start_time.second if len(str(self.bot.start_time.second)) > 1 else ('0' + str(self.bot.start_time.second))))
                 logger.info("Invite Link:\nhttps://discord.com/oauth2/authorize?client_id={}&scope=bot&permissions=8\n".format(self.bot.user.id))
+
+        def _available_extensions(self) -> list[str]:
+                cogs_dir = Path(__file__).resolve().parent
+                return [
+                        f"Cogs.{file.stem}"
+                        for file in sorted(cogs_dir.glob("*.py"))
+                        if file.stem != "__init__"
+                ]
+
+        def _resolve_extensions(self, selected: str | None) -> list[str]:
+                available = self._available_extensions()
+                if selected is None:
+                        return available
+
+                name = selected
+                if name.startswith("Cogs."):
+                        name = name[len("Cogs."):]
+                if name.endswith(".py"):
+                        name = name[:-3]
+
+                extension = f"Cogs.{name}"
+                if extension not in available:
+                        raise ValueError(f"Unknown cog: {selected}")
+                return [extension]
 
         async def _load_extension(self, sel_cog=None, progress_bar=None) -> None:
                 # Find cogs to load
@@ -58,7 +85,7 @@ class Cogloader(commands.Cog):
                                 cog = '{}.{}'.format(directory, loading)
                                 try:
                                         if not self.bot.get_cog(loading):
-                                                self.bot.load_extension(cog)
+                                                await self.bot.load_extension(cog)
                                                 self.bot.dispatch("loaded_extension", self.bot.extensions.get(cog))
                                                 logger.info('Loaded {}'.format(loading))
                                 except Exception as error:
@@ -90,7 +117,7 @@ class Cogloader(commands.Cog):
                         try:
                                 if self.bot.get_cog(c):
                                         self.bot.dispatch("unloaded_extension", self.bot.extensions.get(cog))
-                                        self.bot.unload_extension(cog)
+                                        await self.bot.unload_extension(cog)
                         except Exception as error:
                                 logger.error('{} cannot be unloaded. [{}]'.format(c, error))
 
@@ -102,12 +129,16 @@ class Cogloader(commands.Cog):
                 """
                 msg = await ctx.send('Reloading Cogs')
                 
-                self.reload_lock = asyncio.Lock()
-                async with self.reload_lock:
-                        await self._unload_extension(args)
-                        await self._load_extension(args)
-                await self._unload_extension(args)
-                await self._load_extension(args)
+                async with self._reload_lock:
+                        extensions = self._resolve_extensions(args)
+                        preloads = {f"Cogs.{name}" for name in self.bot.preloads}
+                        extensions = [ext for ext in extensions if ext not in preloads]
+
+                        for extension in extensions:
+                                if extension in self.bot.extensions:
+                                        await self.bot.reload_extension(extension)
+                                else:
+                                        await self.bot.load_extension(extension)
 
                 await msg.edit(content='Cogs Successfully reloaded')
 
@@ -148,16 +179,15 @@ class Cogloader(commands.Cog):
                 """
                 Clears the Cache
                 """
-                cache_dir = Path("Cogs/__pycache__")
-                await self._unload_extension()
+                cache_dir = Path(__file__).resolve().parent / "__pycache__"
+
+                removed = 0
                 if cache_dir.exists():
-                        for o in os.listdir(cache_dir):
-                                if not o.startswith('CogLoader') and not o.startswith('Settings') and not o.startswith('BotControl'):
-                                        os.remove(cache_dir)
+                        for cache_file in cache_dir.glob("*.pyc"):
+                                cache_file.unlink()
+                                removed += 1
 
-                #  self._load_extension()
-
-                await ctx.send('Cache has been removed')
+                await ctx.send(f"Removed {removed} cache file(s)")
 
         @commands.command()
         @commands.is_owner()

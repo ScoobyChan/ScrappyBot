@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
 
-def setup(bot):
-	bot.add_cog(Database_interact(bot))
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(Database_interact(bot))
 
 class Database_interact(commands.Cog):
 	def __init__(self, bot):
@@ -98,3 +98,6 @@ class Database_interact(commands.Cog):
 			qet_db_item = yaml_guild_find if yaml_guild_find else json_guild_find
 
 		if qet_db_item: return qet_db_item
+
+	def some_command(self, ctx, _user: discord.User = None):
+		members = list(_user or [ctx.author])

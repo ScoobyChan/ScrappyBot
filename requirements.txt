@@ -6,3 +6,4 @@ progress
 requests
 typing-extensions
 imgurpython
+asyncmy
