@@ -1,6 +1,6 @@
 certifi 
 pyyaml
-py-cord
+discord.py
 python-dotenv
 progress
 requests
