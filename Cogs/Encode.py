@@ -94,5 +94,5 @@ class Encode(commands.Cog):
 		)
 		await ctx.send(embed=embed)
 
-def setup(bot):
+async def setup(bot):
 	bot.add_cog(Encode(bot))

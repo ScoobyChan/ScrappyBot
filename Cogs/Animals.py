@@ -8,8 +8,8 @@ import aiohttp
 import random
 from discord.ext import commands
 
-def setup(bot):
-	bot.add_cog(Animals(bot))
+async def setup(bot):
+	await bot.add_cog(Animals(bot))
 
 class Animals(commands.Cog):
 	def __init__(self, bot):

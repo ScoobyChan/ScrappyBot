@@ -79,5 +79,5 @@ class Drink(commands.Cog):
 		# print(msg)
 		await ctx.send(msg)
 
-def setup(bot):
-	bot.add_cog(Drink(bot))
+async def setup(bot):
+	await bot.add_cog(Drink(bot))

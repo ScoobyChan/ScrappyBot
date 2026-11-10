@@ -34,5 +34,5 @@ class Lmgtfy(commands.Cog):
 			except Exception as e:
 				traceback.print_exc()
 
-def setup(bot):
-	bot.add_cog(Lmgtfy(bot))
+async def setup(bot):
+	await bot.add_cog(Lmgtfy(bot))

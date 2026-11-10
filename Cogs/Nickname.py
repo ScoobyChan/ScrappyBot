@@ -33,5 +33,5 @@ class Nickname(commands.Cog):
 				print(e)
 				pass
 			
-def setup(bot):
-	bot.add_cog(Nickname(bot))
+async def setup(bot):
+	await bot.add_cog(Nickname(bot))

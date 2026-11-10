@@ -64,5 +64,5 @@ class Eat(commands.Cog):
 		await ctx.send(msg)
 
 
-def setup(bot):
+async def setup(bot):
 	bot.add_cog(Eat(bot))

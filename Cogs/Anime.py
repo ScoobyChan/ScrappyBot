@@ -8,8 +8,8 @@ import discord
 import random
 from discord.ext import commands
 
-def setup(bot):
-	bot.add_cog(Anime(bot))
+async def setup(bot):
+	await bot.add_cog(Anime(bot))
 
 class Anime(commands.Cog):
 	def __init__(self, bot):

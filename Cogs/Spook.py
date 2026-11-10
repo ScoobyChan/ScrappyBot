@@ -66,6 +66,6 @@ class Spook(commands.Cog):
 		# print(msg)	
 		await ctx.send(msg)	
 
-def setup(bot):
+async def setup(bot):
 	settings = bot.get_cog("Settings")
-	bot.add_cog(Spook(bot, settings))
+	await bot.add_cog(Spook(bot, settings))

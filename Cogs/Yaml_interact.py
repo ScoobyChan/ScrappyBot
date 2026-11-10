@@ -3,8 +3,8 @@ import os
 import discord
 from discord.ext import commands
 
-def setup(bot) -> None:
-	bot.add_cog(Yaml_interact(bot))
+async def setup(bot):
+    await bot.add_cog(Yaml_interact(bot))
 
 class Yaml_interact(commands.Cog):
     def __init__(self, bot):

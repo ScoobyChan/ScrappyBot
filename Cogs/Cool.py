@@ -19,5 +19,5 @@ class Cool(commands.Cog):
 	async def _bot(self, ctx):
 		await ctx.send('Yes, the bot is cool.')
 
-def setup(bot):
-	bot.add_cog(Cool(bot))
+async def setup(bot):
+	await bot.add_cog(Cool(bot))

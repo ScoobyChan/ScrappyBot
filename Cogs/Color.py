@@ -2,8 +2,8 @@ import random
 import discord
 from discord.ext import commands
 
-def setup(bot):
-	bot.add_cog(Color(bot))
+async def setup(bot):
+	await bot.add_cog(Color(bot))
 
 class Color(commands.Cog):
 	def __init__(self, bot):

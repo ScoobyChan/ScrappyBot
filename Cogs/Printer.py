@@ -53,5 +53,5 @@ class Printer(commands.Cog):
 		embed.set_image(url=f'https://cdn.discordapp.com/avatars/{u.id}/{u.avatar}.webp?size=1024')
 		await ctx.send(embed=embed)
 
-def setup(bot):
-	bot.add_cog(Printer(bot))
+async def setup(bot):
+	await bot.add_cog(Printer(bot))

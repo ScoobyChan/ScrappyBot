@@ -55,5 +55,5 @@ class Lenny(commands.Cog):
 		if self.db_int: self.db_int.update_guild_database_item(ctx.guild.id, "guild_lenny", ctx.author.id)
 
 
-def setup(bot):
-	bot.add_cog(Lenny(bot))
+async def setup(bot):
+	await bot.add_cog(Lenny(bot))

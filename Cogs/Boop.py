@@ -69,5 +69,5 @@ class Boop(commands.Cog):
 		# print(msg)
 		await ctx.send(msg)
 
-def setup(bot):
-	bot.add_cog(Boop(bot))
+async def setup(bot):
+	await bot.add_cog(Boop(bot))

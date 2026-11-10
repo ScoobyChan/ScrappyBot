@@ -5,8 +5,8 @@ import aiohttp
 import random
 from discord.ext import commands
 
-def setup(bot):
-	bot.add_cog(Personality(bot))
+async def setup(bot):
+	await bot.add_cog(Personality(bot))
 
 class Personality(commands.Cog):
 	def __init__(self, bot):

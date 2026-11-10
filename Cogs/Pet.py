@@ -62,6 +62,6 @@ class Pet(commands.Cog):
 		# print(msg)
 		await ctx.send(msg)
 
-def setup(bot):
+async def setup(bot):
 	settings = bot.get_cog("Settings")
 	bot.add_cog(Pet(bot, settings))

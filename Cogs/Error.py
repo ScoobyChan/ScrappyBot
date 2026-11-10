@@ -124,5 +124,5 @@ class Error(commands.Cog):
 		else:
 			await ctx.send('Cant find Error channel')
 
-def setup(bot):
-	bot.add_cog(Error(bot))
+async def setup(bot):
+	await bot.add_cog(Error(bot))

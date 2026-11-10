@@ -69,5 +69,5 @@ class Nou(commands.Cog):
 			self.db_int.update_guild_database_item(ctx.guild.id, 'guild_nou_channel', name.id)
 			await ctx.send('The New No U channel to listen on is: {}'.format(name))
 
-def setup(bot):
-	bot.add_cog(Nou(bot))
+async def setup(bot):
+	await bot.add_cog(Nou(bot))

@@ -4,8 +4,8 @@ import discord
 import random
 from discord.ext import commands
 
-def setup(bot):
-	bot.add_cog(Coffee(bot))
+async def setup(bot):
+	await bot.add_cog(Coffee(bot))
 
 class Coffee(commands.Cog):
 	def __init__(self, bot):

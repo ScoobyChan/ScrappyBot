@@ -20,5 +20,5 @@ class BotAdmin(commands.Cog):
 
 		await ctx.send("Updated databases")
 
-def setup(bot: commands.Bot) -> None:
-	bot.add_cog(BotAdmin(bot))
+async def setup(bot):
+	await bot.add_cog(BotAdmin(bot))
