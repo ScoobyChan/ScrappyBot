@@ -84,30 +84,21 @@ class Scrappy(commands.Bot):
                 return prefix
 
         async def setup_hook(self) -> None:
-                logging.info("Initiating Setup Hook")
-                for cog in self.preloads:
-                        path = f"Cogs/{cog}.py"
-                        if not os.path.exists(path):
-                                logger.warning("Missing cog %s", cog)
-                                continue
-                        logger.info("Loading cog %s", cog)
-                        try:
-                                Cogloader = self.get_cog('Cogloader')
-                                if Cogloader:
-                                        await Cogloader._load_extension(progress_bar=True)
-                                        self.load_extension(f"Cogs.{cog}")
-                        except Exception:
-                                logger.exception("Failed loading cog %s", cog)
+                logger.info("Initiating setup hook")
+                cogs_dir = Path(__file__).resolve().parent / "Cogs"
 
-                for file in Path("Cogs").glob("*.py"):
-                        if file.stem == "__init__":
-                                continue
+                for name in self.preloads:
+                        if not (cogs_dir / f"{name}.py").is_file():
+                                raise FileNotFoundError(f"Required cog not found: {name}")
+                        self.load_extension(f"Cogs.{name}")
 
+                for file in sorted(cogs_dir.glob("*.py")):
+                        if file.stem == "__init__" or file.stem in self.preloads:
+                                continue
                         try:
                                 self.load_extension(f"Cogs.{file.stem}")
-                                logging.info(f"Loaded {file.stem}")
-                        except Exception as e:
-                                logging.error(f"Failed loading {file.stem}: {e}")
+                        except Exception:
+                                logger.exception("Failed loading cog %s", file.stem)
 
                 await self.tree.sync()
 
@@ -156,15 +147,20 @@ class Scrappy(commands.Bot):
                 reactions: list[str] = []
                 for cog in self.cogs.values():
                         try:
+                                handler = getattr(cog, "onmessage", None)
+                                if not callable(handler):
+                                        continue
+
                                 try:
-                                        check = await cog.onmessage(message)
-                                except TypeError as e:
-                                        if self.debug:
-                                                logging.debug(cog)
-                                                logging.debug(type(message))
-                                                logging.debug(message)
-                                        logging.error('########## Big error :P #############')
-                                        logging.error(e)
+                                        check = await handler(message)
+                                except Exception:
+                                        logger.exception("Error in onmessage for %s", cog.__class__.__name__)
+                                        continue
+
+                                if not isinstance(check, dict):
+                                        continue
+
+                                # Keep the existing Delete / Ignore / Respond / Reaction handling here.
                         except AttributeError as e:
                                 # Onto the next
                                 logging.error("AttributeError in cog {}: {}".format(cog.__class__.__name__, e))
@@ -221,3 +217,9 @@ if not token:
 
 logging.info("Starting bot...")
 bot.run(token, reconnect=True)
+
+cache_dir = Path(".").resolve() / "cogs" / "cache"
+if cache_dir.is_dir():
+    for entry in cache_dir.iterdir():
+        if entry.is_file():
+            entry.unlink()
