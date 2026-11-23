@@ -2,102 +2,125 @@ import discord
 from discord.ext import commands
 
 
-class Help(commands.Cog):
-    """Modern help command."""
+class HelpPaginator(discord.ui.View):
+    def __init__(self, ctx, categories):
+        super().__init__(timeout=180)
 
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
+        self.ctx = ctx
+        self.categories = categories
+        self.category_names = list(categories.keys())
 
-    @commands.hybrid_command(
-        name="help",
-        description="Shows all commands or information about a specific command."
-    )
-    async def help(self, ctx: commands.Context, *, command_name: str = None):
-        if command_name is None:
-            await self.send_bot_help(ctx)
-        else:
-            await self.send_command_help(ctx, command_name)
+        self.current_category = 0
+        self.current_page = 0
 
-    async def send_bot_help(self, ctx):
+        self.add_item(CategorySelect(self))
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        return interaction.user.id == self.ctx.author.id
+
+    def get_commands(self):
+        category = self.category_names[self.current_category]
+        return self.categories[category]
+
+    def max_pages(self):
+        cmds = self.get_commands()
+        return max(1, (len(cmds) + 5) // 6)
+
+    async def update_message(self, interaction):
+        embed = self.build_embed()
+
+        self.previous.disabled = self.current_page == 0
+        self.next.disabled = self.current_page >= self.max_pages() - 1
+
+        await interaction.response.edit_message(
+            embed=embed,
+            view=self
+        )
+
+    def build_embed(self):
+        category = self.category_names[self.current_category]
+        commands_list = self.categories[category]
+
+        start = self.current_page * 6
+        end = start + 6
+
         embed = discord.Embed(
-            title=f"{self.bot.user.name} Help",
-            description="Available command categories",
+            title=f"📚 {category}",
             colour=discord.Colour.blurple()
         )
 
-        for cog_name, cog in self.bot.cogs.items():
-            commands_list = []
-
-            for command in cog.get_commands():
-                if command.hidden:
-                    continue
-
-                try:
-                    if await command.can_run(ctx):
-                        commands_list.append(f"`{command.name}`")
-                except commands.CheckFailure:
-                    pass
-
-            if commands_list:
-                embed.add_field(
-                    name=f"📁 {cog_name}",
-                    value=" ".join(commands_list),
-                    inline=False
-                )
-
-        embed.set_footer(
-            text=f"Use {ctx.clean_prefix}help <command> for more information"
-        )
-
-        await ctx.send(embed=embed)
-
-    async def send_command_help(self, ctx, command_name: str):
-        command = self.bot.get_command(command_name)
-
-        if not command:
-            return await ctx.send(
-                f"❌ Command `{command_name}` not found."
-            )
-
-        embed = discord.Embed(
-            title=f"📖 {command.qualified_name}",
-            colour=discord.Colour.green()
-        )
-
-        embed.add_field(
-            name="Description",
-            value=command.help or command.description or "No description provided.",
-            inline=False
-        )
-
-        usage = (
-            f"{ctx.clean_prefix}{command.qualified_name} "
-            f"{command.signature}"
-        )
-
-        embed.add_field(
-            name="Usage",
-            value=f"```{usage}```",
-            inline=False
-        )
-
-        if command.aliases:
+        for command in commands_list[start:end]:
             embed.add_field(
-                name="Aliases",
-                value=", ".join(f"`{a}`" for a in command.aliases),
+                name=f"/{command.qualified_name}",
+                value=command.help or "No description provided.",
                 inline=False
             )
 
-        cog_name = command.cog_name or "No Category"
-
-        embed.add_field(
-            name="Category",
-            value=cog_name,
-            inline=False
+        embed.set_footer(
+            text=f"Page {self.current_page + 1}/{self.max_pages()}"
         )
 
-        await ctx.send(embed=embed)
+        return embed
+
+    @discord.ui.button(
+        emoji="⬅️",
+        style=discord.ButtonStyle.secondary
+    )
+    async def previous(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
+        self.current_page -= 1
+        await self.update_message(interaction)
+
+    @discord.ui.button(
+        emoji="🏠",
+        style=discord.ButtonStyle.primary
+    )
+    async def home(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
+        self.current_category = 0
+        self.current_page = 0
+        await self.update_message(interaction)
+
+    @discord.ui.button(
+        emoji="➡️",
+        style=discord.ButtonStyle.secondary
+    )
+    async def next(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
+        self.current_page += 1
+        await self.update_message(interaction)
 
 
-async def setup(bot):
-    await bot.add_cog(Help(bot))
+class CategorySelect(discord.ui.Select):
+    def __init__(self, paginator):
+        self.paginator = paginator
+
+        options = [
+            discord.SelectOption(
+                label=name,
+                emoji="📁"
+            )
+            for name in paginator.category_names
+        ]
+
+        super().__init__(
+            placeholder="Choose a category...",
+            options=options
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        self.paginator.current_category = (
+            self.paginator.category_names.index(self.values[0])
+        )
+        self.paginator.current_page = 0
+
+        await self.paginator.update_message(interaction)
