@@ -8,3 +8,4 @@ typing-extensions
 imgurpython
 asyncmy
 asyncpg
+wavelink
