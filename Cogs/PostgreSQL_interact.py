@@ -1,7 +1,6 @@
 import json
 import os
 from typing import Any
-
 import asyncpg
 from discord.ext import commands
 
