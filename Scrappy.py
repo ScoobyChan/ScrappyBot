@@ -14,6 +14,9 @@ logger = logging.getLogger(__name__)
 from Bot_Configuration import Bot_Configuration
 
 token = os.getenv("TOKEN")
+LAVALINK_HOST = os.getenv("LAVALINK_HOST")
+LAVALINK_PORT = os.getenv("LAVALINK_PORT")
+LAVALINK_PASSWORD = os.getenv("LAVALINK_PASSWORD")
 
 # logging.debug(f"Token loaded: {token}")
 
@@ -87,6 +90,24 @@ class Scrappy(commands.Bot):
                 logger.info("Initiating setup hook")
                 cogs_dir = Path(__file__).resolve().parent / "Cogs"
                 logger.info("Loading cogs from directory: %s", cogs_dir)
+
+                node = wavelink.Node(
+                        identifier="main",
+                        uri=f"http://{LAVALINK_HOST}:{LAVALINK_PORT}",
+                        password=LAVALINK_PASSWORD,
+                )
+        
+                await wavelink.Pool.connect(
+                        nodes=[node],
+                        client=self
+                )
+
+                if node.identifier == "main":
+                        logger.info("Wavelink node is the main node. Ready to handle music commands.")
+                else:
+                        logger.warning("Wavelink node is not the main node. Music commands may not function as expected.")
+
+
                 for name in self.preloads:
                         if not (cogs_dir / f"{name}.py").is_file():
                                 raise FileNotFoundError(f"Required cog not found: {name}")
@@ -96,6 +117,10 @@ class Scrappy(commands.Bot):
                         if file.stem == "__init__" or file.stem in self.preloads:
                                 continue
                         try:
+                                logger.info("Loading cog: %s", file.stem)
+                                if file.stem == "Music" and node.identifier != "main":
+                                        logger.warning("Skipping Music cog due to missing Lavalink configuration.")
+                                        continue
                                 await self.load_extension(f"Cogs.{file.stem}")
                         except Exception:
                                 logger.exception("Failed loading cog %s", file.stem)
