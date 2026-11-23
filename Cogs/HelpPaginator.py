@@ -1,11 +1,14 @@
 import discord
 from discord.ext import commands
 
-async def setup(bot):
-	await bot.add_cog(HelpPaginator(bot))
+
+async def setup(bot: commands.Bot) -> None:
+    bot.help_command = None
+    await bot.add_cog(HelpCog(bot))
+
 
 class HelpPaginator(discord.ui.View):
-    def __init__(self, ctx, categories):
+    def __init__(self, ctx: commands.Context, categories: dict[str, list[commands.Command]]):
         super().__init__(timeout=180)
 
         self.ctx = ctx
@@ -16,30 +19,33 @@ class HelpPaginator(discord.ui.View):
         self.current_page = 0
 
         self.add_item(CategorySelect(self))
+        self._sync_button_states()
 
     async def interaction_check(self, interaction: discord.Interaction):
         return interaction.user.id == self.ctx.author.id
 
-    def get_commands(self):
+    def get_commands(self) -> list[commands.Command]:
         category = self.category_names[self.current_category]
         return self.categories[category]
 
-    def max_pages(self):
+    def max_pages(self) -> int:
         cmds = self.get_commands()
         return max(1, (len(cmds) + 5) // 6)
 
-    async def update_message(self, interaction):
-        embed = self.build_embed()
-
+    def _sync_button_states(self) -> None:
         self.previous.disabled = self.current_page == 0
         self.next.disabled = self.current_page >= self.max_pages() - 1
+
+    async def update_message(self, interaction: discord.Interaction) -> None:
+        embed = self.build_embed()
+        self._sync_button_states()
 
         await interaction.response.edit_message(
             embed=embed,
             view=self
         )
 
-    def build_embed(self):
+    def build_embed(self) -> discord.Embed:
         category = self.category_names[self.current_category]
         commands_list = self.categories[category]
 
@@ -52,9 +58,10 @@ class HelpPaginator(discord.ui.View):
         )
 
         for command in commands_list[start:end]:
+            description = command.short_doc or "No description provided."
             embed.add_field(
-                name=f"/{command.qualified_name}",
-                value=command.help or "No description provided.",
+                name=f"{self.ctx.clean_prefix}{command.qualified_name}",
+                value=description,
                 inline=False
             )
 
@@ -73,6 +80,8 @@ class HelpPaginator(discord.ui.View):
         interaction: discord.Interaction,
         button: discord.ui.Button
     ):
+        if self.current_page == 0:
+            return
         self.current_page -= 1
         await self.update_message(interaction)
 
@@ -98,12 +107,14 @@ class HelpPaginator(discord.ui.View):
         interaction: discord.Interaction,
         button: discord.ui.Button
     ):
+        if self.current_page >= self.max_pages() - 1:
+            return
         self.current_page += 1
         await self.update_message(interaction)
 
 
 class CategorySelect(discord.ui.Select):
-    def __init__(self, paginator):
+    def __init__(self, paginator: HelpPaginator):
         self.paginator = paginator
 
         options = [
@@ -119,10 +130,47 @@ class CategorySelect(discord.ui.Select):
             options=options
         )
 
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: discord.Interaction) -> None:
         self.paginator.current_category = (
             self.paginator.category_names.index(self.values[0])
         )
         self.paginator.current_page = 0
 
         await self.paginator.update_message(interaction)
+
+
+class HelpCog(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+
+    @commands.command(name="help")
+    async def help_command(self, ctx: commands.Context) -> None:
+        categories: dict[str, list[commands.Command]] = {}
+
+        for command in sorted(self.bot.commands, key=lambda item: item.qualified_name.lower()):
+            if command.hidden or not command.enabled:
+                continue
+
+            try:
+                can_run = await command.can_run(ctx)
+            except (commands.CheckFailure, commands.CommandError):
+                continue
+
+            if not can_run:
+                continue
+
+            cog_name = command.cog.qualified_name if command.cog else "No Category"
+            categories.setdefault(cog_name, []).append(command)
+
+        sorted_categories = sorted(categories.items(), key=lambda item: item[0].lower())
+        if len(sorted_categories) > 25:
+            first_categories = sorted_categories[:24]
+            other_commands = [
+                command
+                for _, commands_in_category in sorted_categories[24:]
+                for command in commands_in_category
+            ]
+            sorted_categories = first_categories + [("Other", other_commands)]
+
+        paginator = HelpPaginator(ctx, dict(sorted_categories))
+        await ctx.send(embed=paginator.build_embed(), view=paginator)
