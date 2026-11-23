@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 async def setup(bot):
-	await bot.add_cog(Groot(bot))
+	await bot.add_cog(HelpPaginator(bot))
 
 class HelpPaginator(discord.ui.View):
     def __init__(self, ctx, categories):
