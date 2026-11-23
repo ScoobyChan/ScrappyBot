@@ -7,3 +7,4 @@ requests
 typing-extensions
 imgurpython
 asyncmy
+asyncpg
