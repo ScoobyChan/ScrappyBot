@@ -6,6 +6,10 @@ import wavelink
 from discord.ext import commands
 from collections import deque
 import random
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class MusicPlayer:
@@ -46,20 +50,44 @@ class Music(commands.Cog):
     ) -> wavelink.Player:
 
         if not ctx.author.voice:
+            logger.warning(
+                "Voice join rejected: guild=%s user=%s is not connected to a voice channel",
+                ctx.guild.id if ctx.guild else None,
+                ctx.author.id,
+            )
             raise commands.CommandError(
                 "You must be connected to a voice channel."
             )
 
         player: wavelink.Player
+        voice_channel = ctx.author.voice.channel
 
         if not ctx.voice_client:
-
-            player = await ctx.author.voice.channel.connect(
-                cls=wavelink.Player
+            logger.info(
+                "Joining voice channel: guild=%s channel=%s user=%s",
+                ctx.guild.id if ctx.guild else None,
+                getattr(voice_channel, "id", None),
+                ctx.author.id,
             )
+            try:
+                player = await voice_channel.connect(cls=wavelink.Player)
+            except Exception:
+                logger.exception(
+                    "Failed to join voice channel: guild=%s channel=%s user=%s",
+                    ctx.guild.id if ctx.guild else None,
+                    getattr(voice_channel, "id", None),
+                    ctx.author.id,
+                )
+                raise
 
         else:
             player = ctx.voice_client
+            logger.debug(
+                "Using existing voice client: guild=%s channel=%s user=%s",
+                ctx.guild.id if ctx.guild else None,
+                getattr(player.channel, "id", None),
+                ctx.author.id,
+            )
 
         return player
 
@@ -68,9 +96,32 @@ class Music(commands.Cog):
 
         player = await self.get_voice_client(ctx)
 
-        tracks = await wavelink.Playable.search(query)
+        guild_id = ctx.guild.id if ctx.guild else None
+        logger.info(
+            "Music play requested: guild=%s user=%s query=%r",
+            guild_id,
+            ctx.author.id,
+            query,
+        )
+
+        try:
+            tracks = await wavelink.Playable.search(query)
+        except Exception:
+            logger.exception(
+                "Track search failed: guild=%s user=%s query=%r",
+                guild_id,
+                ctx.author.id,
+                query,
+            )
+            raise
 
         if not tracks:
+            logger.warning(
+                "No tracks found: guild=%s user=%s query=%r",
+                guild_id,
+                ctx.author.id,
+                query,
+            )
             return await ctx.send("No results found.")
 
         #
@@ -98,7 +149,21 @@ class Music(commands.Cog):
 
             if not player.playing:
                 next_track = player_data.queue.popleft()
-                await player.play(next_track)
+                logger.info(
+                    "Starting playlist: guild=%s tracks=%s first_track=%r",
+                    guild_id,
+                    len(tracks.tracks),
+                    getattr(next_track, "title", str(next_track)),
+                )
+                try:
+                    await player.play(next_track)
+                except Exception:
+                    logger.exception(
+                        "Failed to start playlist track: guild=%s track=%r",
+                        guild_id,
+                        getattr(next_track, "title", str(next_track)),
+                    )
+                    raise
 
             return
 
@@ -109,12 +174,33 @@ class Music(commands.Cog):
 
         if player.playing:
             self.get_player(ctx.guild.id).queue.append(track)
+            logger.info(
+                "Track queued: guild=%s track=%r queue_size=%s",
+                guild_id,
+                track.title,
+                len(self.get_player(ctx.guild.id).queue),
+            )
 
             return await ctx.send(
                 f"✅ Queued **{track.title}**"
             )
 
-        await player.play(track)
+        logger.info(
+            "Starting track: guild=%s track=%r author=%r",
+            guild_id,
+            track.title,
+            track.author,
+        )
+        try:
+            await player.play(track)
+        except Exception:
+            logger.exception(
+                "Failed to start track: guild=%s track=%r author=%r",
+                guild_id,
+                track.title,
+                track.author,
+            )
+            raise
 
         await ctx.send(
             f"🎵 Now playing **{track.title}**"
@@ -232,6 +318,12 @@ class Music(commands.Cog):
     ):
 
         player = payload.player
+        logger.info(
+            "Track ended: guild=%s track=%r reason=%r",
+            player.guild.id,
+            getattr(payload.track, "title", str(payload.track)),
+            getattr(payload, "reason", None),
+        )
 
         state = self.get_player(
             player.guild.id
@@ -241,7 +333,15 @@ class Music(commands.Cog):
         # Loop current song
         #
         if state.loop:
-            await player.play(payload.track)
+            try:
+                await player.play(payload.track)
+                logger.info("Looping track: guild=%s", player.guild.id)
+            except Exception:
+                logger.exception(
+                    "Failed to loop track: guild=%s track=%r",
+                    player.guild.id,
+                    getattr(payload.track, "title", str(payload.track)),
+                )
             return
 
         #
@@ -250,7 +350,19 @@ class Music(commands.Cog):
         next_track = state.get_next_track()
 
         if next_track:
-            await player.play(next_track)
+            try:
+                await player.play(next_track)
+                logger.info(
+                    "Started queued track after track end: guild=%s track=%r",
+                    player.guild.id,
+                    getattr(next_track, "title", str(next_track)),
+                )
+            except Exception:
+                logger.exception(
+                    "Failed to start queued track: guild=%s track=%r",
+                    player.guild.id,
+                    getattr(next_track, "title", str(next_track)),
+                )
             return
 
         #
@@ -266,12 +378,33 @@ class Music(commands.Cog):
                 )
 
                 if recommendations:
-                    await player.play(
-                        recommendations[0]
+                    recommendation = recommendations[0]
+                    try:
+                        await player.play(recommendation)
+                        logger.info(
+                            "Started autoplay track: guild=%s track=%r",
+                            player.guild.id,
+                            getattr(recommendation, "title", str(recommendation)),
+                        )
+                    except Exception:
+                        logger.exception(
+                            "Failed to start autoplay track: guild=%s track=%r",
+                            player.guild.id,
+                            getattr(recommendation, "title", str(recommendation)),
+                        )
+                else:
+                    logger.warning(
+                        "Autoplay found no recommendations: guild=%s source_track=%r",
+                        player.guild.id,
+                        getattr(payload.track, "title", str(payload.track)),
                     )
 
             except Exception:
-                pass
+                logger.exception(
+                    "Autoplay recommendation search failed: guild=%s source_track=%r",
+                    player.guild.id,
+                    getattr(payload.track, "title", str(payload.track)),
+                )
 
     @commands.hybrid_command()
     async def volume(
@@ -360,18 +493,38 @@ class Music(commands.Cog):
     ):
 
         player = payload.player
+        logger.info(
+            "Track-end fallback listener: guild=%s track=%r reason=%r",
+            player.guild.id,
+            getattr(payload.track, "title", str(payload.track)),
+            getattr(payload, "reason", None),
+        )
 
         guild_player = self.get_player(
             player.guild.id
         )
 
         if guild_player.loop:
-            await player.play(payload.track)
+            try:
+                await player.play(payload.track)
+            except Exception:
+                logger.exception(
+                    "Fallback loop playback failed: guild=%s track=%r",
+                    player.guild.id,
+                    getattr(payload.track, "title", str(payload.track)),
+                )
             return
 
         if guild_player.queue:
             next_track = guild_player.queue.popleft()
-            await player.play(next_track)
+            try:
+                await player.play(next_track)
+            except Exception:
+                logger.exception(
+                    "Fallback queue playback failed: guild=%s track=%r",
+                    player.guild.id,
+                    getattr(next_track, "title", str(next_track)),
+                )
 
     @commands.hybrid_command()
     async def loop(self, ctx):
